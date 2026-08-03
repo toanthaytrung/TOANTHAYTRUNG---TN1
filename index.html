@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Học Thêm - HKD Trần Văn Hồng</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .header-bg { background: linear-gradient(135deg, #1f497d 0%, #0d233a 100%); color: white; }
+        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .btn-primary-custom { background-color: #1f497d; border-color: #1f497d; }
+        .btn-primary-custom:hover { background-color: #16355b; }
+        @media print {
+            body * { visibility: hidden; }
+            #printSection, #printSection * { visibility: visible; }
+            #printSection { position: absolute; left: 0; top: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header-bg py-4 text-center mb-4">
+        <div class="container">
+            <h5 class="text-warning mb-1">HỘ KINH DOANH TRẦN VĂN HỒNG</h5>
+            <h2 class="fw-bold">LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG</h2>
+            <p class="mb-0 opacity-75">Địa điểm: [Địa chỉ Hộ kinh doanh] | Hotline: [Số điện thoại trung tâm]</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills justify-content-center mb-4" id="mainTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold px-4" id="form-tab" data-bs-toggle="tab" data-bs-target="#form-pane" type="button">📝 PHỤ HUYNH ĐĂNG KÝ ONLINE</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold px-4" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin-pane" type="button" onclick="loadAdminData()">📊 QUẢN LÝ CƠ SỞ (ADMIN)</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabContent">
+            
+            <!-- TAB 1: FORM ĐĂNG KÝ DÀNH CHO PHỤ HUYNH -->
+            <div class="tab-pane fade show active" id="form-pane" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card card-custom p-4">
+                            <h4 class="card-title text-center text-primary mb-3 fw-bold">PHIẾU ĐĂNG KÝ HỌC THÊM TỰ NGUYỆN</h4>
+                            <p class="text-muted text-center small mb-4">Phụ huynh vui lòng điền đầy đủ thông tin bên dưới để đăng ký cho học sinh.</p>
+                            
+                            <form id="registrationForm">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">1. THÔNG TIN HỌC SINH</h6>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label font-semibold">Họ và tên học sinh *</label>
+                                        <input type="text" class="form-control" id="hoTenHocSinh" required placeholder="Nhập họ tên học sinh">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label font-semibold">Đăng ký Lớp *</label>
+                                        <select class="form-select" id="lop" required>
+                                            <option value="">-- Chọn lớp --</option>
+                                            <option value="12A">Lớp 12A</option>
+                                            <option value="12B">Lớp 12B</option>
+                                            <option value="11A">Lớp 11A</option>
+                                            <option value="10A">Lớp 10A</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label font-semibold">Trường THPT *</label>
+                                        <input type="text" class="form-control" id="truongHoc" required placeholder="Ví dụ: THPT Số 1 Tư Nghĩa">
+                                    </div>
+                                </div>
+
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3 mt-4">2. THÔNG TIN PHỤ HUYNH / NGƯỜI GIÁM HỘ</h6>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Họ tên Cha/Mẹ (Người giám hộ) *</label>
+                                        <input type="text" class="form-control" id="hoTenPhuHuynh" required placeholder="Nhập họ tên phụ huynh">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Số CCCD / CMND *</label>
+                                        <input type="text" class="form-control" id="soCCCD" required placeholder="Nhập số CCCD phụ huynh">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Số điện thoại liên hệ *</label>
+                                        <input type="tel" class="form-control" id="soDienThoai" required placeholder="Nhập số điện thoại">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Địa chỉ thường trú *</label>
+                                        <input type="text" class="form-control" id="diaChi" required placeholder="Nhập địa chỉ nhà">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label font-semibold">Lịch học & Môn học</label>
+                                    <input type="text" class="form-control bg-light" id="lichHoc" value="Môn Toán - Thầy Nguyễn Phỉ Đức Trung (Lịch học thông báo sau)" readonly>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="camKet" required>
+                                    <label class="form-check-label small" for="camKet">
+                                        Gia đình cam kết việc đăng ký học thêm là hoàn toàn <b>tự nguyện</b> và chấp hành đúng nội quy của Hộ kinh doanh.
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary-custom btn-lg w-100 fw-bold text-white" id="submitBtn">
+                                    🚀 GỬI PHIẾU ĐĂNG KÝ
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: QUẢN LÝ DÀNH CHO CƠ SỞ (ADMIN) -->
+            <div class="tab-pane fade" id="admin-pane" role="tabpanel">
+                <div class="card card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-primary mb-0">DANH SÁCH HỌC SINH ĐĂNG KÝ</h4>
+                        <div>
+                            <select class="form-select d-inline-block w-auto me-2" id="filterLop" onchange="filterDataByClass()">
+                                <option value="ALL">-- Tất cả các Lớp --</option>
+                                <option value="12A">Lớp 12A</option>
+                                <option value="12B">Lớp 12B</option>
+                                <option value="11A">Lớp 11A</option>
+                                <option value="10A">Lớp 10A</option>
+                            </select>
+                            <button class="btn btn-success fw-bold" onclick="exportToExcel()">📥 Xuất Danh Sách Excel</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle" id="adminTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Lớp</th>
+                                    <th>Họ Tên Học Sinh</th>
+                                    <th>Trường THPT</th>
+                                    <th>Phụ Huynh</th>
+                                    <th>Số Điện Thoại</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <tr><td colspan="7" class="text-center py-4">Đang tải dữ liệu từ Google Sheets...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- KHU VỰC ẨN ĐỂ IN PHIẾU ĐĂNG KÝ -->
+    <div id="printSection" class="d-none p-5">
+        <div class="text-center mb-3">
+            <h5 class="fw-bold mb-0">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h5>
+            <h6>Độc lập – Tự do – Hạnh phúc</h6>
+            <p>____________________</p>
+            <h3 class="fw-bold mt-3">PHIẾU ĐĂNG KÝ HỌC THÊM TỰ NGUYỆN</h3>
+            <p class="fst-italic">(Áp dụng tại Cơ sở/Hộ kinh doanh dạy thêm ngoài nhà trường)</p>
+        </div>
+        <p><b>Kính gửi:</b> Chủ Hộ kinh doanh Trần Văn Hồng</p>
+        
+        <p><b>1. Thông tin Cha mẹ / Người giám hộ:</b></p>
+        <ul>
+            <li>Họ và tên cha/mẹ: <b id="p_hoTenPhuHuynh"></b></li>
+            <li>Số CCCD: <b id="p_soCCCD"></b></li>
+            <li>Số điện thoại: <b id="p_soDienThoai"></b> | Địa chỉ: <b id="p_diaChi"></b></li>
+            <li>Là phụ huynh của học sinh: <b id="p_hoTenHocSinh"></b> - Lớp chính khóa: <b id="p_truongHoc"></b></li>
+        </ul>
+
+        <p><b>2. Nội dung đăng ký học thêm tự nguyện:</b></p>
+        <ul>
+            <li>Cơ sở dạy thêm: <b>Hộ kinh doanh Trần Văn Hồng</b></li>
+            <li>Môn đăng ký: <b>TOÁN</b> | Giáo viên giảng dạy: <b>Thầy Nguyễn Phỉ Đức Trung</b></li>
+            <li>Đăng ký Học lớp: <b id="p_lop"></b></li>
+        </ul>
+
+        <p><b>3. Cam kết:</b> Gia đình và học sinh hoàn toàn tự nguyện đăng ký học thêm, không bị ép buộc và cam kết chấp hành nghiêm túc nội quy của cơ sở.</p>
+
+        <div class="row text-center mt-5">
+            <div class="col-6">
+                <p class="fw-bold mb-5">Ý KIẾN CỦA HỌC SINH<br><i>(Ký và ghi rõ họ tên)</i></p>
+            </div>
+            <div class="col-6">
+                <p class="fw-bold mb-5">CHA MẸ / NGƯỜI GIÁM HỘ<br><i>(Ký và ghi rõ họ tên)</i></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // === DÁN URL GOOGLE APPS SCRIPT CỦA THẦY VÀO ĐÂY ===
+        const SCRIPT_URL = "DAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_VAO_DAY";
+
+        let globalData = [];
+
+        // 1. Xử lý gửi Form Đăng ký
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "⏳ Đang gửi dữ liệu...";
+
+            const payload = {
+                hoTenHocSinh: document.getElementById('hoTenHocSinh').value,
+                lop: document.getElementById('lop').value,
+                truongHoc: document.getElementById('truongHoc').value,
+                hoTenPhuHuynh: document.getElementById('hoTenPhuHuynh').value,
+                soCCCD: document.getElementById('soCCCD').value,
+                soDienThoai: document.getElementById('soDienThoai').value,
+                diaChi: document.getElementById('diaChi').value,
+                lichHoc: document.getElementById('lichHoc').value
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert("🎉 ĐĂNG KÝ THÀNH CÔNG!\nCảm ơn Phụ huynh và Học sinh đã hoàn tất đăng ký.");
+                document.getElementById('registrationForm').reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🚀 GỬI PHIẾU ĐĂNG KÝ";
+            }).catch(err => {
+                alert("Có lỗi xảy ra, vui lòng thử lại!");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🚀 GỬI PHIẾU ĐĂNG KÝ";
+            });
+        });
+
+        // 2. Tải dữ liệu Admin từ Google Sheet
+        function loadAdminData() {
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    globalData = data;
+                    renderTable(globalData);
+                }).catch(err => {
+                    document.getElementById('adminTableBody').innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Chưa thể tải dữ liệu hoặc chưa dán URL Web App!</td></tr>`;
+                });
+        }
+
+        // 3. Render Bảng Admin
+        function renderTable(data) {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Chưa có học sinh nào đăng ký.</td></tr>`;
+                return;
+            }
+
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><span class="badge bg-primary fs-6">${row.Lớp || ''}</span></td>
+                    <td class="fw-bold">${row.HoTenHocSinh || ''}</td>
+                    <td>${row.TruongHoc || ''}</td>
+                    <td>${row.HoTenPhuHuynh || ''}</td>
+                    <td>${row.SoDienThoai || ''}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In Phiếu</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4. Lọc theo Lớp
+        function filterDataByClass() {
+            const selectedClass = document.getElementById('filterLop').value;
+            if (selectedClass === 'ALL') {
+                renderTable(globalData);
+            } else {
+                const filtered = globalData.filter(item => item.Lớp === selectedClass);
+                renderTable(filtered);
+            }
+        }
+
+        // 5. In Phiếu đăng ký của 1 học sinh
+        function printSingleReceipt(student) {
+            document.getElementById('p_hoTenPhuHuynh').innerText = student.HoTenPhuHuynh || '';
+            document.getElementById('p_soCCCD').innerText = student.SoCCCD || '';
+            document.getElementById('p_soDienThoai').innerText = student.SoDienThoai || '';
+            document.getElementById('p_diaChi').innerText = student.DiaChi || '';
+            document.getElementById('p_hoTenHocSinh').innerText = student.HoTenHocSinh || '';
+            document.getElementById('p_truongHoc').innerText = student.TruongHoc || '';
+            document.getElementById('p_lop').innerText = student.Lớp || '';
+
+            document.getElementById('printSection').classList.remove('d-none');
+            window.print();
+            document.getElementById('printSection').classList.add('d-none');
+        }
+
+        // 6. Xuất Danh Sách Ra File CSV/Excel
+        function exportToExcel() {
+            if (globalData.length === 0) {
+                alert("Chưa có dữ liệu để xuất!");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "STT,Ho Ten Hoc Sinh,Lop,Truong Hoc,Ho Ten Phu Huynh,So CCCD,So Dien Thoai,Dia Chi\n";
+            
+            globalData.forEach((row, i) => {
+                csvContent += `${i+1},"${row.HoTenHocSinh}","${row.Lớp}","${row.TruongHoc}","${row.HoTenPhuHuynh}","${row.SoCCCD}","${row.SoDienThoai}","${row.DiaChi}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Danh_Sach_Dang_Ky_Lop_Toan.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
