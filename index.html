@@ -294,7 +294,7 @@
     <script>
         // === DÁN URL GOOGLE APPS SCRIPT CỦA THẦY VÀO ĐÂY ===
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJmB0gORl33cR-T1BsdCLNgk2rN53CKnbsYu5iZ49ZHrf3zqEFiN0Z2SsJ4RwDpMHo/exec";
-        const ADMIN_PASSWORD = "123579"; // Mật khẩu xem Admin (Thầy có thể đổi mật khẩu tại đây)
+        const ADMIN_PASSWORD = "123579"; // Mật khẩu xem Admin
 
         let globalData = [];
 
@@ -414,18 +414,39 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        // 7. Xuất File Excel
+        // 7. Xuất File Excel Theo Từng Lớp Đang Lọc (Hoặc Tất Cả)
         function exportToExcel() {
-            if (globalData.length === 0) { alert("Chưa có dữ liệu!"); return; }
+            if (!globalData || globalData.length === 0) { 
+                alert("Chưa có dữ liệu để xuất!"); 
+                return; 
+            }
+
+            const selectedClass = document.getElementById('filterLop').value;
+            let exportData = globalData;
+            let fileName = "Danh_Sach_Dang_Ky_Lop_Toan_TatCa.csv";
+
+            // Nếu người dùng chọn lọc theo từng lớp cụ thể
+            if (selectedClass !== 'ALL') {
+                exportData = globalData.filter(item => item.Lớp === selectedClass);
+                fileName = `Danh_Sach_Dang_Ky_Lop_${selectedClass}.csv`;
+            }
+
+            if (exportData.length === 0) {
+                alert(`Lớp ${selectedClass} hiện chưa có học sinh đăng ký!`);
+                return;
+            }
+
             let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-            csvContent += "STT,Ho Ten Hoc Sinh,Lop,Truong Hoc,Ho Ten Phu Huynh,So Dien Thoai,Dia Chi\n";
-            globalData.forEach((row, i) => {
-                csvContent += `${i+1},"${row.HoTenHocSinh}","${row.Lớp}","${row.TruongHoc}","${row.HoTenPhuHuynh}","${row.SoDienThoai}","${row.DiaChi}"\n`;
+            csvContent += "STT,Lop,Ho Ten Hoc Sinh,Truong THPT,Ho Ten Phu Huynh,So Dien Thoai,Dia Chi\n";
+            
+            exportData.forEach((row, i) => {
+                csvContent += `${i+1},"${row.Lớp || ''}","${row.HoTenHocSinh || ''}","${row.TruongHoc || ''}","${row.HoTenPhuHuynh || ''}","${row.SoDienThoai || ''}","${row.DiaChi || ''}"\n`;
             });
+
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Danh_Sach_Dang_Ky_Lop_Toan.csv`);
+            link.setAttribute("download", fileName);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
