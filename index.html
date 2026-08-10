@@ -22,7 +22,7 @@
         .btn-primary-custom:hover { background-color: #16355b; color: white; }
         .exam-card { transition: all 0.25s ease-in-out; border-left: 5px solid #1f497d; }
         .exam-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .notice-card { border-left: 5px solid #ffc107; background-color: #fff8e6; }
+        .notice-card { border-left: 5px solid #1f497d; background-color: #eef4fc; }
 
         @media print {
             body * { visibility: hidden; }
@@ -33,13 +33,12 @@
 </head>
 <body>
 
-    <!-- HEADER & KHỐI 1: NÚT QUẢN LÝ / CƠ SỞ -->
+    <!-- HEADER & KHỐI QUẢN LÝ -->
     <div class="header-bg py-3 px-4 d-flex justify-content-between align-items-center flex-wrap">
         <div>
             <h4 class="fw-bold mb-0 text-warning"><i class="fa-solid fa-graduation-cap me-2"></i>LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG</h4>
             <small class="opacity-75">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
         </div>
-        <!-- Nút bấm mở Khối Hành chính/Quản lý -->
         <button class="btn btn-outline-light fw-bold mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#adminModal">
             🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
         </button>
@@ -60,12 +59,12 @@
                 </div>
             </div>
 
-            <!-- KHỐI 2: HỆ THỐNG LUYỆN ĐỀ AZOTA 3 KHỐI (10, 11, 12) -->
+            <!-- KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
             <div class="col-lg-12">
                 <div class="card card-custom p-4">
                     <div class="text-center mb-4">
                         <h4 class="fw-bold text-primary">📝 KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
-                        <p class="text-muted mb-0">Chọn Khối và bấm "Bắt đầu làm bài" để chuyển tới hệ thống làm bài Azota</p>
+                        <p class="text-muted mb-0">Chọn Khối và bấm "Bắt đầu làm bài" để tiến hành làm bài</p>
                     </div>
 
                     <!-- TAB CHỌN KHỐI HỌC -->
@@ -83,7 +82,7 @@
 
                     <!-- DANH SÁCH ĐỀ THI HIỂN THỊ -->
                     <div class="row g-3" id="examListContainer">
-                        <!-- Javascript sẽ tải đề vào đây -->
+                        <div class="text-center py-4 text-muted">⏳ Đang tải danh sách đề thi...</div>
                     </div>
                 </div>
             </div>
@@ -91,7 +90,7 @@
         </div>
     </div>
 
-    <!-- MODAL POPUP: CỬA SỔ QUẢN LÝ (ĐĂNG KÝ, NIÊM YẾT, ADMIN) -->
+    <!-- MODAL POPUP: QUẢN LÝ (ĐĂNG KÝ, NIÊM YẾT, ADMIN) -->
     <div class="modal fade" id="adminModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -103,7 +102,7 @@
                     <ul class="nav nav-tabs justify-content-center mb-4" id="modalTab">
                         <li class="nav-item"><button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#m-form">📝 ĐĂNG KÝ HỌC THÊM</button></li>
                         <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#m-notice">📋 NIÊM YẾT CÔNG KHAI (MẪU 02)</button></li>
-                        <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#m-admin">🔒 QUẢN LÝ (ADMIN)</button></li>
+                        <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#m-admin">🔒 QUẢN LÝ ADMIN TỰ ĐỘNG</button></li>
                     </ul>
 
                     <div class="tab-content">
@@ -151,7 +150,7 @@
                             </table>
                         </div>
 
-                        <!-- 3. Admin Quản lý & Đăng Thông báo -->
+                        <!-- 3. Admin Quản lý Tự động -->
                         <div class="tab-pane fade" id="m-admin">
                             <div id="passwordAuthBox" class="text-center py-4">
                                 <h6>🔒 Nhập mật khẩu Admin để truy cập</h6>
@@ -160,21 +159,50 @@
                             </div>
                             
                             <div id="adminContentBox" class="d-none">
-                                <!-- ĐĂNG THÔNG BÁO MỚI -->
+                                
+                                <!-- FORM DÁN TẠO ĐỀ AZOTA MỚI TRỰC TIẾP -->
+                                <div class="card p-3 mb-4 bg-light border border-primary">
+                                    <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / DÁN ĐỀ THI AZOTA MỚI</h6>
+                                    <div class="row g-2">
+                                        <div class="col-md-3">
+                                            <select class="form-select" id="newExamKhoi">
+                                                <option value="12">🎓 Khối 12</option>
+                                                <option value="11">🎓 Khối 11</option>
+                                                <option value="10">🎓 Khối 10</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề 1, Đề 2...)">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="newExamTime" value="90 Phút" placeholder="Thời gian">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="newExamLink" placeholder="Dán Link Azota tại đây...">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary-custom fw-bold mt-3 w-auto align-self-start" onclick="addNewExam()">🚀 ĐĂNG ĐỀ THI MỚI</button>
+                                </div>
+
+                                <!-- KHUNG ĐĂNG VÀ XÓA THÔNG BÁO -->
                                 <div class="card p-3 mb-4 bg-light border">
-                                    <h6 class="fw-bold text-primary mb-2">📢 ĐĂNG THÔNG BÁO MỚI LÊN TRANG CHỦ</h6>
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 2. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
                                     <div class="mb-2">
-                                        <textarea class="form-control" id="newNoticeText" rows="2" placeholder="Nhập nội dung thông báo chữ..."></textarea>
+                                        <textarea class="form-control" id="newNoticeText" rows="2" placeholder="Gõ nội dung thông báo..."></textarea>
                                     </div>
                                     <div class="mb-2">
                                         <input type="text" class="form-control" id="newNoticeImg" placeholder="Link ảnh thông báo (.png / .jpg) - Tùy chọn">
                                     </div>
-                                    <button class="btn btn-sm btn-primary fw-bold w-auto" onclick="postNewNotice()">🚀 ĐĂNG THÔNG BÁO</button>
+                                    <button class="btn btn-primary-custom fw-bold w-auto" onclick="postNewNotice()">🚀 ĐĂNG THÔNG BÁO</button>
+
+                                    <!-- Bảng danh sách thông báo để XÓA -->
+                                    <h6 class="fw-bold mt-4 mb-2">Danh sách thông báo đang hiển thị (Bấm để xóa):</h6>
+                                    <div id="adminNoticeList" class="small">Đang tải...</div>
                                 </div>
 
-                                <!-- QUẢN LÝ DANH SÁCH ĐĂNG KÝ -->
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold mb-0">DANH SÁCH HỌC SINH ĐĂNG KÝ</h6>
+                                <!-- QUẢN LÝ DANH SÁCH ĐĂNG KÝ HỌC SINH -->
+                                <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3">
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-users me-1"></i> 3. DANH SÁCH HỌC SINH ĐĂNG KÝ HỌC THÊM</h6>
                                     <div>
                                         <select class="form-select w-auto d-inline-block me-2" id="filterLop" onchange="filterDataByClass()">
                                             <option value="ALL">-- Tất cả Lớp --</option>
@@ -199,7 +227,7 @@
         </div>
     </div>
 
-    <!-- KHU VỰC IN PHIẾU A4 CHUẨN 1 TRANG -->
+    <!-- KHU VỰC IN PHIẾU A4 -->
     <div id="printSection" class="d-none">
         <div class="text-center mb-3">
             <h5 class="fw-bold mb-0">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h5>
@@ -224,103 +252,58 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJmB0gORl33cR-T1BsdCLNgk2rN53CKnbsYu5iZ49ZHrf3zqEFiN0Z2SsJ4RwDpMHo/exec";
         const ADMIN_PASSWORD = "123579";
 
-        // =========================================================================
-        // 🎯 CẤU HÌNH DANH SÁCH ĐỀ THI AZOTA 3 KHỐI (THẦY THÊM/SỬA TẠI ĐÂY)
-        // =========================================================================
-        const AZOTA_EXAM_DATABASE = [
-            // CÁC ĐỀ KHỐI 12
-            {
-                id: "k12_de01",
-                khoi: 12,
-                title: "Đề Ôn Tập Khảo Sát Chất Lượng Lớp 12 - Đề 01",
-                thoiGian: "90 Phút",
-                azotaLink: "https://azota.vn/" // Link Azota thực tế của Thầy
-            },
-            {
-                id: "k12_de02",
-                khoi: 12,
-                title: "Đề Ôn Tập Khảo Sát Chất Lượng Lớp 12 - Đề 02",
-                thoiGian: "90 Phút",
-                azotaLink: "https://azota.vn/"
-            },
-
-            // CÁC ĐỀ KHỐI 11
-            {
-                id: "k11_de01",
-                khoi: 11,
-                title: "Đề Kiểm Tra Định Kỳ Môn Toán Khối 11 - Đề 01",
-                thoiGian: "45 Phút",
-                azotaLink: "https://azota.vn/"
-            },
-
-            // CÁC ĐỀ KHỐI 10
-            {
-                id: "k10_de01",
-                khoi: 10,
-                title: "Đề Ôn Tập Đầu Khóa Môn Toán Khối 10 - Đề 01",
-                thoiGian: "45 Phút",
-                azotaLink: "https://azota.vn/"
-            }
-        ];
-
         let currentGrade = 12;
         let globalData = [];
+        let globalExams = [];
 
-        // 1. TẢI THÔNG BÁO TỪ GOOGLE SHEETS BẰNG JSONP
-        function loadNotices() {
-            const container = document.getElementById('noticeBoardContainer');
-            
-            window.handleNoticeData = function(data) {
-                container.innerHTML = '';
-                if (!data || data.length === 0) {
-                    container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
-                    return;
-                }
-                
-                // Hiển thị thông báo mới nhất lên đầu
-                data.reverse().forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'card notice-card p-3 mb-3';
-                    
-                    let imgHtml = '';
-                    if (item.HinhAnh && item.HinhAnh.trim() !== '') {
-                        imgHtml = `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border" style="max-height: 400px;"></div>`;
-                    }
-
-                    div.innerHTML = `
-                        <div class="fw-bold text-dark">${item.NoiDung || ''}</div>
-                        ${imgHtml}
-                    `;
-                    container.appendChild(div);
-                });
+        // 1. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA TỪ GOOGLE SHEETS
+        function loadExams() {
+            window.handleExamData = function(data) {
+                globalExams = data;
+                switchGrade(currentGrade);
             };
-
             const script = document.createElement('script');
-            script.src = SCRIPT_URL + "?type=thongBao&callback=handleNoticeData&t=" + new Date().getTime();
+            script.src = SCRIPT_URL + "?type=deThi&callback=handleExamData&t=" + new Date().getTime();
             document.body.appendChild(script);
         }
 
-        // 2. ĐĂNG THÔNG BÁO MỚI (DÀNH CHO ADMIN)
-        function postNewNotice() {
-            const txt = document.getElementById('newNoticeText').value.trim();
-            const img = document.getElementById('newNoticeImg').value.trim();
-            
-            if (!txt && !img) { alert("Vui lòng nhập nội dung chữ hoặc link ảnh!"); return; }
+        // TẠO ĐỀ THI AZOTA MỚI TỪ ADMIN
+        function addNewExam() {
+            const khoi = document.getElementById('newExamKhoi').value;
+            const tenDe = document.getElementById('newExamTitle').value.trim();
+            const thoiGian = document.getElementById('newExamTime').value.trim();
+            const link = document.getElementById('newExamLink').value.trim();
+
+            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "dangThongBao", noiDung: txt, hinhAnh: img })
+                body: JSON.stringify({ action: "themDeThi", khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link })
             }).then(() => {
-                alert("🚀 ĐÃ ĐĂNG THÔNG BÁO MỚI THÀNH CÔNG!");
-                document.getElementById('newNoticeText').value = '';
-                document.getElementById('newNoticeImg').value = '';
-                loadNotices();
+                alert("🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
+                document.getElementById('newExamTitle').value = '';
+                document.getElementById('newExamLink').value = '';
+                loadExams();
             });
         }
 
-        // 3. HIỂN THỊ ĐỀ THI AZOTA THEO KHỐI
+        // XÓA ĐỀ THI (DÀNH CHO ADMIN)
+        function deleteExam(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
+            }).then(() => {
+                alert("Đã xóa đề thi!");
+                loadExams();
+            });
+        }
+
+        // HIỂN THỊ ĐỀ THI THEO KHỐI
         function switchGrade(grade) {
             currentGrade = grade;
             document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
@@ -329,10 +312,10 @@
             const container = document.getElementById('examListContainer');
             container.innerHTML = '';
 
-            const filteredExams = AZOTA_EXAM_DATABASE.filter(e => e.khoi === grade);
+            const filteredExams = globalExams.filter(e => String(e.Khoi) === String(grade));
 
             if (filteredExams.length === 0) {
-                container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi cho Khối ${grade}. Thầy sẽ cập nhật sớm!</div>`;
+                container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi cho Khối ${grade}. Thầy sẽ bổ sung sớm!</div>`;
                 return;
             }
 
@@ -343,21 +326,100 @@
                     <div class="card card-custom exam-card p-3 h-100 d-flex flex-column justify-content-between bg-white">
                         <div>
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-primary fs-6">Khối ${exam.khoi}</span>
-                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.thoiGian}</small>
+                                <span class="badge bg-primary fs-6">Khối ${exam.Khoi}</span>
+                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
                             </div>
-                            <h6 class="fw-bold text-dark mb-3">${exam.title}</h6>
+                            <h5 class="fw-bold text-dark mb-3">${exam.TenDe}</h5>
                         </div>
-                        <a href="${exam.azotaLink}" target="_blank" class="btn btn-primary-custom w-100 fw-bold">
-                            🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                        </a>
+                        <div>
+                            <a href="${exam.AzotaLink}" target="_blank" class="btn btn-primary-custom w-100 fw-bold mb-1">
+                                🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                            </a>
+                            <button class="btn btn-sm btn-link text-danger w-100 text-decoration-none d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})">🗑️ Xóa đề này (Admin)</button>
+                        </div>
                     </div>
                 `;
                 container.appendChild(col);
             });
+            if (!document.getElementById('adminContentBox').classList.contains('d-none')) {
+                document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
+            }
         }
 
-        // 4. XỬ LÝ FORM ĐĂNG KÝ & ADMIN
+        // 2. TẢI VÀ XÓA THÔNG BÁO TỪ GOOGLE SHEETS
+        function loadNotices() {
+            const container = document.getElementById('noticeBoardContainer');
+            const adminNoticeList = document.getElementById('adminNoticeList');
+            
+            window.handleNoticeData = function(data) {
+                container.innerHTML = '';
+                if (adminNoticeList) adminNoticeList.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
+                    return;
+                }
+                
+                data.slice().reverse().forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'card notice-card p-3 mb-3';
+                    
+                    let imgHtml = '';
+                    if (item.HinhAnh && item.HinhAnh.trim() !== '') {
+                        imgHtml = `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border" style="max-height: 400px;"></div>`;
+                    }
+
+                    div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
+                    container.appendChild(div);
+
+                    if (adminNoticeList) {
+                        adminNoticeList.innerHTML += `
+                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                                <span>${item.NoiDung || 'Thông báo dạng ảnh'}</span>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
+                            </div>
+                        `;
+                    }
+                });
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + "?type=thongBao&callback=handleNoticeData&t=" + new Date().getTime();
+            document.body.appendChild(script);
+        }
+
+        function postNewNotice() {
+            const txt = document.getElementById('newNoticeText').value.trim();
+            const img = document.getElementById('newNoticeImg').value.trim();
+            if (!txt && !img) { alert("Vui lòng nhập nội dung!"); return; }
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "dangThongBao", noiDung: txt, hinhAnh: img })
+            }).then(() => {
+                alert("🚀 ĐÃ ĐĂNG THÔNG BÁO THÀNH CÔNG!");
+                document.getElementById('newNoticeText').value = '';
+                document.getElementById('newNoticeImg').value = '';
+                loadNotices();
+            });
+        }
+
+        function deleteNotice(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa thông báo này?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaThongBao", rowIndex: rowIndex })
+            }).then(() => {
+                alert("Đã xóa thông báo!");
+                loadNotices();
+            });
+        }
+
+        // 3. ĐĂNG KÝ HỌC THÊM & ADMIN
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
@@ -392,6 +454,7 @@
             if (document.getElementById('adminPasswordInput').value === ADMIN_PASSWORD) {
                 document.getElementById('passwordAuthBox').classList.add('d-none');
                 document.getElementById('adminContentBox').classList.remove('d-none');
+                document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
                 loadAdminData();
             } else { alert("Mật khẩu không chính xác!"); }
         }
@@ -447,7 +510,7 @@
         }
 
         // TỰ ĐỘNG KHỞI TẠO TẢI ĐỀ VÀ THÔNG BÁO
-        switchGrade(12);
+        loadExams();
         loadNotices();
     </script>
 </body>
