@@ -218,23 +218,30 @@
                                 </div>
 
                                 <!-- QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH -->
-                                <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3 flex-wrap gap-2">
                                     <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
-                                    <div>
-                                        <select class="form-select w-auto d-inline-block me-2" id="filterLop" onchange="filterDataByClass()">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <!-- NÚT MỚI: DUYỆT HÀNG LOẠT -->
+                                        <button class="btn btn-success fw-bold" onclick="approveSelectedStudents()">
+                                            ✅ DUYỆT CÁC MỤC ĐÃ CHỌN
+                                        </button>
+                                        <select class="form-select w-auto" id="filterLop" onchange="filterDataByClass()">
                                             <option value="ALL">-- Tất cả Lớp --</option>
                                             <option value="12A">Lớp 12A</option><option value="12B">Lớp 12B</option>
                                             <option value="11A">Lớp 11A</option><option value="11B">Lớp 11B</option>
                                             <option value="10A">Lớp 10A</option><option value="10B">Lớp 10B</option><option value="10C">Lớp 10C</option>
                                         </select>
-                                        <button class="btn btn-success fw-bold" onclick="exportToExcel()">📥 Xuất Excel</button>
+                                        <button class="btn btn-outline-success fw-bold" onclick="exportToExcel()">📥 Xuất Excel</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-bordered align-middle">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Hành Động Phê Duyệt</th><th>Phiếu</th>
+                                                <th class="text-center" style="width: 40px;">
+                                                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" title="Chọn tất cả">
+                                                </th>
+                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Hành Động</th><th>Phiếu</th>
                                             </tr>
                                         </thead>
                                         <tbody id="adminTableBody"></tbody>
@@ -278,7 +285,7 @@
         let globalExams = [];
         let selectedAzotaUrl = "";
 
-        // 1. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
+        // TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -333,16 +340,14 @@
             }
         }
 
-        // 2. CƠ CHẾ XÁC THỰC SỐ ĐIỆN THOẠI VÀ BẢO MẬT BÀI THI
+        // XÁC THỰC SỐ ĐIỆN THOẠI VÀ BẢO MẬT BÀI THI
         function openExamWithAuth(azotaUrl) {
             selectedAzotaUrl = azotaUrl;
             const savedPhone = localStorage.getItem('user_auth_phone');
             
-            // Nếu đã lưu SĐT hợp lệ trước đó thì mở thẳng
             if (savedPhone) {
                 verifyPhoneOnServer(savedPhone, true);
             } else {
-                // Hiện Modal bắt nhập SĐT
                 document.getElementById('inputPhoneAuth').value = '';
                 document.getElementById('authAlertBox').innerHTML = '';
                 const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
@@ -385,7 +390,6 @@
                         modal.show();
                     }
                 } else {
-                    // XÁC THỰC THÀNH CÔNG: LƯU SĐT VÀ MỞ AZOTA
                     localStorage.setItem('user_auth_phone', phone);
                     const modalEl = document.getElementById('verifyPhoneModal');
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
@@ -400,7 +404,34 @@
             document.body.appendChild(script);
         }
 
-        // 3. QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH TỪ TRANG ADMIN
+        // TÍNH NĂNG CHỌN TẤT CẢ VÀ DUYỆT HÀNG LOẠT
+        function toggleSelectAll(master) {
+            const checkboxes = document.querySelectorAll('.student-select-cb');
+            checkboxes.forEach(cb => cb.checked = master.checked);
+        }
+
+        function approveSelectedStudents() {
+            const selectedCbs = document.querySelectorAll('.student-select-cb:checked');
+            if (selectedCbs.length === 0) {
+                alert("Thầy chưa chọn học sinh nào để duyệt!");
+                return;
+            }
+
+            const indexes = Array.from(selectedCbs).map(cb => parseInt(cb.value));
+            if (!confirm(`Thầy có chắc chắn muốn duyệt ${indexes.length} học sinh đã chọn?`)) return;
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "duyetNhieuHocSinh", rowIndexes: indexes })
+            }).then(() => {
+                alert(`✅ ĐÃ PHÊ DUYỆT THÀNH CÔNG ${indexes.length} HỌC SINH!`);
+                document.getElementById('selectAllCheckbox').checked = false;
+                loadAdminData();
+            });
+        }
+
         function approveStudent(rowIndex) {
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -429,7 +460,9 @@
         function renderAdminTable(data) {
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
+            document.getElementById('selectAllCheckbox').checked = false;
+
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
             
             data.forEach((row, i) => {
                 const isApproved = (row.TrangThai === "Đã duyệt");
@@ -437,6 +470,10 @@
                     `<span class="badge bg-success">Đã duyệt</span>` : 
                     `<span class="badge bg-warning text-dark">Chờ duyệt</span>`;
                 
+                const checkboxCell = isApproved ? 
+                    `<i class="fa-solid fa-check text-success"></i>` : 
+                    `<input type="checkbox" class="student-select-cb" value="${row._rowIndex}">`;
+
                 const actionBtn = isApproved ? 
                     `<button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>` : 
                     `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
@@ -444,6 +481,7 @@
 
                 tbody.innerHTML += `
                     <tr>
+                        <td class="text-center">${checkboxCell}</td>
                         <td>${i+1}</td>
                         <td><span class="badge bg-primary">${row.Lớp||''}</span></td>
                         <td class="fw-bold">${row.HoTenHocSinh||''}</td>
@@ -455,7 +493,7 @@
             });
         }
 
-        // CÁC HÀM XỬ LÝ KHÁC (TẢI THÔNG BÁO, ĐĂNG KÝ, THÊM ĐỀ...)
+        // TẢI VÀ ĐĂNG THÔNG BÁO / ĐỀ THI / HỌC SINH
         function addNewExam() {
             const khoi = document.getElementById('newExamKhoi').value;
             const tenDe = document.getElementById('newExamTitle').value.trim();
