@@ -90,6 +90,24 @@
         </div>
     </div>
 
+    <!-- MODAL POPUP XÁC THỰC SỐ ĐIỆN THOẠI HỌC SINH -->
+    <div class="modal fade" id="verifyPhoneModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header header-bg text-white">
+                    <h5 class="modal-title fw-bold">🔒 XÁC THỰC HỌC VIÊN CƠ SỞ</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p class="text-muted mb-3">Đề thi chỉ dành cho Học sinh đã được <b>Thầy Trung phê duyệt</b>. Vui lòng nhập Số điện thoại đã đăng ký để làm bài.</p>
+                    <input type="tel" class="form-control form-control-lg text-center fw-bold mb-3" id="inputPhoneAuth" placeholder="Nhập số điện thoại...">
+                    <button class="btn btn-primary-custom btn-lg w-100 fw-bold" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
+                    <div id="authAlertBox" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL POPUP: QUẢN LÝ (ĐĂNG KÝ, NIÊM YẾT, ADMIN) -->
     <div class="modal fade" id="adminModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -195,14 +213,13 @@
                                     </div>
                                     <button class="btn btn-primary-custom fw-bold w-auto" onclick="postNewNotice()">🚀 ĐĂNG THÔNG BÁO</button>
 
-                                    <!-- Bảng danh sách thông báo để XÓA -->
                                     <h6 class="fw-bold mt-4 mb-2">Danh sách thông báo đang hiển thị (Bấm để xóa):</h6>
                                     <div id="adminNoticeList" class="small">Đang tải...</div>
                                 </div>
 
-                                <!-- QUẢN LÝ DANH SÁCH ĐĂNG KÝ HỌC SINH -->
+                                <!-- QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH -->
                                 <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3">
-                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-users me-1"></i> 3. DANH SÁCH HỌC SINH ĐĂNG KÝ HỌC THÊM</h6>
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
                                     <div>
                                         <select class="form-select w-auto d-inline-block me-2" id="filterLop" onchange="filterDataByClass()">
                                             <option value="ALL">-- Tất cả Lớp --</option>
@@ -215,7 +232,11 @@
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-bordered align-middle">
-                                        <thead class="table-dark"><tr><th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>Trường THPT</th><th>Phụ Huynh</th><th>SĐT</th><th>In</th></tr></thead>
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Hành Động Phê Duyệt</th><th>Phiếu</th>
+                                            </tr>
+                                        </thead>
                                         <tbody id="adminTableBody"></tbody>
                                     </table>
                                 </div>
@@ -255,8 +276,9 @@
         let currentGrade = 12;
         let globalData = [];
         let globalExams = [];
+        let selectedAzotaUrl = "";
 
-        // 1. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA TỪ GOOGLE SHEETS
+        // 1. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -267,47 +289,6 @@
             document.body.appendChild(script);
         }
 
-        // TẠO ĐỀ THI AZOTA MỚI TỪ ADMIN
-        function addNewExam() {
-            const khoi = document.getElementById('newExamKhoi').value;
-            const tenDe = document.getElementById('newExamTitle').value.trim();
-            const thoiGian = document.getElementById('newExamTime').value.trim();
-            let link = document.getElementById('newExamLink').value.trim();
-
-            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
-
-            if (!link.startsWith("http://") && !link.startsWith("https://")) {
-                link = "https://" + link;
-            }
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "themDeThi", khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link })
-            }).then(() => {
-                alert("🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
-                document.getElementById('newExamTitle').value = '';
-                document.getElementById('newExamLink').value = '';
-                loadExams();
-            });
-        }
-
-        // XÓA ĐỀ THI (DÀNH CHO ADMIN)
-        function deleteExam(rowIndex) {
-            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
-            }).then(() => {
-                alert("Đã xóa đề thi!");
-                loadExams();
-            });
-        }
-
-        // HIỂN THỊ ĐỀ THI THEO KHỐI (TỰ ĐỘNG BẢO VỆ CHỐNG LỖI UNDEFINED LINK)
         function switchGrade(grade) {
             currentGrade = grade;
             document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
@@ -324,8 +305,7 @@
             }
 
             filteredExams.forEach(exam => {
-                // Ép linh hoạt lấy link Azota dù cột đặt tên gì
-                const rawLink = exam.AzotaLink || exam.azotaLink || exam.Azotalink || exam.AZOTALINK || exam.Link || exam.link || '#';
+                const rawLink = exam.AzotaLink || exam.azotaLink || exam.Link || '#';
                 
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4';
@@ -334,14 +314,14 @@
                         <div>
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="badge bg-primary fs-6">Khối ${exam.Khoi || exam.khoi}</span>
-                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || exam.thoiGian || '90 Phút'}</small>
+                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
                             </div>
                             <h5 class="fw-bold text-dark mb-3">${exam.TenDe || exam.tenDe}</h5>
                         </div>
                         <div>
-                            <a href="${rawLink}" target="_blank" class="btn btn-primary-custom w-100 fw-bold mb-1">
+                            <button class="btn btn-primary-custom w-100 fw-bold mb-1" onclick="openExamWithAuth('${rawLink}')">
                                 🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                            </a>
+                            </button>
                             <button class="btn btn-sm btn-link text-danger w-100 text-decoration-none d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})">🗑️ Xóa đề này (Admin)</button>
                         </div>
                     </div>
@@ -353,7 +333,161 @@
             }
         }
 
-        // 2. TẢI VÀ XÓA THÔNG BÁO TỪ GOOGLE SHEETS
+        // 2. CƠ CHẾ XÁC THỰC SỐ ĐIỆN THOẠI VÀ BẢO MẬT BÀI THI
+        function openExamWithAuth(azotaUrl) {
+            selectedAzotaUrl = azotaUrl;
+            const savedPhone = localStorage.getItem('user_auth_phone');
+            
+            // Nếu đã lưu SĐT hợp lệ trước đó thì mở thẳng
+            if (savedPhone) {
+                verifyPhoneOnServer(savedPhone, true);
+            } else {
+                // Hiện Modal bắt nhập SĐT
+                document.getElementById('inputPhoneAuth').value = '';
+                document.getElementById('authAlertBox').innerHTML = '';
+                const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
+                modal.show();
+            }
+        }
+
+        function processPhoneAuth() {
+            const inputPhone = document.getElementById('inputPhoneAuth').value.trim();
+            if (!inputPhone) {
+                document.getElementById('authAlertBox').innerHTML = `<div class="alert alert-danger py-2">Vui lòng nhập số điện thoại!</div>`;
+                return;
+            }
+            verifyPhoneOnServer(inputPhone, false);
+        }
+
+        function verifyPhoneOnServer(phone, isAuto) {
+            window.handleAuthCheck = function(students) {
+                const found = (students || []).find(s => String(s.SoDienThoai).trim() === String(phone).trim());
+                
+                if (!found) {
+                    if (isAuto) localStorage.removeItem('user_auth_phone');
+                    document.getElementById('authAlertBox').innerHTML = `
+                        <div class="alert alert-warning py-2 small">
+                            ❌ Số điện thoại <b>${phone}</b> chưa đăng ký học.<br>
+                            Vui lòng bấm nút <b>"KHỐI QUẢN LÝ & ĐĂNG KÝ"</b> để hoàn tất phiếu đăng ký!
+                        </div>`;
+                    if (isAuto) {
+                        const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
+                        modal.show();
+                    }
+                } else if (found.TrangThai !== "Đã duyệt") {
+                    document.getElementById('authAlertBox').innerHTML = `
+                        <div class="alert alert-info py-2 small">
+                            ⏳ Học sinh <b>${found.HoTenHocSinh}</b> đang <b>Chờ Thầy Trung phê duyệt</b>.<br>
+                            Em vui lòng đợi Thầy xác nhận để vào làm bài nhé!
+                        </div>`;
+                    if (isAuto) {
+                        const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
+                        modal.show();
+                    }
+                } else {
+                    // XÁC THỰC THÀNH CÔNG: LƯU SĐT VÀ MỞ AZOTA
+                    localStorage.setItem('user_auth_phone', phone);
+                    const modalEl = document.getElementById('verifyPhoneModal');
+                    const modalObj = bootstrap.Modal.getInstance(modalEl);
+                    if (modalObj) modalObj.hide();
+
+                    window.open(selectedAzotaUrl, '_blank');
+                }
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + "?type=dangKy&callback=handleAuthCheck&t=" + new Date().getTime();
+            document.body.appendChild(script);
+        }
+
+        // 3. QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH TỪ TRANG ADMIN
+        function approveStudent(rowIndex) {
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "duyetHocSinh", rowIndex: rowIndex })
+            }).then(() => {
+                alert("✅ ĐÃ PHÊ DUYỆT HỌC SINH THÀNH CÔNG!");
+                loadAdminData();
+            });
+        }
+
+        function deleteStudent(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa học sinh này?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaHocSinh", rowIndex: rowIndex })
+            }).then(() => {
+                alert("Đã xóa học sinh!");
+                loadAdminData();
+            });
+        }
+
+        function renderAdminTable(data) {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
+            
+            data.forEach((row, i) => {
+                const isApproved = (row.TrangThai === "Đã duyệt");
+                const statusBadge = isApproved ? 
+                    `<span class="badge bg-success">Đã duyệt</span>` : 
+                    `<span class="badge bg-warning text-dark">Chờ duyệt</span>`;
+                
+                const actionBtn = isApproved ? 
+                    `<button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>` : 
+                    `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
+                     <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td><span class="badge bg-primary">${row.Lớp||''}</span></td>
+                        <td class="fw-bold">${row.HoTenHocSinh||''}</td>
+                        <td>${row.SoDienThoai||''}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionBtn}</td>
+                        <td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td>
+                    </tr>`;
+            });
+        }
+
+        // CÁC HÀM XỬ LÝ KHÁC (TẢI THÔNG BÁO, ĐĂNG KÝ, THÊM ĐỀ...)
+        function addNewExam() {
+            const khoi = document.getElementById('newExamKhoi').value;
+            const tenDe = document.getElementById('newExamTitle').value.trim();
+            const thoiGian = document.getElementById('newExamTime').value.trim();
+            let link = document.getElementById('newExamLink').value.trim();
+
+            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
+            if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "themDeThi", khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link })
+            }).then(() => {
+                alert("🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
+                document.getElementById('newExamTitle').value = '';
+                document.getElementById('newExamLink').value = '';
+                loadExams();
+            });
+        }
+
+        function deleteExam(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
+            }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
+        }
+
         function loadNotices() {
             const container = document.getElementById('noticeBoardContainer');
             const adminNoticeList = document.getElementById('adminNoticeList');
@@ -370,12 +504,7 @@
                 data.slice().reverse().forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'card notice-card p-3 mb-3';
-                    
-                    let imgHtml = '';
-                    if (item.HinhAnh && item.HinhAnh.trim() !== '') {
-                        imgHtml = `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border" style="max-height: 400px;"></div>`;
-                    }
-
+                    let imgHtml = item.HinhAnh && item.HinhAnh.trim() !== '' ? `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border" style="max-height: 400px;"></div>` : '';
                     div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
                     container.appendChild(div);
 
@@ -384,8 +513,7 @@
                             <div class="d-flex justify-content-between align-items-center border-bottom py-2">
                                 <span>${item.NoiDung || 'Thông báo dạng ảnh'}</span>
                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
-                            </div>
-                        `;
+                            </div>`;
                     }
                 });
             };
@@ -420,13 +548,9 @@
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: "xoaThongBao", rowIndex: rowIndex })
-            }).then(() => {
-                alert("Đã xóa thông báo!");
-                loadNotices();
-            });
+            }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        // 3. ĐĂNG KÝ HỌC THÊM & ADMIN
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
@@ -450,7 +574,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             }).then(() => {
-                alert("🎉 ĐĂNG KÝ THÀNH CÔNG!");
+                alert("🎉 ĐĂNG KÝ THÀNH CÔNG!\nThông tin của em đã gửi tới Thầy Trung. Em vui lòng đợi Thầy phê duyệt để được làm bài nhé!");
                 document.getElementById('registrationForm').reset();
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = "🚀 GỬI PHIẾU ĐĂNG KÝ";
@@ -468,21 +592,12 @@
 
         function loadAdminData() {
             window.handleSheetData = function(data) {
-                globalData = data;
+                globalData = data || [];
                 renderAdminTable(globalData);
             };
             const script = document.createElement('script');
             script.src = SCRIPT_URL + "?type=dangKy&callback=handleSheetData&t=" + new Date().getTime();
             document.body.appendChild(script);
-        }
-
-        function renderAdminTable(data) {
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = '';
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
-            data.forEach((row, i) => {
-                tbody.innerHTML += `<tr><td>${i+1}</td><td><span class="badge bg-primary">${row.Lớp||''}</span></td><td class="fw-bold">${row.HoTenHocSinh||''}</td><td>${row.TruongHoc||''}</td><td>${row.HoTenPhuHuynh||''}</td><td>${row.SoDienThoai||''}</td><td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td></tr>`;
-            });
         }
 
         function filterDataByClass() {
@@ -506,9 +621,9 @@
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
             let exportData = selectedClass === 'ALL' ? globalData : globalData.filter(i => i.Lớp === selectedClass);
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Lop,Ho Ten Hoc Sinh,Truong THPT,Ho Ten Phu Huynh,So Dien Thoai,Dia Chi\n";
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Lop,Ho Ten Hoc Sinh,So Dien Thoai,Trang Thai\n";
             exportData.forEach((row, i) => {
-                csvContent += `${i+1},"${row.Lớp||''}","${row.HoTenHocSinh||''}","${row.TruongHoc||''}","${row.HoTenPhuHuynh||''}","${row.SoDienThoai||''}","${row.DiaChi||''}"\n`;
+                csvContent += `${i+1},"${row.Lớp||''}","${row.HoTenHocSinh||''}","${row.SoDienThoai||''}","${row.TrangThai||''}"\n`;
             });
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
@@ -516,7 +631,7 @@
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
-        // TỰ ĐỘNG KHỞI TẠO TẢI ĐỀ VÀ THÔNG BÁO
+        // TỰ ĐỘNG TẢI DỮ LIỆU
         loadExams();
         loadNotices();
     </script>
