@@ -172,7 +172,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề 1, Đề 2...)">
+                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề số 01...)">
                                         </div>
                                         <div class="col-md-2">
                                             <input type="text" class="form-control" id="newExamTime" value="90 Phút" placeholder="Thời gian">
@@ -259,7 +259,7 @@
         // 1. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA TỪ GOOGLE SHEETS
         function loadExams() {
             window.handleExamData = function(data) {
-                globalExams = data;
+                globalExams = data || [];
                 switchGrade(currentGrade);
             };
             const script = document.createElement('script');
@@ -272,9 +272,13 @@
             const khoi = document.getElementById('newExamKhoi').value;
             const tenDe = document.getElementById('newExamTitle').value.trim();
             const thoiGian = document.getElementById('newExamTime').value.trim();
-            const link = document.getElementById('newExamLink').value.trim();
+            let link = document.getElementById('newExamLink').value.trim();
 
             if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
+
+            if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                link = "https://" + link;
+            }
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -303,7 +307,7 @@
             });
         }
 
-        // HIỂN THỊ ĐỀ THI THEO KHỐI
+        // HIỂN THỊ ĐỀ THI THEO KHỐI (TỰ ĐỘNG BẢO VỆ CHỐNG LỖI UNDEFINED LINK)
         function switchGrade(grade) {
             currentGrade = grade;
             document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
@@ -312,7 +316,7 @@
             const container = document.getElementById('examListContainer');
             container.innerHTML = '';
 
-            const filteredExams = globalExams.filter(e => String(e.Khoi) === String(grade));
+            const filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi) === String(grade));
 
             if (filteredExams.length === 0) {
                 container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi cho Khối ${grade}. Thầy sẽ bổ sung sớm!</div>`;
@@ -320,19 +324,22 @@
             }
 
             filteredExams.forEach(exam => {
+                // Ép linh hoạt lấy link Azota dù cột đặt tên gì
+                const rawLink = exam.AzotaLink || exam.azotaLink || exam.Azotalink || exam.AZOTALINK || exam.Link || exam.link || '#';
+                
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4';
                 col.innerHTML = `
                     <div class="card card-custom exam-card p-3 h-100 d-flex flex-column justify-content-between bg-white">
                         <div>
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-primary fs-6">Khối ${exam.Khoi}</span>
-                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
+                                <span class="badge bg-primary fs-6">Khối ${exam.Khoi || exam.khoi}</span>
+                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || exam.thoiGian || '90 Phút'}</small>
                             </div>
-                            <h5 class="fw-bold text-dark mb-3">${exam.TenDe}</h5>
+                            <h5 class="fw-bold text-dark mb-3">${exam.TenDe || exam.tenDe}</h5>
                         </div>
                         <div>
-                            <a href="${exam.AzotaLink}" target="_blank" class="btn btn-primary-custom w-100 fw-bold mb-1">
+                            <a href="${rawLink}" target="_blank" class="btn btn-primary-custom w-100 fw-bold mb-1">
                                 🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
                             </a>
                             <button class="btn btn-sm btn-link text-danger w-100 text-decoration-none d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})">🗑️ Xóa đề này (Admin)</button>
