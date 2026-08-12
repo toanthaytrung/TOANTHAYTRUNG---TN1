@@ -21,7 +21,7 @@
         .btn-primary-custom { background-color: #1f497d; border-color: #1f497d; color: white; }
         .btn-primary-custom:hover { background-color: #16355b; color: white; }
         .exam-card { transition: all 0.25s ease-in-out; border-left: 5px solid #1f497d; }
-        .exam-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .exam-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
         .notice-card { border-left: 5px solid #1f497d; background-color: #eef4fc; }
 
         @media print {
@@ -80,7 +80,7 @@
                         </li>
                     </ul>
 
-                    <!-- DANH SÁCH ĐỀ THI HIỂN THỊ -->
+                    <!-- DANH SÁCH ĐỀ THI HIỂN THỊ HÀNG DỌC TỪ MỚI ĐẾN CŨ -->
                     <div class="row g-3" id="examListContainer">
                         <div class="text-center py-4 text-muted">⏳ Đang tải danh sách đề thi...</div>
                     </div>
@@ -190,7 +190,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề số 01...)">
+                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề số 02...)">
                                         </div>
                                         <div class="col-md-2">
                                             <input type="text" class="form-control" id="newExamTime" value="90 Phút" placeholder="Thời gian">
@@ -295,6 +295,7 @@
             document.body.appendChild(script);
         }
 
+        // HIỂN THỊ THEO HÀNG DỌC & ƯU TIÊN ĐỀ MỚI BÊN TRÊN
         function switchGrade(grade) {
             currentGrade = grade;
             document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
@@ -303,7 +304,7 @@
             const container = document.getElementById('examListContainer');
             container.innerHTML = '';
 
-            const filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi) === String(grade));
+            const filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi) === String(grade)).reverse();
 
             if (filteredExams.length === 0) {
                 container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi cho Khối ${grade}. Thầy sẽ bổ sung sớm!</div>`;
@@ -311,25 +312,26 @@
             }
 
             filteredExams.forEach(exam => {
-                // Ép linh hoạt nhận diện đúng thuộc tính Link Azota từ Google Sheets
                 const rawLink = exam.AzotaLink || exam.azotaLink || exam.Azotalink || exam.AZOTALINK || exam.Link || exam.link || '';
                 
                 const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4';
+                col.className = 'col-12';
                 col.innerHTML = `
-                    <div class="card card-custom exam-card p-3 h-100 d-flex flex-column justify-content-between bg-white">
-                        <div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-primary fs-6">Khối ${exam.Khoi || exam.khoi}</span>
-                                <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
+                    <div class="card card-custom exam-card p-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge bg-primary fs-6">Khối ${exam.Khoi || exam.khoi}</span>
+                                    <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-0">${exam.TenDe || exam.tenDe}</h5>
                             </div>
-                            <h5 class="fw-bold text-dark mb-3">${exam.TenDe || exam.tenDe}</h5>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary-custom w-100 fw-bold mb-1" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
-                                🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                            </button>
-                            <button class="btn btn-sm btn-link text-danger w-100 text-decoration-none d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})">🗑️ Xóa đề này (Admin)</button>
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+                                <button class="btn btn-primary-custom fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
+                                    🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -338,6 +340,16 @@
             if (!document.getElementById('adminContentBox').classList.contains('d-none')) {
                 document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
             }
+        }
+
+        // HÀM TỐI ƯU HÓA RỬA SỐ ĐIỆN THOẠI (CẮT KHOẢNG TRẮNG VÀ BỎ SỐ 0 Ở ĐẦU)
+        function cleanPhoneNumber(phone) {
+            if (!phone) return "";
+            let cleaned = String(phone).replace(/\D/g, ''); // Bỏ tất cả ký tự không phải số
+            if (cleaned.startsWith('0')) {
+                cleaned = cleaned.substring(1); // Cắt bỏ số 0 ở đầu
+            }
+            return cleaned;
         }
 
         // XÁC THỰC SỐ ĐIỆN THOẠI VÀ MỞ LINK AZOTA CHÍNH XÁC
@@ -370,8 +382,11 @@
         }
 
         function verifyPhoneOnServer(phone, isAuto) {
+            const targetPhoneClean = cleanPhoneNumber(phone);
+
             window.handleAuthCheck = function(students) {
-                const found = (students || []).find(s => String(s.SoDienThoai).trim() === String(phone).trim());
+                // SO SÁNH SĐT ĐÃ LÀM SẠCH (CẢ 2 BÊN ĐỀU CẮT BỎ SỐ 0 Ở ĐẦU)
+                const found = (students || []).find(s => cleanPhoneNumber(s.SoDienThoai) === targetPhoneClean);
                 
                 if (!found) {
                     if (isAuto) localStorage.removeItem('user_auth_phone');
@@ -455,7 +470,7 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaXoaHocSinh", rowIndex: rowIndex })
+                body: JSON.stringify({ action: "xoaHocSinh", rowIndex: rowIndex })
             }).then(() => {
                 alert("Đã xóa học sinh!");
                 loadAdminData();
@@ -484,13 +499,19 @@
                     `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
                      <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
 
+                // Thêm số 0 ở đầu nếu SĐT chỉ có 9 chữ số khi hiển thị bảng Admin
+                let displayPhone = String(row.SoDienThoai || '');
+                if (displayPhone.length === 9 && !displayPhone.startsWith('0')) {
+                    displayPhone = '0' + displayPhone;
+                }
+
                 tbody.innerHTML += `
                     <tr>
                         <td class="text-center">${checkboxCell}</td>
                         <td>${i+1}</td>
                         <td><span class="badge bg-primary">${row.Lớp||''}</span></td>
                         <td class="fw-bold">${row.HoTenHocSinh||''}</td>
-                        <td>${row.SoDienThoai||''}</td>
+                        <td>${displayPhone}</td>
                         <td>${statusBadge}</td>
                         <td>${actionBtn}</td>
                         <td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td>
@@ -599,13 +620,17 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = "⏳ Đang gửi...";
 
+            // Ép thêm dấu nháy đơn ' ở đầu SĐT để Google Sheets lưu giữ nguyên chữ số 0
+            const rawPhone = document.getElementById('soDienThoai').value.trim();
+            const formattedPhone = rawPhone.startsWith('0') ? "'" + rawPhone : rawPhone;
+
             const payload = {
                 action: "dangKy",
                 hoTenHocSinh: document.getElementById('hoTenHocSinh').value,
                 lop: document.getElementById('lop').value,
                 truongHoc: document.getElementById('truongHoc').value,
                 hoTenPhuHuynh: document.getElementById('hoTenPhuHuynh').value,
-                soDienThoai: document.getElementById('soDienThoai').value,
+                soDienThoai: formattedPhone,
                 diaChi: document.getElementById('diaChi').value,
                 lichHoc: "Môn TOÁN - Thầy Nguyễn Phỉ Đức Trung"
             };
@@ -665,7 +690,7 @@
             let exportData = selectedClass === 'ALL' ? globalData : globalData.filter(i => i.Lớp === selectedClass);
             let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Lop,Ho Ten Hoc Sinh,So Dien Thoai,Trang Thai\n";
             exportData.forEach((row, i) => {
-                csvContent += `${i+1},"${row.Lớp||''}","${row.HoTenHocSinh||''}","${row.SoDienThoai||''}","${row.TrangThai||''}"\n`;
+                csvContent += `${i+1},"${row.Lớp||''}","${row.HoTenHocSinh||''}","'${row.SoDienThoai||''}","${row.TrangThai||''}"\n`;
             });
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
