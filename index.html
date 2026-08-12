@@ -221,7 +221,6 @@
                                 <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3 flex-wrap gap-2">
                                     <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
                                     <div class="d-flex align-items-center gap-2">
-                                        <!-- NÚT MỚI: DUYỆT HÀNG LOẠT -->
                                         <button class="btn btn-success fw-bold" onclick="approveSelectedStudents()">
                                             ✅ DUYỆT CÁC MỤC ĐÃ CHỌN
                                         </button>
@@ -312,7 +311,8 @@
             }
 
             filteredExams.forEach(exam => {
-                const rawLink = exam.AzotaLink || exam.azotaLink || exam.Link || '#';
+                // Ép linh hoạt nhận diện đúng thuộc tính Link Azota từ Google Sheets
+                const rawLink = exam.AzotaLink || exam.azotaLink || exam.Azotalink || exam.AZOTALINK || exam.Link || exam.link || '';
                 
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4';
@@ -326,7 +326,7 @@
                             <h5 class="fw-bold text-dark mb-3">${exam.TenDe || exam.tenDe}</h5>
                         </div>
                         <div>
-                            <button class="btn btn-primary-custom w-100 fw-bold mb-1" onclick="openExamWithAuth('${rawLink}')">
+                            <button class="btn btn-primary-custom w-100 fw-bold mb-1" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
                                 🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
                             </button>
                             <button class="btn btn-sm btn-link text-danger w-100 text-decoration-none d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})">🗑️ Xóa đề này (Admin)</button>
@@ -340,8 +340,13 @@
             }
         }
 
-        // XÁC THỰC SỐ ĐIỆN THOẠI VÀ BẢO MẬT BÀI THI
+        // XÁC THỰC SỐ ĐIỆN THOẠI VÀ MỞ LINK AZOTA CHÍNH XÁC
         function openExamWithAuth(azotaUrl) {
+            if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
+                alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets. Thầy vui lòng kiểm tra lại link trong Admin!");
+                return;
+            }
+
             selectedAzotaUrl = azotaUrl;
             const savedPhone = localStorage.getItem('user_auth_phone');
             
@@ -404,7 +409,7 @@
             document.body.appendChild(script);
         }
 
-        // TÍNH NĂNG CHỌN TẤT CẢ VÀ DUYỆT HÀNG LOẠT
+        // TÍNH NĂNG DUYỆT HÀNG LOẠT
         function toggleSelectAll(master) {
             const checkboxes = document.querySelectorAll('.student-select-cb');
             checkboxes.forEach(cb => cb.checked = master.checked);
@@ -450,7 +455,7 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaHocSinh", rowIndex: rowIndex })
+                body: JSON.stringify({ action: "xoaXoaHocSinh", rowIndex: rowIndex })
             }).then(() => {
                 alert("Đã xóa học sinh!");
                 loadAdminData();
@@ -493,7 +498,6 @@
             });
         }
 
-        // TẢI VÀ ĐĂNG THÔNG BÁO / ĐỀ THI / HỌC SINH
         function addNewExam() {
             const khoi = document.getElementById('newExamKhoi').value;
             const tenDe = document.getElementById('newExamTitle').value.trim();
