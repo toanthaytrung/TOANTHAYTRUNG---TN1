@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lớp Toán Thầy Nguyễn Phỉ Đức Trung</title>
+    <title>Lớp Toán Thầy Nguyễn Phỉ Đức Trung - Cổng Luyện Thi Trực Tuyến</title>
 
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- App Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="https://cdn-icons-png.flaticon.com/512/3426/3426653.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://cdn-icons-png.flaticon.com/512/3426/3426653.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,14 +21,122 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .header-bg { background: linear-gradient(135deg, #1f497d 0%, #0d233a 100%); color: white; }
-        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .btn-primary-custom { background-color: #1f497d; border-color: #1f497d; color: white; }
-        .btn-primary-custom:hover { background-color: #16355b; color: white; }
-        .exam-card { transition: all 0.25s ease-in-out; border-left: 5px solid #1f497d; }
-        .exam-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-        .notice-card { border-left: 5px solid #1f497d; background-color: #eef4fc; }
+        :root {
+            --primary-navy: #1f497d;
+            --primary-dark: #0d233a;
+            --accent-green: #0d9488;
+            --accent-green-hover: #0f766e;
+            --bg-light: #f8fafc;
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #334155;
+        }
+
+        /* HEADER THƯƠNG HIỆU */
+        .header-bg { 
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-dark) 100%); 
+            color: white; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-navy);
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* CARDS & HIỆU ỨNG HOVER */
+        .card-custom { 
+            border-radius: 16px; 
+            border: none; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            background: white;
+        }
+        .exam-card { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-left: 6px solid var(--primary-navy); 
+            border-radius: 12px;
+        }
+        .exam-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 25px rgba(31, 73, 125, 0.12); 
+        }
+
+        /* NÚT BẤM CHUYÊN NGHIỆP */
+        .btn-primary-custom { 
+            background-color: var(--primary-navy); 
+            border-color: var(--primary-navy); 
+            color: white; 
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary-custom:hover { 
+            background-color: var(--primary-dark); 
+            color: white; 
+        }
+        .btn-action-start {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        .btn-action-start:hover {
+            background-color: var(--accent-green-hover);
+            color: white;
+        }
+
+        /* ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT */
+        .countdown-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 10px 15px;
+            min-width: 75px;
+            text-center: center;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .countdown-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #38bdf8;
+            line-height: 1;
+        }
+        .countdown-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* THÔNG BÁO CARD */
+        .notice-card { 
+            border-left: 5px solid #0284c7; 
+            background-color: #f0f9ff; 
+            border-radius: 12px;
+        }
+
+        /* PHÂN LỚP BADGES */
+        .badge-k12 { background-color: #0284c7; }
+        .badge-k11 { background-color: #0d9488; }
+        .badge-k10 { background-color: #8b5cf6; }
 
         @media print {
             body * { visibility: hidden; }
@@ -33,28 +147,55 @@
 </head>
 <body>
 
-    <!-- HEADER & KHỐI QUẢN LÝ -->
-    <div class="header-bg py-3 px-4 d-flex justify-content-between align-items-center flex-wrap">
-        <div>
-            <h4 class="fw-bold mb-0 text-warning"><i class="fa-solid fa-graduation-cap me-2"></i>LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG</h4>
-            <small class="opacity-75">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
+    <!-- HEADER LOGO & QUẢN LÝ -->
+    <div class="header-bg py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="brand-logo">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div>
+                <h4 class="fw-bold mb-0 text-warning d-flex align-items-center gap-2">
+                    LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG
+                </h4>
+                <small class="opacity-90">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
+            </div>
         </div>
-        <button class="btn btn-outline-light fw-bold mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#adminModal">
+        <button class="btn btn-outline-light fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#adminModal" style="border-radius: 10px;">
             🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
         </button>
     </div>
 
     <div class="container my-4">
+        
+        <!-- ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT QUỐC GIA 11/06/2027 -->
+        <div class="countdown-box mb-4">
+            <div class="row align-items-center text-center text-md-start g-3">
+                <div class="col-md-5">
+                    <h5 class="fw-bold text-warning mb-1"><i class="fa-solid fa-hourglass-half me-2"></i>ĐẾM NGƯỢC THI TN THPT 2027</h5>
+                    <p class="small text-light opacity-75 mb-0">Mốc thời gian chính thức: <b>11/06/2027</b>. Quyết tâm đạt điểm cao môn Toán!</p>
+                </div>
+                <div class="col-md-7 d-flex justify-content-center justify-content-md-end gap-2">
+                    <div class="countdown-item"><div class="countdown-value" id="cd-days">00</div><div class="countdown-label">Ngày</div></div>
+                    <div class="countdown-item"><div class="countdown-value" id="cd-hours">00</div><div class="countdown-label">Giờ</div></div>
+                    <div class="countdown-item"><div class="countdown-value" id="cd-mins">00</div><div class="countdown-label">Phút</div></div>
+                    <div class="countdown-item"><div class="countdown-value" id="cd-secs">00</div><div class="countdown-label">Giây</div></div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             
-            <!-- VÙNG TRUNG TÂM: BẢNG TIN THÔNG BÁO TỪ THẦY TRUNG -->
+            <!-- VÙNG TRUNG TÂM: BẢNG TIN THÔNG BÁO -->
             <div class="col-lg-12">
                 <div class="card card-custom p-4 mb-2">
-                    <h4 class="fw-bold text-primary border-bottom pb-2 mb-3">
-                        📢 BẢNG TIN THÔNG BÁO TỪ CƠ SỞ
-                    </h4>
+                    <h5 class="fw-bold text-primary border-bottom pb-3 mb-3 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-danger"></i> BẢNG TIN THÔNG BÁO TỪ CƠ SỞ
+                    </h5>
                     <div id="noticeBoardContainer">
-                        <div class="text-center py-3 text-muted">⏳ Đang tải thông báo mới nhất...</div>
+                        <div class="text-center py-4 text-muted">
+                            <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+                            ⏳ Đang tải thông báo mới nhất...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,8 +204,8 @@
             <div class="col-lg-12">
                 <div class="card card-custom p-4">
                     <div class="text-center mb-4">
-                        <h4 class="fw-bold text-primary">📝 KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
-                        <p class="text-muted mb-0">Chọn Khối và bấm "Bắt đầu làm bài" để tiến hành làm bài</p>
+                        <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
+                        <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện đề</p>
                     </div>
 
                     <!-- TAB CHỌN KHỐI HỌC -->
@@ -82,7 +223,10 @@
 
                     <!-- DANH SÁCH ĐỀ THI HIỂN THỊ HÀNG DỌC TỪ MỚI ĐẾN CŨ -->
                     <div class="row g-3" id="examListContainer">
-                        <div class="text-center py-4 text-muted">⏳ Đang tải danh sách đề thi...</div>
+                        <div class="text-center py-4 text-muted">
+                            <div class="spinner-border text-primary me-2" role="status"></div>
+                            ⏳ Đang tải danh sách đề thi...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,15 +237,15 @@
     <!-- MODAL POPUP XÁC THỰC SỐ ĐIỆN THOẠI HỌC SINH -->
     <div class="modal fade" id="verifyPhoneModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header header-bg text-white">
-                    <h5 class="modal-title fw-bold">🔒 XÁC THỰC HỌC VIÊN CƠ SỞ</h5>
+            <div class="modal-content style-modal" style="border-radius: 20px;">
+                <div class="modal-header header-bg text-white" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-user-shield me-2"></i>XÁC THỰC HỌC VIÊN CƠ SỞ</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center">
-                    <p class="text-muted mb-3">Đề thi chỉ dành cho Học sinh đã được <b>Thầy Trung phê duyệt</b>. Vui lòng nhập Số điện thoại đã đăng ký để làm bài.</p>
-                    <input type="tel" class="form-control form-control-lg text-center fw-bold mb-3" id="inputPhoneAuth" placeholder="Nhập số điện thoại...">
-                    <button class="btn btn-primary-custom btn-lg w-100 fw-bold" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
+                    <p class="text-muted mb-3">Đề thi dành riêng cho Học sinh đã được <b>Thầy Trung phê duyệt</b>. Vui lòng nhập Số điện thoại đã đăng ký để làm bài.</p>
+                    <input type="tel" class="form-control form-control-lg text-center fw-bold mb-3" id="inputPhoneAuth" placeholder="Nhập số điện thoại (VD: 0985...)" style="border-radius: 12px; letter-spacing: 1px;">
+                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
                     <div id="authAlertBox" class="mt-3"></div>
                 </div>
             </div>
@@ -111,7 +255,7 @@
     <!-- MODAL POPUP: QUẢN LÝ (ĐĂNG KÝ, NIÊM YẾT, ADMIN) -->
     <div class="modal fade" id="adminModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
                 <div class="modal-header header-bg text-white">
                     <h5 class="modal-title fw-bold">HỘ KINH DOANH TRẦN VĂN HỒNG - QUẢN LÝ CƠ SỞ</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -168,7 +312,7 @@
                             </table>
                         </div>
 
-                        <!-- 3. Admin Quản lý Tự động -->
+                        <!-- 3. Admin Quản lý Tự động (CẢI TIẾN: CẢNH BÁO ĐĂNG KÝ TRÙNG LẶP) -->
                         <div class="tab-pane fade" id="m-admin">
                             <div id="passwordAuthBox" class="text-center py-4">
                                 <h6>🔒 Nhập mật khẩu Admin để truy cập</h6>
@@ -240,7 +384,7 @@
                                                 <th class="text-center" style="width: 40px;">
                                                     <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" title="Chọn tất cả">
                                                 </th>
-                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Hành Động</th><th>Phiếu</th>
+                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Cảnh Báo Trùng</th><th>Hành Động</th><th>Phiếu</th>
                                             </tr>
                                         </thead>
                                         <tbody id="adminTableBody"></tbody>
@@ -284,7 +428,29 @@
         let globalExams = [];
         let selectedAzotaUrl = "";
 
-        // TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
+        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT QUỐC GIA (MỐC: 11/06/2027)
+        function startExamCountdown() {
+            const targetDate = new Date("June 11, 2027 07:30:00").getTime();
+            
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+
+                if (diff < 0) return;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById("cd-days").innerText = days < 10 ? "0" + days : days;
+                document.getElementById("cd-hours").innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById("cd-mins").innerText = mins < 10 ? "0" + mins : mins;
+                document.getElementById("cd-secs").innerText = secs < 10 ? "0" + secs : secs;
+            }, 1000);
+        }
+
+        // 2. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -295,7 +461,6 @@
             document.body.appendChild(script);
         }
 
-        // HIỂN THỊ THEO HÀNG DỌC & ƯU TIÊN ĐỀ MỚI BÊN TRÊN
         function switchGrade(grade) {
             currentGrade = grade;
             document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
@@ -321,13 +486,13 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <div class="flex-grow-1">
                                 <div class="d-flex align-items-center gap-2 mb-1">
-                                    <span class="badge bg-primary fs-6">Khối ${exam.Khoi || exam.khoi}</span>
+                                    <span class="badge badge-k${grade} fs-6">Khối ${exam.Khoi || exam.khoi}</span>
                                     <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || '90 Phút'}</small>
                                 </div>
                                 <h5 class="fw-bold text-dark mb-0">${exam.TenDe || exam.tenDe}</h5>
                             </div>
                             <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-                                <button class="btn btn-primary-custom fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
+                                <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
                                     🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
                                 </button>
                                 <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
@@ -342,17 +507,13 @@
             }
         }
 
-        // HÀM TỐI ƯU HÓA RỬA SỐ ĐIỆN THOẠI (CẮT KHOẢNG TRẮNG VÀ BỎ SỐ 0 Ở ĐẦU)
         function cleanPhoneNumber(phone) {
             if (!phone) return "";
-            let cleaned = String(phone).replace(/\D/g, ''); // Bỏ tất cả ký tự không phải số
-            if (cleaned.startsWith('0')) {
-                cleaned = cleaned.substring(1); // Cắt bỏ số 0 ở đầu
-            }
+            let cleaned = String(phone).replace(/\D/g, '');
+            if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
             return cleaned;
         }
 
-        // XÁC THỰC SỐ ĐIỆN THOẠI VÀ MỞ LINK AZOTA CHÍNH XÁC
         function openExamWithAuth(azotaUrl) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
                 alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets. Thầy vui lòng kiểm tra lại link trong Admin!");
@@ -385,7 +546,6 @@
             const targetPhoneClean = cleanPhoneNumber(phone);
 
             window.handleAuthCheck = function(students) {
-                // SO SÁNH SĐT ĐÃ LÀM SẠCH (CẢ 2 BÊN ĐỀU CẮT BỎ SỐ 0 Ở ĐẦU)
                 const found = (students || []).find(s => cleanPhoneNumber(s.SoDienThoai) === targetPhoneClean);
                 
                 if (!found) {
@@ -424,7 +584,7 @@
             document.body.appendChild(script);
         }
 
-        // TÍNH NĂNG DUYỆT HÀNG LOẠT
+        // 3. TÍNH NĂNG DUYỆT HÀNG LOẠT & QUÉT CẢNH BÁO TRÙNG LẶP HỌC SINH
         function toggleSelectAll(master) {
             const checkboxes = document.querySelectorAll('.student-select-cb');
             checkboxes.forEach(cb => cb.checked = master.checked);
@@ -482,8 +642,18 @@
             tbody.innerHTML = '';
             document.getElementById('selectAllCheckbox').checked = false;
 
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
             
+            // QUÉT PHÁT HIỆN HỌC SINH ĐĂNG KÝ TRÙNG SĐT HOẶC HỌ TÊN
+            const phoneCounts = {};
+            const nameCounts = {};
+            data.forEach(item => {
+                const pClean = cleanPhoneNumber(item.SoDienThoai);
+                const nameClean = String(item.HoTenHocSinh || '').trim().toLowerCase();
+                if (pClean) phoneCounts[pClean] = (phoneCounts[pClean] || 0) + 1;
+                if (nameClean) nameCounts[nameClean] = (nameCounts[nameClean] || 0) + 1;
+            });
+
             data.forEach((row, i) => {
                 const isApproved = (row.TrangThai === "Đã duyệt");
                 const statusBadge = isApproved ? 
@@ -499,10 +669,22 @@
                     `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
                      <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
 
-                // Thêm số 0 ở đầu nếu SĐT chỉ có 9 chữ số khi hiển thị bảng Admin
                 let displayPhone = String(row.SoDienThoai || '');
                 if (displayPhone.length === 9 && !displayPhone.startsWith('0')) {
                     displayPhone = '0' + displayPhone;
+                }
+
+                // TẠO HUY HIỆU CẢNH BÁO TRÙNG LẶP
+                const pClean = cleanPhoneNumber(row.SoDienThoai);
+                const nameClean = String(row.HoTenHocSinh || '').trim().toLowerCase();
+                let duplicateBadge = `<span class="badge bg-light text-secondary border">Hợp lệ</span>`;
+
+                if (phoneCounts[pClean] > 1 && nameCounts[nameClean] > 1) {
+                    duplicateBadge = `<span class="badge bg-danger">⚠️ Trùng Tên & SĐT</span>`;
+                } else if (phoneCounts[pClean] > 1) {
+                    duplicateBadge = `<span class="badge bg-danger">⚠️ Trùng SĐT</span>`;
+                } else if (nameCounts[nameClean] > 1) {
+                    duplicateBadge = `<span class="badge bg-warning text-dark">⚠️ Trùng Họ Tên</span>`;
                 }
 
                 tbody.innerHTML += `
@@ -513,6 +695,7 @@
                         <td class="fw-bold">${row.HoTenHocSinh||''}</td>
                         <td>${displayPhone}</td>
                         <td>${statusBadge}</td>
+                        <td>${duplicateBadge}</td>
                         <td>${actionBtn}</td>
                         <td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td>
                     </tr>`;
@@ -620,7 +803,6 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = "⏳ Đang gửi...";
 
-            // Ép thêm dấu nháy đơn ' ở đầu SĐT để Google Sheets lưu giữ nguyên chữ số 0
             const rawPhone = document.getElementById('soDienThoai').value.trim();
             const formattedPhone = rawPhone.startsWith('0') ? "'" + rawPhone : rawPhone;
 
@@ -698,7 +880,8 @@
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
-        // TỰ ĐỘNG TẢI DỮ LIỆU
+        // KHỞI TẠO TỰ ĐỘNG
+        startExamCountdown();
         loadExams();
         loadNotices();
     </script>
