@@ -35,15 +35,14 @@
             color: #334155;
         }
 
-        /* HEADER THƯƠNG HIỆU */
         .header-bg { 
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-dark) 100%); 
             color: white; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
         .brand-logo {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: white;
             border-radius: 12px;
             display: flex;
@@ -54,7 +53,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* CARDS & HIỆU ỨNG HOVER */
         .card-custom { 
             border-radius: 16px; 
             border: none; 
@@ -62,22 +60,20 @@
             background: white;
         }
         .exam-card { 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.25s ease-in-out; 
             border-left: 6px solid var(--primary-navy); 
             border-radius: 12px;
         }
         .exam-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 25px rgba(31, 73, 125, 0.12); 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(31, 73, 125, 0.12); 
         }
 
-        /* NÚT BẤM CHUYÊN NGHIỆP */
         .btn-primary-custom { 
             background-color: var(--primary-navy); 
             border-color: var(--primary-navy); 
             color: white; 
             border-radius: 10px;
-            transition: all 0.2s ease;
         }
         .btn-primary-custom:hover { 
             background-color: var(--primary-dark); 
@@ -95,45 +91,49 @@
             color: white;
         }
 
-        /* ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT */
-        .countdown-box {
+        /* ĐỒNG HỒ ĐẾM NGƯỢC THU GỌN THEO SỐ NGÀY */
+        .countdown-slim {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-radius: 14px;
+            padding: 12px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border-radius: 12px;
-            padding: 10px 15px;
-            min-width: 75px;
-            text-center: center;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-        .countdown-value {
-            font-size: 26px;
-            font-weight: 800;
+        .countdown-badge {
+            background: rgba(56, 189, 248, 0.15);
             color: #38bdf8;
-            line-height: 1;
-        }
-        .countdown-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
-            margin-top: 4px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 20px;
+            font-weight: 800;
+            display: inline-block;
         }
 
-        /* THÔNG BÁO CARD */
+        /* GÓC MÔ HÌNH 3D */
+        .section-3d-toggle {
+            background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+            color: white;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .section-3d-toggle:hover {
+            opacity: 0.95;
+            box-shadow: 0 6px 18px rgba(67, 56, 202, 0.25);
+        }
+        .card-3d-item {
+            border-left: 5px solid #6366f1;
+            border-radius: 12px;
+            background: #fdfdfd;
+        }
+
         .notice-card { 
             border-left: 5px solid #0284c7; 
             background-color: #f0f9ff; 
             border-radius: 12px;
         }
 
-        /* PHÂN LỚP BADGES */
         .badge-k12 { background-color: #0284c7; }
         .badge-k11 { background-color: #0d9488; }
         .badge-k10 { background-color: #8b5cf6; }
@@ -167,25 +167,47 @@
 
     <div class="container my-4">
         
-        <!-- ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT QUỐC GIA 11/06/2027 -->
-        <div class="countdown-box mb-4">
-            <div class="row align-items-center text-center text-md-start g-3">
-                <div class="col-md-5">
-                    <h5 class="fw-bold text-warning mb-1"><i class="fa-solid fa-hourglass-half me-2"></i>ĐẾM NGƯỢC THI TN THPT 2027</h5>
-                    <p class="small text-light opacity-75 mb-0">Mốc thời gian chính thức: <b>11/06/2027</b>. Quyết tâm đạt điểm cao môn Toán!</p>
+        <!-- 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (CHỈ ĐẾM SỐ NGÀY) -->
+        <div class="countdown-slim mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-hourglass-half text-warning fs-4"></i>
+                <div>
+                    <span class="fw-bold text-white">ĐẾM NGƯỢC THI TN THPT 2027 (11/06/2027)</span>
+                    <span class="d-none d-md-inline text-light opacity-75 ms-2">- Chúc các em ôn luyện thật tốt!</span>
                 </div>
-                <div class="col-md-7 d-flex justify-content-center justify-content-md-end gap-2">
-                    <div class="countdown-item"><div class="countdown-value" id="cd-days">00</div><div class="countdown-label">Ngày</div></div>
-                    <div class="countdown-item"><div class="countdown-value" id="cd-hours">00</div><div class="countdown-label">Giờ</div></div>
-                    <div class="countdown-item"><div class="countdown-value" id="cd-mins">00</div><div class="countdown-label">Phút</div></div>
-                    <div class="countdown-item"><div class="countdown-value" id="cd-secs">00</div><div class="countdown-label">Giây</div></div>
+            </div>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <span class="text-light opacity-75">Còn lại:</span>
+                <span class="countdown-badge" id="cd-days-slim">...</span>
+                <span class="fw-bold text-warning">NGÀY</span>
+            </div>
+        </div>
+
+        <!-- 2. GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D (THU GỌN / XỔ RA) -->
+        <div class="card card-custom p-3 mb-4">
+            <div class="section-3d-toggle p-3 d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#collapse3DContainer">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="fs-4">🎲</span>
+                    <div>
+                        <h6 class="fw-bold mb-0">GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D</h6>
+                        <small class="opacity-75">Bấm vào đây để mở danh sách mô hình không gian tương tác trực quan</small>
+                    </div>
+                </div>
+                <span class="badge bg-light text-dark fw-bold px-3 py-2">Xem mô hình <i class="fa-solid fa-chevron-down ms-1"></i></span>
+            </div>
+
+            <div class="collapse mt-3" id="collapse3DContainer">
+                <div class="row g-3" id="model3DListContainer">
+                    <div class="text-center py-3 text-muted">
+                        <div class="spinner-border spinner-border-sm text-primary me-2"></div> Đang tải mô hình 3D...
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
             
-            <!-- VÙNG TRUNG TÂM: BẢNG TIN THÔNG BÁO -->
+            <!-- 3. BẢNG TIN THÔNG BÁO TỪ CƠ SỞ -->
             <div class="col-lg-12">
                 <div class="card card-custom p-4 mb-2">
                     <h5 class="fw-bold text-primary border-bottom pb-3 mb-3 d-flex align-items-center gap-2">
@@ -200,7 +222,7 @@
                 </div>
             </div>
 
-            <!-- KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
+            <!-- 4. KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
             <div class="col-lg-12">
                 <div class="card card-custom p-4">
                     <div class="text-center mb-4">
@@ -221,7 +243,7 @@
                         </li>
                     </ul>
 
-                    <!-- DANH SÁCH ĐỀ THI HIỂN THỊ HÀNG DỌC TỪ MỚI ĐẾN CŨ -->
+                    <!-- DANH SÁCH ĐỀ THI HÀNG DỌC TỪ MỚI ĐẾN CŨ -->
                     <div class="row g-3" id="examListContainer">
                         <div class="text-center py-4 text-muted">
                             <div class="spinner-border text-primary me-2" role="status"></div>
@@ -245,8 +267,23 @@
                 <div class="modal-body p-4 text-center">
                     <p class="text-muted mb-3">Đề thi dành riêng cho Học sinh đã được <b>Thầy Trung phê duyệt</b>. Vui lòng nhập Số điện thoại đã đăng ký để làm bài.</p>
                     <input type="tel" class="form-control form-control-lg text-center fw-bold mb-3" id="inputPhoneAuth" placeholder="Nhập số điện thoại (VD: 0985...)" style="border-radius: 12px; letter-spacing: 1px;">
-                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
+                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3" id="btnConfirmAuth" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
                     <div id="authAlertBox" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TRẢI NGHIỆM MÔ HÌNH 3D TRỰC TIẾP TRÊN WEB -->
+    <div class="modal fade" id="view3DModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="view3DModalTitle">🎲 Trải nghiệm Mô hình 3D</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0" style="height: 75vh; background: #000;">
+                    <iframe id="iframe3D" src="" style="width: 100%; height: 100%; border: none;"></iframe>
                 </div>
             </div>
         </div>
@@ -312,7 +349,7 @@
                             </table>
                         </div>
 
-                        <!-- 3. Admin Quản lý Tự động (CẢI TIẾN: CẢNH BÁO ĐĂNG KÝ TRÙNG LẶP) -->
+                        <!-- 3. Admin Quản lý Tự động -->
                         <div class="tab-pane fade" id="m-admin">
                             <div id="passwordAuthBox" class="text-center py-4">
                                 <h6>🔒 Nhập mật khẩu Admin để truy cập</h6>
@@ -322,9 +359,10 @@
                             
                             <div id="adminContentBox" class="d-none">
                                 
-                                <!-- FORM DÁN TẠO ĐỀ AZOTA MỚI TRỰC TIẾP -->
+                                <!-- FORM QUẢN LÝ ĐỀ THI AZOTA (THÊM / SỬA) -->
                                 <div class="card p-3 mb-4 bg-light border border-primary">
-                                    <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / DÁN ĐỀ THI AZOTA MỚI</h6>
+                                    <h6 class="fw-bold text-primary mb-3" id="examFormHeader"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI AZOTA</h6>
+                                    <input type="hidden" id="editExamRowIndex" value="">
                                     <div class="row g-2">
                                         <div class="col-md-3">
                                             <select class="form-select" id="newExamKhoi">
@@ -343,17 +381,54 @@
                                             <input type="text" class="form-control" id="newExamLink" placeholder="Dán Link Azota tại đây...">
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary-custom fw-bold mt-3 w-auto align-self-start" onclick="addNewExam()">🚀 ĐĂNG ĐỀ THI MỚI</button>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-primary-custom fw-bold" id="btnSaveExam" onclick="saveExam()">🚀 ĐĂNG ĐỀ THI</button>
+                                        <button class="btn btn-secondary fw-bold d-none" id="btnCancelEditExam" onclick="cancelEditExam()">Hủy sửa</button>
+                                    </div>
                                 </div>
 
-                                <!-- KHUNG ĐĂNG VÀ XÓA THÔNG BÁO -->
+                                <!-- FORM QUẢN LÝ MÔ HÌNH 3D (THÊM / SỬA) -->
+                                <div class="card p-3 mb-4 bg-light border border-indigo" style="border-color: #6366f1 !important;">
+                                    <h6 class="fw-bold text-indigo mb-3" id="model3DFormHeader" style="color: #4f46e5;"><i class="fa-solid fa-cube me-1"></i> 2. QUẢN LÝ MÔ HÌNH TOÁN 3D (GEOGEBRA / 3D LINK)</h6>
+                                    <input type="hidden" id="edit3DRowIndex" value="">
+                                    <div class="row g-2">
+                                        <div class="col-md-3">
+                                            <select class="form-select" id="new3DKhoi">
+                                                <option value="12">🎓 Khối 12</option>
+                                                <option value="11">🎓 Khối 11</option>
+                                                <option value="10">🎓 Khối 10</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="new3DTitle" placeholder="Tên mô hình (VD: Mô hình lều 3D...)">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" id="new3DLink" placeholder="Link GeoGebra hoặc Link 3D...">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-success fw-bold" id="btnSave3D" onclick="save3DModel()">🎲 ĐĂNG MÔ HÌNH 3D</button>
+                                        <button class="btn btn-secondary fw-bold d-none" id="btnCancelEdit3D" onclick="cancelEdit3D()">Hủy sửa</button>
+                                    </div>
+
+                                    <h6 class="fw-bold mt-4 mb-2">Danh sách mô hình 3D đang có (Bấm để Sửa / Xóa):</h6>
+                                    <div id="admin3DList" class="small">Đang tải...</div>
+                                </div>
+
+                                <!-- KHUNG ĐĂNG THÔNG BÁO (HỖ TRỢ CHỌN ẢNH / DÁN CTRL + V) -->
                                 <div class="card p-3 mb-4 bg-light border">
-                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 2. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 3. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
                                     <div class="mb-2">
-                                        <textarea class="form-control" id="newNoticeText" rows="2" placeholder="Gõ nội dung thông báo..."></textarea>
+                                        <textarea class="form-control" id="newNoticeText" rows="2" placeholder="Gõ nội dung thông báo... (Có thể dán trực tiếp ảnh Ctrl + V vào đây)"></textarea>
                                     </div>
                                     <div class="mb-2">
-                                        <input type="text" class="form-control" id="newNoticeImg" placeholder="Link ảnh thông báo (.png / .jpg) - Tùy chọn">
+                                        <label class="form-label small fw-bold text-muted">📁 Chọn ảnh từ máy tính hoặc dán ảnh trực tiếp:</label>
+                                        <input type="file" class="form-control" id="noticeFileInput" accept="image/*" onchange="handleNoticeImageUpload(this)">
+                                        <input type="hidden" id="noticeImageBase64" value="">
+                                    </div>
+                                    <div id="imagePreviewBox" class="mb-2 d-none text-center">
+                                        <img id="previewImg" src="" class="img-fluid rounded border shadow-sm" style="max-height: 200px;">
+                                        <button class="btn btn-sm btn-link text-danger d-block mx-auto mt-1" onclick="clearNoticeImage()">Xóa ảnh này</button>
                                     </div>
                                     <button class="btn btn-primary-custom fw-bold w-auto" onclick="postNewNotice()">🚀 ĐĂNG THÔNG BÁO</button>
 
@@ -363,7 +438,7 @@
 
                                 <!-- QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH -->
                                 <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3 flex-wrap gap-2">
-                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 4. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
                                     <div class="d-flex align-items-center gap-2">
                                         <button class="btn btn-success fw-bold" onclick="approveSelectedStudents()">
                                             ✅ DUYỆT CÁC MỤC ĐÃ CHỌN
@@ -426,31 +501,144 @@
         let currentGrade = 12;
         let globalData = [];
         let globalExams = [];
+        let global3DModels = [];
         let selectedAzotaUrl = "";
 
-        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT QUỐC GIA (MỐC: 11/06/2027)
-        function startExamCountdown() {
+        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (CHỈ ĐẾM SỐ NGÀY)
+        function startSlimCountdown() {
             const targetDate = new Date("June 11, 2027 07:30:00").getTime();
-            
-            setInterval(() => {
-                const now = new Date().getTime();
-                const diff = targetDate - now;
-
-                if (diff < 0) return;
-
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff > 0) {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById("cd-days").innerText = days < 10 ? "0" + days : days;
-                document.getElementById("cd-hours").innerText = hours < 10 ? "0" + hours : hours;
-                document.getElementById("cd-mins").innerText = mins < 10 ? "0" + mins : mins;
-                document.getElementById("cd-secs").innerText = secs < 10 ? "0" + secs : secs;
-            }, 1000);
+                document.getElementById("cd-days-slim").innerText = days;
+            } else {
+                document.getElementById("cd-days-slim").innerText = "0";
+            }
         }
 
-        // 2. TẢI VÀ HIỂN THỊ ĐỀ THI AZOTA
+        // 2. QUẢN LÝ VÀ HIỂN THỊ MÔ HÌNH 3D
+        function load3DModels() {
+            window.handle3DData = function(data) {
+                global3DModels = data || [];
+                render3DModels();
+                renderAdmin3DList();
+            };
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + "?type=moHinh3D&callback=handle3DData&t=" + new Date().getTime();
+            document.body.appendChild(script);
+        }
+
+        function render3DModels() {
+            const container = document.getElementById('model3DListContainer');
+            container.innerHTML = '';
+            if (global3DModels.length === 0) {
+                container.innerHTML = `<div class="col-12 text-center py-3 text-muted">Chưa có mô hình 3D nào được đăng tải.</div>`;
+                return;
+            }
+
+            global3DModels.slice().reverse().forEach(m => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+                col.innerHTML = `
+                    <div class="card card-custom card-3d-item p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-indigo text-white" style="background-color: #6366f1;">Khối ${m.Khoi || m.khoi || '12'}</span>
+                                <small class="text-muted"><i class="fa-solid fa-cube me-1"></i>Mô hình 3D</small>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-3">${m.TenMoHinh || m.tenMoHinh}</h6>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary fw-bold w-100" onclick="open3DViewer('${(m.Link3D || m.link3D || '').replace(/'/g, "\\'")}', '${(m.TenMoHinh || m.tenMoHinh).replace(/'/g, "\\'")}')">
+                            🔍 TRẢI NGHIỆM 3D
+                        </button>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        function open3DViewer(url, title) {
+            if (!url || !url.startsWith('http')) { alert("Link mô hình không hợp lệ!"); return; }
+            document.getElementById('view3DModalTitle').innerText = "🎲 " + title;
+            document.getElementById('iframe3D').src = url;
+            const modal = new bootstrap.Modal(document.getElementById('view3DModal'));
+            modal.show();
+        }
+
+        function save3DModel() {
+            const editRowIndex = document.getElementById('edit3DRowIndex').value;
+            const khoi = document.getElementById('new3DKhoi').value;
+            const tenMoHinh = document.getElementById('new3DTitle').value.trim();
+            const link3D = document.getElementById('new3DLink').value.trim();
+
+            if (!tenMoHinh || !link3D) { alert("Vui lòng nhập Tên mô hình và Link 3D!"); return; }
+
+            const action = editRowIndex ? "suaMoHinh" : "themMoHinh";
+            const payload = { action: action, khoi: khoi, tenMoHinh: tenMoHinh, link3D: link3D, rowIndex: parseInt(editRowIndex) || null };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert(editRowIndex ? "✅ ĐÃ CẬP NHẬT MÔ HÌNH 3D!" : "🚀 ĐÃ ĐĂNG MÔ HÌNH 3D MỚI!");
+                cancelEdit3D();
+                load3DModels();
+            });
+        }
+
+        function edit3D(modelJson) {
+            const model = typeof modelJson === 'string' ? JSON.parse(modelJson) : modelJson;
+            document.getElementById('edit3DRowIndex').value = model._rowIndex;
+            document.getElementById('new3DKhoi').value = model.Khoi || model.khoi || '12';
+            document.getElementById('new3DTitle').value = model.TenMoHinh || model.tenMoHinh || '';
+            document.getElementById('new3DLink').value = model.Link3D || model.link3D || '';
+            
+            document.getElementById('model3DFormHeader').innerHTML = '<i class="fa-solid fa-pen-to-square me-1"></i> CHỈNH SỬA MÔ HÌNH 3D';
+            document.getElementById('btnSave3D').innerText = "💾 LƯU CẬP NHẬT";
+            document.getElementById('btnCancelEdit3D').classList.remove('d-none');
+        }
+
+        function cancelEdit3D() {
+            document.getElementById('edit3DRowIndex').value = '';
+            document.getElementById('new3DTitle').value = '';
+            document.getElementById('new3DLink').value = '';
+            document.getElementById('model3DFormHeader').innerHTML = '<i class="fa-solid fa-cube me-1"></i> 2. QUẢN LÝ MÔ HÌNH TOÁN 3D (GEOGEBRA / 3D LINK)';
+            document.getElementById('btnSave3D').innerText = "🎲 ĐĂNG MÔ HÌNH 3D";
+            document.getElementById('btnCancelEdit3D').classList.add('d-none');
+        }
+
+        function delete3D(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa mô hình 3D này?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaMoHinh", rowIndex: rowIndex })
+            }).then(() => { alert("Đã xóa mô hình!"); load3DModels(); });
+        }
+
+        function renderAdmin3DList() {
+            const container = document.getElementById('admin3DList');
+            if (!container) return;
+            container.innerHTML = '';
+            if (global3DModels.length === 0) { container.innerHTML = 'Chưa có mô hình nào.'; return; }
+
+            global3DModels.forEach(m => {
+                container.innerHTML += `
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span><b>[Khối ${m.Khoi||'12'}]</b> ${m.TenMoHinh||m.tenMoHinh}</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick='edit3D(${JSON.stringify(m)})'>✏️ Sửa</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="delete3D(${m._rowIndex})">🗑️ Xóa</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // 3. QUẢN LÝ ĐỀ THI AZOTA (THÊM / SỬA / XÓA)
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -495,6 +683,7 @@
                                 <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
                                     🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
                                 </button>
+                                <button class="btn btn-sm btn-outline-primary d-none admin-only-btn" onclick='editExam(${JSON.stringify(exam)})' title="Sửa thông tin đề">✏️</button>
                                 <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
                             </div>
                         </div>
@@ -507,6 +696,164 @@
             }
         }
 
+        function saveExam() {
+            const editRowIndex = document.getElementById('editExamRowIndex').value;
+            const khoi = document.getElementById('newExamKhoi').value;
+            const tenDe = document.getElementById('newExamTitle').value.trim();
+            const thoiGian = document.getElementById('newExamTime').value.trim();
+            let link = document.getElementById('newExamLink').value.trim();
+
+            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
+            if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
+
+            const action = editRowIndex ? "suaDeThi" : "themDeThi";
+            const payload = { action: action, khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link, rowIndex: parseInt(editRowIndex) || null };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert(editRowIndex ? "✅ ĐÃ CẬP NHẬT ĐỀ THI!" : "🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
+                cancelEditExam();
+                loadExams();
+            });
+        }
+
+        function editExam(examJson) {
+            const exam = typeof examJson === 'string' ? JSON.parse(examJson) : examJson;
+            document.getElementById('editExamRowIndex').value = exam._rowIndex;
+            document.getElementById('newExamKhoi').value = exam.Khoi || exam.khoi || '12';
+            document.getElementById('newExamTitle').value = exam.TenDe || exam.tenDe || '';
+            document.getElementById('newExamTime').value = exam.ThoiGian || exam.thoiGian || '90 Phút';
+            document.getElementById('newExamLink').value = exam.AzotaLink || exam.azotaLink || exam.Link || '';
+            
+            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-pen-to-square me-1"></i> CHỈNH SỬA THÔNG TIN ĐỀ THI';
+            document.getElementById('btnSaveExam').innerText = "💾 LƯU CẬP NHẬT";
+            document.getElementById('btnCancelEditExam').classList.remove('d-none');
+        }
+
+        function cancelEditExam() {
+            document.getElementById('editExamRowIndex').value = '';
+            document.getElementById('newExamTitle').value = '';
+            document.getElementById('newExamLink').value = '';
+            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI AZOTA';
+            document.getElementById('btnSaveExam').innerText = "🚀 ĐĂNG ĐỀ THI";
+            document.getElementById('btnCancelEditExam').classList.add('d-none');
+        }
+
+        function deleteExam(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
+            }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
+        }
+
+        // 4. XỬ LÝ ẢNH TRỰC TIẾP (CHỌN FILE TỪ MÁY / DÁN PASTE CTRL+V)
+        function handleNoticeImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('noticeImageBase64').value = e.target.result;
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreviewBox').classList.remove('d-none');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // BẮT SỰ KIỆN DÁN ẢNH (CTRL + V) TRỰC TIẾP VÀO Ô TEXTAREA
+        document.getElementById('newNoticeText').addEventListener('paste', function(e) {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file' && item.type.startsWith('image/')) {
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('noticeImageBase64').value = event.target.result;
+                        document.getElementById('previewImg').src = event.target.result;
+                        document.getElementById('imagePreviewBox').classList.remove('d-none');
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+
+        function clearNoticeImage() {
+            document.getElementById('noticeFileInput').value = '';
+            document.getElementById('noticeImageBase64').value = '';
+            document.getElementById('imagePreviewBox').classList.add('d-none');
+        }
+
+        function loadNotices() {
+            const container = document.getElementById('noticeBoardContainer');
+            const adminNoticeList = document.getElementById('adminNoticeList');
+            
+            window.handleNoticeData = function(data) {
+                container.innerHTML = '';
+                if (adminNoticeList) adminNoticeList.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
+                    return;
+                }
+                
+                data.slice().reverse().forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'card notice-card p-3 mb-3';
+                    let imgHtml = item.HinhAnh && item.HinhAnh.trim() !== '' ? `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border shadow-sm" style="max-height: 500px; width: 100%; object-fit: contain;"></div>` : '';
+                    div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
+                    container.appendChild(div);
+
+                    if (adminNoticeList) {
+                        adminNoticeList.innerHTML += `
+                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                                <span>${item.NoiDung || 'Thông báo hình ảnh'}</span>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
+                            </div>`;
+                    }
+                });
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + "?type=thongBao&callback=handleNoticeData&t=" + new Date().getTime();
+            document.body.appendChild(script);
+        }
+
+        function postNewNotice() {
+            const txt = document.getElementById('newNoticeText').value.trim();
+            const img = document.getElementById('noticeImageBase64').value.trim();
+            if (!txt && !img) { alert("Vui lòng nhập nội dung hoặc chọn ảnh!"); return; }
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "dangThongBao", noiDung: txt, hinhAnh: img })
+            }).then(() => {
+                alert("🚀 ĐÃ ĐĂNG THÔNG BÁO THÀNH CÔNG!");
+                document.getElementById('newNoticeText').value = '';
+                clearNoticeImage();
+                loadNotices();
+            });
+        }
+
+        function deleteNotice(rowIndex) {
+            if (!confirm("Thầy có chắc chắn muốn xóa thông báo này?")) return;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaThongBao", rowIndex: rowIndex })
+            }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
+        }
+
+        // 5. CƠ CHẾ XÁC THỰC SĐT & MỞ LINK AN TOÀN TRÁNH BỊ CHẶN POPUP
         function cleanPhoneNumber(phone) {
             if (!phone) return "";
             let cleaned = String(phone).replace(/\D/g, '');
@@ -516,12 +863,13 @@
 
         function openExamWithAuth(azotaUrl) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
-                alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets. Thầy vui lòng kiểm tra lại link trong Admin!");
+                alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets!");
                 return;
             }
 
             selectedAzotaUrl = azotaUrl;
-            const savedPhone = localStorage.getItem('user_auth_phone');
+            let savedPhone = "";
+            try { savedPhone = localStorage.getItem('user_auth_phone'); } catch(e){}
             
             if (savedPhone) {
                 verifyPhoneOnServer(savedPhone, true);
@@ -544,12 +892,16 @@
 
         function verifyPhoneOnServer(phone, isAuto) {
             const targetPhoneClean = cleanPhoneNumber(phone);
+            const btnConfirm = document.getElementById('btnConfirmAuth');
+            if (btnConfirm) { btnConfirm.disabled = true; btnConfirm.innerHTML = "⏳ Đang kiểm tra..."; }
 
             window.handleAuthCheck = function(students) {
+                if (btnConfirm) { btnConfirm.disabled = false; btnConfirm.innerHTML = "🚀 XÁC NHẬN VÀO BÀI THI"; }
+
                 const found = (students || []).find(s => cleanPhoneNumber(s.SoDienThoai) === targetPhoneClean);
                 
                 if (!found) {
-                    if (isAuto) localStorage.removeItem('user_auth_phone');
+                    try { if (isAuto) localStorage.removeItem('user_auth_phone'); } catch(e){}
                     document.getElementById('authAlertBox').innerHTML = `
                         <div class="alert alert-warning py-2 small">
                             ❌ Số điện thoại <b>${phone}</b> chưa đăng ký học.<br>
@@ -570,12 +922,16 @@
                         modal.show();
                     }
                 } else {
-                    localStorage.setItem('user_auth_phone', phone);
+                    try { localStorage.setItem('user_auth_phone', phone); } catch(e){}
                     const modalEl = document.getElementById('verifyPhoneModal');
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    window.open(selectedAzotaUrl, '_blank');
+                    // MỞ TAB AN TOÀN - CHỐNG POPUP BLOCKER
+                    const newTab = window.open(selectedAzotaUrl, '_blank');
+                    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                        window.location.href = selectedAzotaUrl; // Chuyển thẳng nếu bị chặn popup
+                    }
                 }
             };
 
@@ -584,7 +940,7 @@
             document.body.appendChild(script);
         }
 
-        // 3. TÍNH NĂNG DUYỆT HÀNG LOẠT & QUÉT CẢNH BÁO TRÙNG LẶP HỌC SINH
+        // 6. QUẢN LÝ ADMIN & DUYỆT HỌC SINH
         function toggleSelectAll(master) {
             const checkboxes = document.querySelectorAll('.student-select-cb');
             checkboxes.forEach(cb => cb.checked = master.checked);
@@ -592,10 +948,7 @@
 
         function approveSelectedStudents() {
             const selectedCbs = document.querySelectorAll('.student-select-cb:checked');
-            if (selectedCbs.length === 0) {
-                alert("Thầy chưa chọn học sinh nào để duyệt!");
-                return;
-            }
+            if (selectedCbs.length === 0) { alert("Thầy chưa chọn học sinh nào để duyệt!"); return; }
 
             const indexes = Array.from(selectedCbs).map(cb => parseInt(cb.value));
             if (!confirm(`Thầy có chắc chắn muốn duyệt ${indexes.length} học sinh đã chọn?`)) return;
@@ -644,7 +997,6 @@
 
             if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
             
-            // QUÉT PHÁT HIỆN HỌC SINH ĐĂNG KÝ TRÙNG SĐT HOẶC HỌ TÊN
             const phoneCounts = {};
             const nameCounts = {};
             data.forEach(item => {
@@ -670,11 +1022,8 @@
                      <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
 
                 let displayPhone = String(row.SoDienThoai || '');
-                if (displayPhone.length === 9 && !displayPhone.startsWith('0')) {
-                    displayPhone = '0' + displayPhone;
-                }
+                if (displayPhone.length === 9 && !displayPhone.startsWith('0')) displayPhone = '0' + displayPhone;
 
-                // TẠO HUY HIỆU CẢNH BÁO TRÙNG LẶP
                 const pClean = cleanPhoneNumber(row.SoDienThoai);
                 const nameClean = String(row.HoTenHocSinh || '').trim().toLowerCase();
                 let duplicateBadge = `<span class="badge bg-light text-secondary border">Hợp lệ</span>`;
@@ -700,101 +1049,6 @@
                         <td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td>
                     </tr>`;
             });
-        }
-
-        function addNewExam() {
-            const khoi = document.getElementById('newExamKhoi').value;
-            const tenDe = document.getElementById('newExamTitle').value.trim();
-            const thoiGian = document.getElementById('newExamTime').value.trim();
-            let link = document.getElementById('newExamLink').value.trim();
-
-            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
-            if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "themDeThi", khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link })
-            }).then(() => {
-                alert("🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
-                document.getElementById('newExamTitle').value = '';
-                document.getElementById('newExamLink').value = '';
-                loadExams();
-            });
-        }
-
-        function deleteExam(rowIndex) {
-            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
-            }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
-        }
-
-        function loadNotices() {
-            const container = document.getElementById('noticeBoardContainer');
-            const adminNoticeList = document.getElementById('adminNoticeList');
-            
-            window.handleNoticeData = function(data) {
-                container.innerHTML = '';
-                if (adminNoticeList) adminNoticeList.innerHTML = '';
-
-                if (!data || data.length === 0) {
-                    container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
-                    return;
-                }
-                
-                data.slice().reverse().forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'card notice-card p-3 mb-3';
-                    let imgHtml = item.HinhAnh && item.HinhAnh.trim() !== '' ? `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border" style="max-height: 400px;"></div>` : '';
-                    div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
-                    container.appendChild(div);
-
-                    if (adminNoticeList) {
-                        adminNoticeList.innerHTML += `
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                                <span>${item.NoiDung || 'Thông báo dạng ảnh'}</span>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
-                            </div>`;
-                    }
-                });
-            };
-
-            const script = document.createElement('script');
-            script.src = SCRIPT_URL + "?type=thongBao&callback=handleNoticeData&t=" + new Date().getTime();
-            document.body.appendChild(script);
-        }
-
-        function postNewNotice() {
-            const txt = document.getElementById('newNoticeText').value.trim();
-            const img = document.getElementById('newNoticeImg').value.trim();
-            if (!txt && !img) { alert("Vui lòng nhập nội dung!"); return; }
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "dangThongBao", noiDung: txt, hinhAnh: img })
-            }).then(() => {
-                alert("🚀 ĐÃ ĐĂNG THÔNG BÁO THÀNH CÔNG!");
-                document.getElementById('newNoticeText').value = '';
-                document.getElementById('newNoticeImg').value = '';
-                loadNotices();
-            });
-        }
-
-        function deleteNotice(rowIndex) {
-            if (!confirm("Thầy có chắc chắn muốn xóa thông báo này?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaThongBao", rowIndex: rowIndex })
-            }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
@@ -836,6 +1090,7 @@
                 document.getElementById('adminContentBox').classList.remove('d-none');
                 document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
                 loadAdminData();
+                renderAdmin3DList();
             } else { alert("Mật khẩu không chính xác!"); }
         }
 
@@ -880,8 +1135,9 @@
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
-        // KHỞI TẠO TỰ ĐỘNG
-        startExamCountdown();
+        // TỰ ĐỘNG KHỞI CHẠY HỆ THỐNG
+        startSlimCountdown();
+        load3DModels();
         loadExams();
         loadNotices();
     </script>
