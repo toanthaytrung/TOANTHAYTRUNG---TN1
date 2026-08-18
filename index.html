@@ -314,7 +314,7 @@
                 <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
-            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN: T@xxxxxx -->
+            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN: Trtxxxxxx -->
             <div class="azota-account-badge d-flex align-items-center gap-2">
                 <i class="fa-solid fa-key"></i>
                 <span>Tài khoản Azota: <b><span id="arenaUserPhone" class="text-warning">...</span></b> | Mật khẩu: <b><span id="arenaUserPass" class="text-warning">...</span></b></span>
@@ -415,7 +415,7 @@
                         <!-- 2. Niêm yết Mẫu 02 -->
                         <div class="tab-pane fade" id="m-notice">
                             <div class="p-3 mb-3 bg-light border-start border-4 border-primary">
-                                <p class="mb-1"><b>Tên cơ sở:</b> Hộ kinh đoàn Trần Văn Hồng</p>
+                                <p class="mb-1"><b>Tên cơ sở:</b> Hộ kinh doanh Trần Văn Hồng</p>
                                 <p class="mb-1"><b>Địa chỉ:</b> Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi</p>
                                 <p class="mb-0"><b>Số điện thoại:</b> 0985.759.796</p>
                             </div>
@@ -624,12 +624,12 @@
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
 
-        // HÀM SINH TÀI KHOẢN AZOTA CHUẨN: T@ + 6 SỐ CUỐI SĐT
+        // HÀM SINH TÀI KHOẢN AZOTA CHUẨN: Trt + 6 SỐ CUỐI SĐT (KHÔNG DÙNG KÝ TỰ ĐẶC BIỆT)
         function generateAzotaUsername(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last6 = pClean.slice(-6);
             if (!last6 || last6.length < 6) last6 = pClean.padStart(6, '0');
-            return "T@" + last6;
+            return "Trt" + last6;
         }
 
         // HÀM SINH MẬT KHẨU AZOTA: Trung@ + 4 SỐ CUỐI SĐT
@@ -1076,7 +1076,7 @@
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    // MỞ PHÒNG THI VÀ GẮN TÀI KHOẢN T@xxxxxx LÊN THANH TIÊU ĐỀ
+                    // MỞ PHÒNG THI VÀ GẮN TÀI KHOẢN Trtxxxxxx LÊN THANH TIÊU ĐỀ
                     launchExamArena(selectedAzotaUrl, selectedExamTitle, phone);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
@@ -1370,7 +1370,7 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA: TÀI KHOẢN T@xxxxxx
+        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA: TÀI KHOẢN Trtxxxxxx
         function exportToAzotaExcel() {
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
