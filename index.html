@@ -314,7 +314,7 @@
                 <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
-            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN -->
+            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN: T@xxxxxx -->
             <div class="azota-account-badge d-flex align-items-center gap-2">
                 <i class="fa-solid fa-key"></i>
                 <span>Tài khoản Azota của em: <b><span id="arenaUserPhone">...</span></b> | Mật khẩu: <b><span id="arenaUserPass">...</span></b></span>
@@ -541,7 +541,7 @@
                                                 <th class="text-center" style="width: 40px;">
                                                     <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" title="Chọn tất cả">
                                                 </th>
-                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT (Username)</th><th>Mật Khẩu Azota</th><th>Trạng Thái</th><th>Cảnh Báo Trùng</th><th>Hành Động</th><th>Phiếu</th>
+                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT Đăng Ký</th><th>Tài Khoản Azota</th><th>Mật Khẩu Azota</th><th>Trạng Thái</th><th>Cảnh Báo Trùng</th><th>Hành Động</th><th>Phiếu</th>
                                             </tr>
                                         </thead>
                                         <tbody id="adminTableBody"></tbody>
@@ -615,7 +615,15 @@
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
 
-        // HÀM SINH MẬT KHẨU AZOTA TỰ ĐỘNG CHUẨN BẢO MẬT
+        // HÀM SINH TÀI KHOẢN AZOTA THEO ĐỊNH DẠNG: T@ + 6 SỐ CUỐI SĐT
+        function generateAzotaUsername(rawPhone) {
+            let pClean = String(rawPhone || '').replace(/\D/g, '');
+            let last6 = pClean.slice(-6);
+            if (!last6 || last6.length < 6) last6 = pClean.padStart(6, '0');
+            return "T@" + last6;
+        }
+
+        // HÀM SINH MẬT KHẨU AZOTA THEO ĐỊNH DẠNG: Trung@ + 4 SỐ CUỐI SĐT
         function generateAzotaPassword(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last4 = pClean.slice(-4);
@@ -1059,7 +1067,7 @@
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    // MỞ PHÒNG THI VÀ GẮN SĐT + PASS TỰ SINH LÊN THANH TIÊU ĐỀ
+                    // MỞ PHÒNG THI VÀ GẮN TÀI KHOẢN T@xxxxxx LÊN THANH TIÊU ĐỀ
                     launchExamArena(selectedAzotaUrl, selectedExamTitle, phone);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
@@ -1093,11 +1101,12 @@
         // HÀM KHỞI CHẠY PHÒNG THI
         function launchExamArena(url, title, phone) {
             const formattedP = formatPhone10Digits(phone);
-            const pass = generateAzotaPassword(formattedP);
+            const azotaUsername = generateAzotaUsername(formattedP);
+            const azotaPassword = generateAzotaPassword(formattedP);
 
             document.getElementById('arenaExamTitle').innerText = title.toUpperCase();
-            document.getElementById('arenaUserPhone').innerText = formattedP;
-            document.getElementById('arenaUserPass').innerText = pass;
+            document.getElementById('arenaUserPhone').innerText = azotaUsername;
+            document.getElementById('arenaUserPass').innerText = azotaPassword;
             
             document.getElementById('examIframe').src = url;
             document.getElementById('mainWebsiteWrapper').classList.add('d-none');
@@ -1303,6 +1312,7 @@
                      <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
 
                 let displayPhone = formatPhone10Digits(row.SoDienThoai);
+                let azotaUser = generateAzotaUsername(displayPhone);
                 let azotaPass = generateAzotaPassword(displayPhone);
 
                 const pClean = cleanPhoneLocal(row.SoDienThoai);
@@ -1323,7 +1333,8 @@
                         <td>${i+1}</td>
                         <td><span class="badge bg-primary">${row.Lớp||row.lop||''}</span></td>
                         <td class="fw-bold">${row.HoTenHocSinh||row.hoTenHocSinh||''}</td>
-                        <td><code>${displayPhone}</code></td>
+                        <td>${displayPhone}</td>
+                        <td><code class="text-primary fw-bold">${azotaUser}</code></td>
                         <td><code>${azotaPass}</code></td>
                         <td>${statusBadge}</td>
                         <td>${duplicateBadge}</td>
@@ -1350,12 +1361,11 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA (CÓ SẴN USER VÀ PASS BẢO MẬT)
+        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA: TÀI KHOẢN T@xxxxxx
         function exportToAzotaExcel() {
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
             
-            // Chỉ xuất những học sinh ĐÃ DUYỆT của lớp được chọn
             let exportData = globalData.filter(i => (i.TrangThai === "Đã duyệt") && (selectedClass === 'ALL' || (i.Lớp || i.lop) === selectedClass));
 
             if (exportData.length === 0) {
@@ -1366,10 +1376,11 @@
             let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Họ và tên,Số điện thoại,Tài khoản,Mật khẩu,Lớp\n";
             exportData.forEach((row, i) => {
                 let p = formatPhone10Digits(row.SoDienThoai);
+                let user = generateAzotaUsername(p);
                 let pass = generateAzotaPassword(p);
                 let name = row.HoTenHocSinh || row.hoTenHocSinh || '';
                 let lop = row.Lớp || row.lop || '';
-                csvContent += `${i+1},"${name}","'${p}","'${p}","${pass}","${lop}"\n`;
+                csvContent += `${i+1},"${name}","'${p}","${user}","${pass}","${lop}"\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
