@@ -140,7 +140,7 @@
         .badge-k11 { background-color: #0d9488; }
         .badge-k10 { background-color: #8b5cf6; }
 
-        /* PHÒNG THI TRỰC TUYẾN TOÀN MÀN HÌNH (EXAM ARENA) */
+        /* PHÒNG THI TRỰC TUYẾN TOÀN MÀN HÌNH */
         #examArenaScreen {
             position: fixed;
             top: 0;
@@ -153,26 +153,37 @@
             flex-direction: column;
         }
         .arena-header {
-            height: 56px;
+            min-height: 56px;
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 0 16px;
+            padding: 8px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             flex-shrink: 0;
         }
         .arena-body {
             flex-grow: 1;
             width: 100%;
-            height: calc(100vh - 56px);
+            height: calc(100vh - 65px);
             background: #f1f5f9;
         }
         #examIframe {
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .azota-account-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px dashed #facc15;
+            color: #fef08a;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 13px;
         }
 
         @media print {
@@ -296,12 +307,17 @@
         </div>
     </div>
 
-    <!-- 5. PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP (TOÀN MÀN HÌNH) -->
+    <!-- 5. PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP -->
     <div id="examArenaScreen" class="d-none">
         <div class="arena-header">
             <div class="d-flex align-items-center gap-2 text-truncate">
                 <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
+            </div>
+            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN -->
+            <div class="azota-account-badge d-flex align-items-center gap-2">
+                <i class="fa-solid fa-key"></i>
+                <span>Tài khoản Azota của em: <b><span id="arenaUserPhone">...</span></b> | Mật khẩu: <b><span id="arenaUserPass">...</span></b></span>
             </div>
             <button class="btn btn-danger btn-sm fw-bold px-3 py-1" onclick="closeExamArena()">
                 <i class="fa-solid fa-arrow-left me-1"></i> RỜI PHÒNG THI
@@ -515,7 +531,7 @@
                                             <option value="11A">Lớp 11A</option><option value="11B">Lớp 11B</option>
                                             <option value="10A">Lớp 10A</option><option value="10B">Lớp 10B</option><option value="10C">Lớp 10C</option>
                                         </select>
-                                        <button class="btn btn-outline-success fw-bold" onclick="exportToExcel()">📥 Xuất Excel</button>
+                                        <button class="btn btn-outline-success fw-bold" onclick="exportToAzotaExcel()" title="Xuất file chuẩn để nạp trực tiếp vào Azota">📥 Xuất Excel chuẩn Azota</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -525,7 +541,7 @@
                                                 <th class="text-center" style="width: 40px;">
                                                     <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" title="Chọn tất cả">
                                                 </th>
-                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT</th><th>Trạng Thái</th><th>Cảnh Báo Trùng</th><th>Hành Động</th><th>Phiếu</th>
+                                                <th>STT</th><th>Lớp</th><th>Họ Tên Học Sinh</th><th>SĐT (Username)</th><th>Mật Khẩu Azota</th><th>Trạng Thái</th><th>Cảnh Báo Trùng</th><th>Hành Động</th><th>Phiếu</th>
                                             </tr>
                                         </thead>
                                         <tbody id="adminTableBody"></tbody>
@@ -599,7 +615,22 @@
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
 
-        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (THEO SỐ NGÀY)
+        // HÀM SINH MẬT KHẨU AZOTA TỰ ĐỘNG CHUẨN BẢO MẬT
+        function generateAzotaPassword(rawPhone) {
+            let pClean = String(rawPhone || '').replace(/\D/g, '');
+            let last4 = pClean.slice(-4);
+            if (!last4 || last4.length < 4) last4 = "2027";
+            return "Trung@" + last4;
+        }
+
+        function formatPhone10Digits(rawPhone) {
+            let p = String(rawPhone || '').replace(/\D/g, '');
+            if (p.startsWith('84') && p.length > 9) p = '0' + p.substring(2);
+            if (!p.startsWith('0') && p.length === 9) p = '0' + p;
+            return p;
+        }
+
+        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (CHỈ ĐẾM SỐ NGÀY)
         function startSlimCountdown() {
             const targetDate = new Date("June 11, 2027 07:30:00").getTime();
             const now = new Date().getTime();
@@ -979,14 +1010,6 @@
         }
 
         // 5. XÁC THỰC SỐ ĐIỆN THOẠI & MỞ PHÒNG THI NHÚNG TRỰC TIẾP
-        function cleanPhoneNumber(phone) {
-            if (!phone) return "";
-            let cleaned = String(phone).replace(/\D/g, '');
-            if (cleaned.startsWith('84') && cleaned.length > 9) cleaned = cleaned.substring(2);
-            if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
-            return cleaned;
-        }
-
         function openExamWithAuth(azotaUrl, title) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
                 alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets!");
@@ -1036,8 +1059,8 @@
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    // MỞ PHÒNG THI TOÀN MÀN HÌNH NGAY TRONG WEB
-                    launchExamArena(selectedAzotaUrl, selectedExamTitle);
+                    // MỞ PHÒNG THI VÀ GẮN SĐT + PASS TỰ SINH LÊN THANH TIÊU ĐỀ
+                    launchExamArena(selectedAzotaUrl, selectedExamTitle, phone);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
                         <div class="alert alert-info py-2 small">
@@ -1067,9 +1090,15 @@
             });
         }
 
-        // HÀM KHỞI CHẠY VÀ ĐÓNG PHÒNG THI TOÀN MÀN HÌNH
-        function launchExamArena(url, title) {
+        // HÀM KHỞI CHẠY PHÒNG THI
+        function launchExamArena(url, title, phone) {
+            const formattedP = formatPhone10Digits(phone);
+            const pass = generateAzotaPassword(formattedP);
+
             document.getElementById('arenaExamTitle').innerText = title.toUpperCase();
+            document.getElementById('arenaUserPhone').innerText = formattedP;
+            document.getElementById('arenaUserPass').innerText = pass;
+            
             document.getElementById('examIframe').src = url;
             document.getElementById('mainWebsiteWrapper').classList.add('d-none');
             document.getElementById('examArenaScreen').classList.remove('d-none');
@@ -1247,7 +1276,7 @@
             tbody.innerHTML = '';
             document.getElementById('selectAllCheckbox').checked = false;
 
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="10" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
             
             const phoneCounts = {};
             const nameCounts = {};
@@ -1273,8 +1302,8 @@
                     `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
                      <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
 
-                let displayPhone = String(row.SoDienThoai || '');
-                if (displayPhone.length === 9 && !displayPhone.startsWith('0')) displayPhone = '0' + displayPhone;
+                let displayPhone = formatPhone10Digits(row.SoDienThoai);
+                let azotaPass = generateAzotaPassword(displayPhone);
 
                 const pClean = cleanPhoneLocal(row.SoDienThoai);
                 const nameClean = String(row.HoTenHocSinh || '').trim().toLowerCase();
@@ -1294,7 +1323,8 @@
                         <td>${i+1}</td>
                         <td><span class="badge bg-primary">${row.Lớp||row.lop||''}</span></td>
                         <td class="fw-bold">${row.HoTenHocSinh||row.hoTenHocSinh||''}</td>
-                        <td>${displayPhone}</td>
+                        <td><code>${displayPhone}</code></td>
+                        <td><code>${azotaPass}</code></td>
                         <td>${statusBadge}</td>
                         <td>${duplicateBadge}</td>
                         <td>${actionBtn}</td>
@@ -1320,18 +1350,35 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        function exportToExcel() {
-            if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu!"); return; }
+        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA (CÓ SẴN USER VÀ PASS BẢO MẬT)
+        function exportToAzotaExcel() {
+            if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
-            let exportData = selectedClass === 'ALL' ? globalData : globalData.filter(i => (i.Lớp || i.lop) === selectedClass);
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Lop,Ho Ten Hoc Sinh,So Dien Thoai,Trang Thai\n";
+            
+            // Chỉ xuất những học sinh ĐÃ DUYỆT của lớp được chọn
+            let exportData = globalData.filter(i => (i.TrangThai === "Đã duyệt") && (selectedClass === 'ALL' || (i.Lớp || i.lop) === selectedClass));
+
+            if (exportData.length === 0) {
+                alert(`Không có học sinh nào ở trạng thái 'Đã duyệt' trong ${selectedClass === 'ALL' ? 'hệ thống' : selectedClass}!`);
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Họ và tên,Số điện thoại,Tài khoản,Mật khẩu,Lớp\n";
             exportData.forEach((row, i) => {
-                csvContent += `${i+1},"${row.Lớp||row.lop||''}","${row.HoTenHocSinh||row.hoTenHocSinh||''}","'${row.SoDienThoai||''}","${row.TrangThai||''}"\n`;
+                let p = formatPhone10Digits(row.SoDienThoai);
+                let pass = generateAzotaPassword(p);
+                let name = row.HoTenHocSinh || row.hoTenHocSinh || '';
+                let lop = row.Lớp || row.lop || '';
+                csvContent += `${i+1},"${name}","'${p}","'${p}","${pass}","${lop}"\n`;
             });
+
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri); link.setAttribute("download", `Danh_Sach_Lop_${selectedClass}.csv`);
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Danh_Sach_Azota_${selectedClass}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
