@@ -33,6 +33,8 @@
             background-color: var(--bg-light); 
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: #334155;
+            margin: 0;
+            padding: 0;
         }
 
         .header-bg { 
@@ -91,7 +93,7 @@
             color: white;
         }
 
-        /* ĐỒNG HỒ ĐẾM NGƯỢC THEO NGÀY */
+        /* ĐỒNG HỒ ĐẾM NGƯỢC */
         .countdown-slim {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
@@ -138,6 +140,41 @@
         .badge-k11 { background-color: #0d9488; }
         .badge-k10 { background-color: #8b5cf6; }
 
+        /* PHÒNG THI TRỰC TUYẾN TOÀN MÀN HÌNH (EXAM ARENA) */
+        #examArenaScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+        }
+        .arena-header {
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+        .arena-body {
+            flex-grow: 1;
+            width: 100%;
+            height: calc(100vh - 56px);
+            background: #f1f5f9;
+        }
+        #examIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @media print {
             body * { visibility: hidden; }
             #printSection, #printSection * { visibility: visible; }
@@ -147,112 +184,131 @@
 </head>
 <body>
 
-    <!-- HEADER LOGO & QUẢN LÝ -->
-    <div class="header-bg py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
-        <div class="d-flex align-items-center gap-3">
-            <div class="brand-logo">
-                <i class="fa-solid fa-calculator"></i>
+    <!-- GIAO DIỆN CHÍNH CỦA TRANG WEB -->
+    <div id="mainWebsiteWrapper">
+        <!-- HEADER LOGO & QUẢN LÝ -->
+        <div class="header-bg py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-0 text-warning d-flex align-items-center gap-2">
+                        LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG
+                    </h4>
+                    <small class="opacity-90">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
+                </div>
             </div>
-            <div>
-                <h4 class="fw-bold mb-0 text-warning d-flex align-items-center gap-2">
-                    LỚP TOÁN THẦY NGUYỄN PHỈ ĐỨC TRUNG
-                </h4>
-                <small class="opacity-90">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
+            <button class="btn btn-outline-light fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#adminModal" style="border-radius: 10px;">
+                🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
+            </button>
+        </div>
+
+        <div class="container my-4">
+            
+            <!-- 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT -->
+            <div class="countdown-slim mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-hourglass-half text-warning fs-4"></i>
+                    <div>
+                        <span class="fw-bold text-white">ĐẾM NGƯỢC THI TN THPT 2027 (11/06/2027)</span>
+                        <span class="d-none d-md-inline text-light opacity-75 ms-2">- Chúc các em ôn luyện thật tốt!</span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <span class="text-light opacity-75">Còn lại:</span>
+                    <span class="countdown-badge" id="cd-days-slim">...</span>
+                    <span class="fw-bold text-warning">NGÀY</span>
+                </div>
+            </div>
+
+            <!-- 2. GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D -->
+            <div class="card card-custom p-3 mb-4">
+                <div class="section-3d-toggle p-3 d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#collapse3DContainer">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fs-4">🎲</span>
+                        <div>
+                            <h6 class="fw-bold mb-0">GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D</h6>
+                            <small class="opacity-75">Bấm vào đây để mở danh sách mô hình không gian tương tác trực quan</small>
+                        </div>
+                    </div>
+                    <span class="badge bg-light text-dark fw-bold px-3 py-2">Xem mô hình <i class="fa-solid fa-chevron-down ms-1"></i></span>
+                </div>
+
+                <div class="collapse mt-3" id="collapse3DContainer">
+                    <div class="row g-3" id="model3DListContainer">
+                        <div class="text-center py-3 text-muted">
+                            <div class="spinner-border spinner-border-sm text-primary me-2"></div> Đang tải mô hình 3D...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                
+                <!-- 3. BẢNG TIN THÔNG BÁO TỪ CƠ SỞ -->
+                <div class="col-lg-12">
+                    <div class="card card-custom p-4 mb-2">
+                        <h5 class="fw-bold text-primary border-bottom pb-3 mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-danger"></i> BẢNG TIN THÔNG BÁO TỪ CƠ SỞ
+                        </h5>
+                        <div id="noticeBoardContainer">
+                            <div class="text-center py-4 text-muted">
+                                <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+                                ⏳ Đang tải thông báo mới nhất...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
+                <div class="col-lg-12">
+                    <div class="card card-custom p-4">
+                        <div class="text-center mb-4">
+                            <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
+                            <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện đề</p>
+                        </div>
+
+                        <!-- TAB CHỌN KHỐI HỌC -->
+                        <ul class="nav nav-pills nav-justified mb-4 card-custom p-2 bg-light" id="gradeTab">
+                            <li class="nav-item">
+                                <button class="nav-link active fw-bold py-2 fs-5" id="tab-k12" onclick="switchGrade(12)">🎓 KHỐI 12</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link fw-bold py-2 fs-5" id="tab-k11" onclick="switchGrade(11)">🎓 KHỐI 11</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link fw-bold py-2 fs-5" id="tab-k10" onclick="switchGrade(10)">🎓 KHỐI 10</button>
+                            </li>
+                        </ul>
+
+                        <!-- DANH SÁCH ĐỀ THI -->
+                        <div class="row g-3" id="examListContainer">
+                            <div class="text-center py-4 text-muted">
+                                <div class="spinner-border text-primary me-2" role="status"></div>
+                                ⏳ Đang tải danh sách đề thi...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <button class="btn btn-outline-light fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#adminModal" style="border-radius: 10px;">
-            🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
-        </button>
     </div>
 
-    <div class="container my-4">
-        
-        <!-- 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (THEO SỐ NGÀY) -->
-        <div class="countdown-slim mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-hourglass-half text-warning fs-4"></i>
-                <div>
-                    <span class="fw-bold text-white">ĐẾM NGƯỢC THI TN THPT 2027 (11/06/2027)</span>
-                    <span class="d-none d-md-inline text-light opacity-75 ms-2">- Chúc các em ôn luyện thật tốt!</span>
-                </div>
+    <!-- 5. PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP (TOÀN MÀN HÌNH) -->
+    <div id="examArenaScreen" class="d-none">
+        <div class="arena-header">
+            <div class="d-flex align-items-center gap-2 text-truncate">
+                <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
+                <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
-            <div class="d-flex align-items-center gap-2 ms-auto">
-                <span class="text-light opacity-75">Còn lại:</span>
-                <span class="countdown-badge" id="cd-days-slim">...</span>
-                <span class="fw-bold text-warning">NGÀY</span>
-            </div>
+            <button class="btn btn-danger btn-sm fw-bold px-3 py-1" onclick="closeExamArena()">
+                <i class="fa-solid fa-arrow-left me-1"></i> RỜI PHÒNG THI
+            </button>
         </div>
-
-        <!-- 2. GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D (THU GỌN / XỔ RA) -->
-        <div class="card card-custom p-3 mb-4">
-            <div class="section-3d-toggle p-3 d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#collapse3DContainer">
-                <div class="d-flex align-items-center gap-3">
-                    <span class="fs-4">🎲</span>
-                    <div>
-                        <h6 class="fw-bold mb-0">GÓC TRẢI NGHIỆM MÔ HÌNH TOÁN HỌC 3D</h6>
-                        <small class="opacity-75">Bấm vào đây để mở danh sách mô hình không gian tương tác trực quan</small>
-                    </div>
-                </div>
-                <span class="badge bg-light text-dark fw-bold px-3 py-2">Xem mô hình <i class="fa-solid fa-chevron-down ms-1"></i></span>
-            </div>
-
-            <div class="collapse mt-3" id="collapse3DContainer">
-                <div class="row g-3" id="model3DListContainer">
-                    <div class="text-center py-3 text-muted">
-                        <div class="spinner-border spinner-border-sm text-primary me-2"></div> Đang tải mô hình 3D...
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4">
-            
-            <!-- 3. BẢNG TIN THÔNG BÁO TỪ CƠ SỞ -->
-            <div class="col-lg-12">
-                <div class="card card-custom p-4 mb-2">
-                    <h5 class="fw-bold text-primary border-bottom pb-3 mb-3 d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-bullhorn text-danger"></i> BẢNG TIN THÔNG BÁO TỪ CƠ SỞ
-                    </h5>
-                    <div id="noticeBoardContainer">
-                        <div class="text-center py-4 text-muted">
-                            <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
-                            ⏳ Đang tải thông báo mới nhất...
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
-            <div class="col-lg-12">
-                <div class="card card-custom p-4">
-                    <div class="text-center mb-4">
-                        <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
-                        <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện đề</p>
-                    </div>
-
-                    <!-- TAB CHỌN KHỐI HỌC -->
-                    <ul class="nav nav-pills nav-justified mb-4 card-custom p-2 bg-light" id="gradeTab">
-                        <li class="nav-item">
-                            <button class="nav-link active fw-bold py-2 fs-5" id="tab-k12" onclick="switchGrade(12)">🎓 KHỐI 12</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link fw-bold py-2 fs-5" id="tab-k11" onclick="switchGrade(11)">🎓 KHỐI 11</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link fw-bold py-2 fs-5" id="tab-k10" onclick="switchGrade(10)">🎓 KHỐI 10</button>
-                        </li>
-                    </ul>
-
-                    <!-- DANH SÁCH ĐỀ THI HÀNG DỌC TỪ MỚI ĐẾN CŨ -->
-                    <div class="row g-3" id="examListContainer">
-                        <div class="text-center py-4 text-muted">
-                            <div class="spinner-border text-primary me-2" role="status"></div>
-                            ⏳ Đang tải danh sách đề thi...
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="arena-body">
+            <iframe id="examIframe" src="" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
         </div>
     </div>
 
@@ -371,7 +427,7 @@
                                     </div>
                                 </div>
 
-                                <!-- FORM QUẢN LÝ ĐỀ THI AZOTA (THÊM / SỬA) -->
+                                <!-- FORM QUẢN LÝ ĐỀ THI AZOTA -->
                                 <div class="card p-3 mb-4 bg-light border border-primary">
                                     <h6 class="fw-bold text-primary mb-3" id="examFormHeader"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI AZOTA</h6>
                                     <input type="hidden" id="editExamRowIndex" value="">
@@ -399,7 +455,7 @@
                                     </div>
                                 </div>
 
-                                <!-- FORM QUẢN LÝ MÔ HÌNH 3D (THÊM / SỬA) -->
+                                <!-- FORM QUẢN LÝ MÔ HÌNH 3D -->
                                 <div class="card p-3 mb-4 bg-light border border-indigo" style="border-color: #6366f1 !important;">
                                     <h6 class="fw-bold text-indigo mb-3" id="model3DFormHeader" style="color: #4f46e5;"><i class="fa-solid fa-cube me-1"></i> 2. QUẢN LÝ MÔ HÌNH TOÁN 3D</h6>
                                     <input type="hidden" id="edit3DRowIndex" value="">
@@ -426,7 +482,7 @@
                                     <div id="admin3DList" class="small">Đang tải...</div>
                                 </div>
 
-                                <!-- KHUNG ĐĂNG THÔNG BÁO (HỖ TRỢ FILE / DÁN CTRL + V) -->
+                                <!-- KHUNG ĐĂNG THÔNG BÁO -->
                                 <div class="card p-3 mb-4 bg-light border">
                                     <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 3. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
                                     <div class="mb-2">
@@ -539,10 +595,11 @@
         let globalExams = [];
         let global3DModels = [];
         let selectedAzotaUrl = "";
+        let selectedExamTitle = "";
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
 
-        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (CHỈ ĐẾM SỐ NGÀY)
+        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (THEO SỐ NGÀY)
         function startSlimCountdown() {
             const targetDate = new Date("June 11, 2027 07:30:00").getTime();
             const now = new Date().getTime();
@@ -555,7 +612,7 @@
             }
         }
 
-        // 2. QUẢN LÝ VÀ HIỂN THỊ MÔ HÌNH 3D
+        // 2. MÔ HÌNH 3D
         function load3DModels() {
             window.handle3DData = function(data) {
                 global3DModels = data || [];
@@ -681,7 +738,7 @@
             });
         }
 
-        // 3. QUẢN LÝ ĐỀ THI AZOTA (TỰ ĐỘNG QUÉT LINK TOÀN DIỆN)
+        // 3. QUẢN LÝ ĐỀ THI AZOTA
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -709,7 +766,6 @@
             }
 
             filteredExams.forEach(exam => {
-                // BỘ QUÉT TÌM LINK AZOTA THÔNG MINH
                 let rawLink = "";
                 const candidates = [exam.AzotaLink, exam.azotaLink, exam.Azotalink, exam.AZOTALINK, exam.Link, exam.link, exam.LinkAzota, exam.linkAzota, exam.LinkDe, exam.linkDe];
                 for (let c of candidates) {
@@ -727,6 +783,8 @@
                         }
                     }
                 }
+
+                const examTitle = exam.TenDe || exam.tenDe || 'Đề luyện tập';
                 
                 const col = document.createElement('div');
                 col.className = 'col-12';
@@ -738,11 +796,11 @@
                                     <span class="badge badge-k${grade} fs-6">Khối ${exam.Khoi || exam.khoi || grade}</span>
                                     <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || exam.thoiGian || '90 Phút'}</small>
                                 </div>
-                                <h5 class="fw-bold text-dark mb-0">${exam.TenDe || exam.tenDe || 'Đề luyện tập'}</h5>
+                                <h5 class="fw-bold text-dark mb-0">${examTitle}</h5>
                             </div>
                             <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-                                <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}')">
-                                    🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                                <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}', '${examTitle.replace(/'/g, "\\'")}')">
+                                    🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-right ms-1"></i>
                                 </button>
                                 <button class="btn btn-sm btn-outline-primary d-none admin-only-btn" onclick='editExam(${JSON.stringify(exam)})' title="Sửa thông tin đề">✏️</button>
                                 <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
@@ -821,7 +879,7 @@
             }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
         }
 
-        // 4. XỬ LÝ ẢNH TRỰC TIẾP TỪ MÁY HOẶC DÁN CTRL + V
+        // 4. XỬ LÝ ẢNH THÔNG BÁO
         function handleNoticeImageUpload(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -920,7 +978,7 @@
             }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        // 5. CHUẨN HÓA & XÁC THỰC SỐ ĐIỆN THOẠI SERVER-SIDE AN TOÀN
+        // 5. XÁC THỰC SỐ ĐIỆN THOẠI & MỞ PHÒNG THI NHÚNG TRỰC TIẾP
         function cleanPhoneNumber(phone) {
             if (!phone) return "";
             let cleaned = String(phone).replace(/\D/g, '');
@@ -929,13 +987,14 @@
             return cleaned;
         }
 
-        function openExamWithAuth(azotaUrl) {
+        function openExamWithAuth(azotaUrl, title) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
                 alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets!");
                 return;
             }
 
             selectedAzotaUrl = azotaUrl;
+            selectedExamTitle = title || "ĐỀ THI TRỰC TUYẾN";
             let savedPhone = "";
             try { savedPhone = localStorage.getItem('user_auth_phone'); } catch(e){}
             
@@ -977,10 +1036,8 @@
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    const newTab = window.open(selectedAzotaUrl, '_blank');
-                    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
-                        window.location.href = selectedAzotaUrl;
-                    }
+                    // MỞ PHÒNG THI TOÀN MÀN HÌNH NGAY TRONG WEB
+                    launchExamArena(selectedAzotaUrl, selectedExamTitle);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
                         <div class="alert alert-info py-2 small">
@@ -1008,6 +1065,23 @@
                 if (btnConfirm) { btnConfirm.disabled = false; btnConfirm.innerHTML = "🚀 XÁC NHẬN VÀO BÀI THI"; }
                 alert("Mạng yếu, vui lòng thử lại hoặc tải lại trang!");
             });
+        }
+
+        // HÀM KHỞI CHẠY VÀ ĐÓNG PHÒNG THI TOÀN MÀN HÌNH
+        function launchExamArena(url, title) {
+            document.getElementById('arenaExamTitle').innerText = title.toUpperCase();
+            document.getElementById('examIframe').src = url;
+            document.getElementById('mainWebsiteWrapper').classList.add('d-none');
+            document.getElementById('examArenaScreen').classList.remove('d-none');
+            window.scrollTo(0, 0);
+        }
+
+        function closeExamArena() {
+            if (confirm("Em có chắc chắn muốn rời khỏi phòng thi?\nHãy đảm bảo rằng em đã nộp bài trên hệ thống!")) {
+                document.getElementById('examIframe').src = "";
+                document.getElementById('examArenaScreen').classList.add('d-none');
+                document.getElementById('mainWebsiteWrapper').classList.remove('d-none');
+            }
         }
 
         // 6. ĐĂNG NHẬP ADMIN & ĐỔI MẬT KHẨU
@@ -1110,7 +1184,7 @@
             });
         }
 
-        // 7. QUẢN LÝ DUYỆT / XÓA HỌC SINH
+        // 7. QUẢN LÝ DUYỆT & XÓA HỌC SINH
         function toggleSelectAll(master) {
             const checkboxes = document.querySelectorAll('.student-select-cb');
             checkboxes.forEach(cb => cb.checked = master.checked);
@@ -1160,6 +1234,14 @@
             });
         }
 
+        function cleanPhoneLocal(p) {
+            if (!p) return "";
+            let cleaned = String(p).replace(/\D/g, '');
+            if (cleaned.startsWith('84') && cleaned.length > 9) cleaned = cleaned.substring(2);
+            if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
+            return cleaned;
+        }
+
         function renderAdminTable(data) {
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
@@ -1170,7 +1252,7 @@
             const phoneCounts = {};
             const nameCounts = {};
             data.forEach(item => {
-                const pClean = cleanPhoneNumber(item.SoDienThoai);
+                const pClean = cleanPhoneLocal(item.SoDienThoai);
                 const nameClean = String(item.HoTenHocSinh || '').trim().toLowerCase();
                 if (pClean) phoneCounts[pClean] = (phoneCounts[pClean] || 0) + 1;
                 if (nameClean) nameCounts[nameClean] = (nameCounts[nameClean] || 0) + 1;
@@ -1194,7 +1276,7 @@
                 let displayPhone = String(row.SoDienThoai || '');
                 if (displayPhone.length === 9 && !displayPhone.startsWith('0')) displayPhone = '0' + displayPhone;
 
-                const pClean = cleanPhoneNumber(row.SoDienThoai);
+                const pClean = cleanPhoneLocal(row.SoDienThoai);
                 const nameClean = String(row.HoTenHocSinh || '').trim().toLowerCase();
                 let duplicateBadge = `<span class="badge bg-light text-secondary border">Hợp lệ</span>`;
 
