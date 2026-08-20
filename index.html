@@ -70,6 +70,11 @@
             transform: translateY(-3px); 
             box-shadow: 0 8px 20px rgba(31, 73, 125, 0.12); 
         }
+        .exam-card-hidden {
+            border-left: 6px solid #94a3b8 !important;
+            background-color: #f8fafc !important;
+            opacity: 0.85;
+        }
 
         .btn-primary-custom { 
             background-color: var(--primary-navy); 
@@ -178,12 +183,20 @@
         }
 
         .azota-account-badge {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px dashed #facc15;
-            color: #fef08a;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid #facc15;
+            color: #ffffff;
             border-radius: 8px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             font-size: 13px;
+        }
+
+        /* KHUNG THẺ THÔNG TIN TÀI KHOẢN TRONG MODAL */
+        .account-card-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 16px;
         }
 
         @media print {
@@ -307,6 +320,57 @@
         </div>
     </div>
 
+    <!-- MODAL HƯỚNG DẪN ĐĂNG NHẬP AZOTA NỔI BẬT TRƯỚC KHI VÀO THI -->
+    <div class="modal fade" id="azotaInstructionModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-header header-bg text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-key text-warning me-2"></i>THÔNG TIN ĐĂNG NHẬP BÀI THI</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p class="text-muted mb-3 fs-6">Để vào làm bài trên Azota, em vui lòng sử dụng đúng <b>Tài khoản & Mật khẩu</b> cá nhân của mình bên dưới:</p>
+                    
+                    <!-- Khung Tài khoản -->
+                    <div class="account-card-box mb-3 text-start">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small text-muted fw-bold">🏷️ TÀI KHOẢN AZOTA:</span>
+                            <span class="badge bg-secondary" id="toastCopyUser" style="display:none;">Đã sao chép!</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-4 fw-bold text-primary" id="modalAzotaUsername">Trt...</span>
+                            <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-1" onclick="copyToClipboard('modalAzotaUsername', 'toastCopyUser')">
+                                <i class="fa-regular fa-copy me-1"></i> Sao chép
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Khung Mật khẩu -->
+                    <div class="account-card-box mb-4 text-start">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small text-muted fw-bold">🔑 MẬT KHẨU AZOTA:</span>
+                            <span class="badge bg-secondary" id="toastCopyPass" style="display:none;">Đã sao chép!</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-4 fw-bold text-danger" id="modalAzotaPassword">Trung@...</span>
+                            <button class="btn btn-outline-danger btn-sm fw-bold px-3 py-1" onclick="copyToClipboard('modalAzotaPassword', 'toastCopyPass')">
+                                <i class="fa-regular fa-copy me-1"></i> Sao chép
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info py-2 small mb-4 text-start">
+                        💡 <b>Hướng dẫn:</b> Em bấm nút <b>Sao chép</b> ở trên $\rightarrow$ Sau đó dán vào ô <b>Đăng nhập</b> của Azota để làm bài nhé!
+                    </div>
+
+                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3 fs-5" onclick="confirmLaunchArena()">
+                        🚀 ĐÃ HIỂU, TIẾN HÀNH ĐĂNG NHẬP <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 5. PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP -->
     <div id="examArenaScreen" class="d-none">
         <div class="arena-header">
@@ -315,9 +379,13 @@
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
             <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN: Trtxxxxxx -->
-            <div class="azota-account-badge d-flex align-items-center gap-2">
-                <i class="fa-solid fa-key"></i>
-                <span>Tài khoản Azota: <b><span id="arenaUserPhone" class="text-warning">...</span></b> | Mật khẩu: <b><span id="arenaUserPass" class="text-warning">...</span></b></span>
+            <div class="azota-account-badge d-flex align-items-center gap-2 flex-wrap">
+                <i class="fa-solid fa-key text-warning"></i>
+                <span>TK: <b class="text-warning" id="arenaUserPhone">...</b></span>
+                <span>|</span>
+                <span>MK: <b class="text-warning" id="arenaUserPass">...</b></span>
+                <button class="btn btn-sm btn-outline-warning py-0 px-2 text-white" onclick="copyText(document.getElementById('arenaUserPhone').innerText)" title="Sao chép Tài khoản">Copy TK</button>
+                <button class="btn btn-sm btn-outline-warning py-0 px-2 text-white" onclick="copyText(document.getElementById('arenaUserPass').innerText)" title="Sao chép Mật khẩu">Copy MK</button>
             </div>
             <button class="btn btn-danger btn-sm fw-bold px-3 py-1" onclick="closeExamArena()">
                 <i class="fa-solid fa-arrow-left me-1"></i> RỜI PHÒNG THI
@@ -623,8 +691,9 @@
         let selectedExamTitle = "";
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
+        let currentVerifiedPhone = "";
 
-        // HÀM SINH TÀI KHOẢN AZOTA CHUẨN: Trt + 6 SỐ CUỐI SĐT (KHÔNG DÙNG KÝ TỰ ĐẶC BIỆT)
+        // HÀM SINH TÀI KHOẢN AZOTA: Trt + 6 SỐ CUỐI SĐT
         function generateAzotaUsername(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last6 = pClean.slice(-6);
@@ -647,7 +716,34 @@
             return p;
         }
 
-        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT (CHỈ ĐẾM SỐ NGÀY)
+        // HÀM SAO CHÉP VĂN BẢN VÀ BÁO HIỆU
+        function copyToClipboard(elementId, toastId) {
+            const text = document.getElementById(elementId).innerText;
+            copyText(text);
+            const toast = document.getElementById(toastId);
+            if (toast) {
+                toast.style.display = "inline-block";
+                setTimeout(() => { toast.style.display = "none"; }, 1500);
+            }
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try { document.execCommand('copy'); } catch(e){}
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT
         function startSlimCountdown() {
             const targetDate = new Date("June 11, 2027 07:30:00").getTime();
             const now = new Date().getTime();
@@ -786,7 +882,7 @@
             });
         }
 
-        // 3. QUẢN LÝ ĐỀ THI AZOTA
+        // 3. QUẢN LÝ ĐỀ THI AZOTA & TÍNH NĂNG ẨN / HIỆN ĐỀ
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -806,10 +902,21 @@
             const container = document.getElementById('examListContainer');
             container.innerHTML = '';
 
-            const filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi || e.KHOI || '') === String(grade)).reverse();
+            const isAdmin = (currentAdminPasswordSession !== "");
+
+            // Lọc danh sách đề thi theo khối
+            let filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi || e.KHOI || '') === String(grade)).reverse();
+
+            // Nếu là học sinh: chỉ hiển thị đề có trạng thái khác "AN" (mặc định là HIEN)
+            if (!isAdmin) {
+                filteredExams = filteredExams.filter(e => {
+                    const st = String(e.TrangThai || e.trangThai || e.status || '').toUpperCase();
+                    return st !== "AN";
+                });
+            }
 
             if (filteredExams.length === 0) {
-                container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi cho Khối ${grade}. Thầy sẽ bổ sung sớm!</div>`;
+                container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi nào đang mở cho Khối ${grade}.</div>`;
                 return;
             }
 
@@ -833,16 +940,28 @@
                 }
 
                 const examTitle = exam.TenDe || exam.tenDe || 'Đề luyện tập';
-                
+                const status = String(exam.TrangThai || exam.trangThai || exam.status || 'HIEN').toUpperCase();
+                const isHidden = (status === "AN");
+
                 const col = document.createElement('div');
                 col.className = 'col-12';
+
+                // Nút toggle ẩn hiện dành cho Admin
+                let toggleBtnHtml = "";
+                if (isAdmin) {
+                    toggleBtnHtml = isHidden ? 
+                        `<button class="btn btn-sm btn-secondary fw-bold me-1" onclick="toggleExamVisibility(${exam._rowIndex}, 'HIEN')" title="Bấm để Hiện đề cho học sinh">👁️‍🗨️ Đang ẩn</button>` :
+                        `<button class="btn btn-sm btn-success fw-bold me-1" onclick="toggleExamVisibility(${exam._rowIndex}, 'AN')" title="Bấm để Ẩn đề khỏi học sinh">👁️ Đang hiện</button>`;
+                }
+
                 col.innerHTML = `
-                    <div class="card card-custom exam-card p-3 bg-white">
+                    <div class="card card-custom exam-card ${isHidden ? 'exam-card-hidden' : ''} p-3 bg-white">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <div class="flex-grow-1">
-                                <div class="d-flex align-items-center gap-2 mb-1">
+                                <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
                                     <span class="badge badge-k${grade} fs-6">Khối ${exam.Khoi || exam.khoi || grade}</span>
                                     <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || exam.thoiGian || '90 Phút'}</small>
+                                    ${isHidden ? '<span class="badge bg-secondary ms-2"><i class="fa-solid fa-eye-slash me-1"></i>Đang ẩn với học sinh</span>' : ''}
                                 </div>
                                 <h5 class="fw-bold text-dark mb-0 text-start">${examTitle}</h5>
                             </div>
@@ -850,6 +969,7 @@
                                 <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}', '${examTitle.replace(/'/g, "\\'")}')">
                                     🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-right ms-1"></i>
                                 </button>
+                                ${toggleBtnHtml}
                                 <button class="btn btn-sm btn-outline-primary d-none admin-only-btn" onclick='editExam(${JSON.stringify(exam)})' title="Sửa thông tin đề">✏️</button>
                                 <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
                             </div>
@@ -859,9 +979,28 @@
                 container.appendChild(col);
             });
 
-            if (currentAdminPasswordSession && !document.getElementById('adminContentBox').classList.contains('d-none')) {
+            if (isAdmin && !document.getElementById('adminContentBox').classList.contains('d-none')) {
                 document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
             }
+        }
+
+        // HÀM ĐỔI TRẠNG THÁI ẨN / HIỆN ĐỀ THI
+        function toggleExamVisibility(rowIndex, newStatus) {
+            // Cập nhật mượt mà trực tiếp trên giao diện
+            const targetExam = globalExams.find(e => e._rowIndex === rowIndex);
+            if (targetExam) {
+                targetExam.TrangThai = newStatus;
+                targetExam.trangThai = newStatus;
+            }
+            switchGrade(currentGrade);
+
+            // Gửi dữ liệu cập nhật về máy chủ Google Sheets
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "doiTrangThaiDeThi", rowIndex: rowIndex, trangThai: newStatus })
+            });
         }
 
         function saveExam() {
@@ -875,7 +1014,7 @@
             if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
 
             const action = editRowIndex ? "suaDeThi" : "themDeThi";
-            const payload = { action: action, khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link, rowIndex: parseInt(editRowIndex) || null };
+            const payload = { action: action, khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link, trangThai: "HIEN", rowIndex: parseInt(editRowIndex) || null };
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -1026,7 +1165,7 @@
             }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        // 5. XÁC THỰC SỐ ĐIỆN THOẠI TRÊN WEB & MỞ PHÒNG THI AZOTA
+        // 5. XÁC THỰC SỐ ĐIỆN THOẠI TRÊN WEB & BẬT MODAL HƯỚNG DẪN AZOTA
         function openExamWithAuth(azotaUrl, title) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
                 alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets!");
@@ -1072,12 +1211,14 @@
 
                 if (res.status === "APPROVED") {
                     try { localStorage.setItem('user_auth_phone', phone); } catch(e){}
+                    currentVerifiedPhone = phone;
+
                     const modalEl = document.getElementById('verifyPhoneModal');
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    // MỞ PHÒNG THI VÀ GẮN TÀI KHOẢN Trtxxxxxx LÊN THANH TIÊU ĐỀ
-                    launchExamArena(selectedAzotaUrl, selectedExamTitle, phone);
+                    // BẬT MODAL HƯỚNG DẪN TÀI KHOẢN AZOTA TO RÕ
+                    showAzotaInstructionModal(phone);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
                         <div class="alert alert-info py-2 small">
@@ -1107,7 +1248,28 @@
             });
         }
 
-        // HÀM KHỞI CHẠY PHÒNG THI
+        // BẬT BẢNG THÔNG TIN TÀI KHOẢN AZOTA TO RÕ Ở GIỮA MÀN HÌNH
+        function showAzotaInstructionModal(phone) {
+            const formattedP = formatPhone10Digits(phone);
+            const user = generateAzotaUsername(formattedP);
+            const pass = generateAzotaPassword(formattedP);
+
+            document.getElementById('modalAzotaUsername').innerText = user;
+            document.getElementById('modalAzotaPassword').innerText = pass;
+
+            const modal = new bootstrap.Modal(document.getElementById('azotaInstructionModal'));
+            modal.show();
+        }
+
+        function confirmLaunchArena() {
+            const modalEl = document.getElementById('azotaInstructionModal');
+            const modalObj = bootstrap.Modal.getInstance(modalEl);
+            if (modalObj) modalObj.hide();
+
+            launchExamArena(selectedAzotaUrl, selectedExamTitle, currentVerifiedPhone);
+        }
+
+        // HÀM KHỞI CHẠY PHÒNG THI AZOTA TOÀN MÀN HÌNH
         function launchExamArena(url, title, phone) {
             const formattedP = formatPhone10Digits(phone);
             const azotaUsername = generateAzotaUsername(formattedP);
@@ -1158,6 +1320,7 @@
                     document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.remove('d-none'));
                     renderAdminTable(globalData);
                     renderAdmin3DList();
+                    switchGrade(currentGrade); // Tải lại danh sách đề với quyền Admin
                 } else {
                     alert("❌ Mật khẩu Admin không chính xác!");
                 }
@@ -1176,6 +1339,7 @@
             document.getElementById('passwordAuthBox').classList.remove('d-none');
             document.getElementById('adminContentBox').classList.add('d-none');
             document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.add('d-none'));
+            switchGrade(currentGrade); // Tải lại giao diện về góc nhìn học sinh
         }
 
         function reloadAdminData() {
