@@ -182,7 +182,7 @@
             border: none;
         }
 
-        .azota-account-badge {
+        .account-badge-header {
             background: rgba(255, 255, 255, 0.18);
             border: 1px solid #facc15;
             color: #ffffff;
@@ -320,7 +320,7 @@
         </div>
     </div>
 
-    <!-- MODAL HƯỚNG DẪN ĐĂNG NHẬP AZOTA NỔI BẬT TRƯỚC KHI VÀO THI -->
+    <!-- MODAL HƯỚNG DẪN ĐĂNG NHẬP NỔI BẬT TRƯỚC KHI VÀO THI -->
     <div class="modal fade" id="azotaInstructionModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
@@ -329,12 +329,12 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center">
-                    <p class="text-muted mb-3 fs-6">Để vào làm bài trên Azota, em vui lòng sử dụng đúng <b>Tài khoản & Mật khẩu</b> cá nhân của mình bên dưới:</p>
+                    <p class="text-muted mb-3 fs-6">Để vào làm bài thi, em vui lòng sử dụng đúng <b>Tài khoản & Mật khẩu</b> cá nhân của mình bên dưới:</p>
                     
                     <!-- Khung Tài khoản -->
                     <div class="account-card-box mb-3 text-start">
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small text-muted fw-bold">🏷️ TÀI KHOẢN AZOTA:</span>
+                            <span class="small text-muted fw-bold">🏷️ TÀI KHOẢN:</span>
                             <span class="badge bg-secondary" id="toastCopyUser" style="display:none;">Đã sao chép!</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -348,7 +348,7 @@
                     <!-- Khung Mật khẩu -->
                     <div class="account-card-box mb-4 text-start">
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small text-muted fw-bold">🔑 MẬT KHẨU AZOTA:</span>
+                            <span class="small text-muted fw-bold">🔑 MẬT KHẨU:</span>
                             <span class="badge bg-secondary" id="toastCopyPass" style="display:none;">Đã sao chép!</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -360,7 +360,7 @@
                     </div>
 
                     <div class="alert alert-info py-2 small mb-4 text-start">
-                        💡 <b>Hướng dẫn:</b> Em bấm nút <b>Sao chép</b> ở trên $\rightarrow$ Sau đó dán vào ô <b>Đăng nhập</b> của Azota để làm bài nhé!
+                        💡 <b>Hướng dẫn:</b> Em bấm nút <b>Sao chép</b> ở trên ➔ Sau đó dán vào ô <b>Đăng nhập</b> để làm bài nhé!
                     </div>
 
                     <button class="btn btn-action-start btn-lg w-100 fw-bold py-3 fs-5" onclick="confirmLaunchArena()">
@@ -378,8 +378,8 @@
                 <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
-            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN AZOTA CÁ NHÂN: Trtxxxxxx -->
-            <div class="azota-account-badge d-flex align-items-center gap-2 flex-wrap">
+            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN CÁ NHÂN -->
+            <div class="account-badge-header d-flex align-items-center gap-2 flex-wrap">
                 <i class="fa-solid fa-key text-warning"></i>
                 <span>TK: <b class="text-warning" id="arenaUserPhone">...</b></span>
                 <span>|</span>
@@ -511,9 +511,9 @@
                                     </div>
                                 </div>
 
-                                <!-- FORM QUẢN LÝ ĐỀ THI AZOTA -->
+                                <!-- FORM QUẢN LÝ ĐỀ THI -->
                                 <div class="card p-3 mb-4 bg-light border border-primary">
-                                    <h6 class="fw-bold text-primary mb-3" id="examFormHeader"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI AZOTA</h6>
+                                    <h6 class="fw-bold text-primary mb-3" id="examFormHeader"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI</h6>
                                     <input type="hidden" id="editExamRowIndex" value="">
                                     <div class="row g-2">
                                         <div class="col-md-3">
@@ -530,7 +530,7 @@
                                             <input type="text" class="form-control" id="newExamTime" value="90 Phút" placeholder="Thời gian">
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control" id="newExamLink" placeholder="Dán Link Azota tại đây...">
+                                            <input type="text" class="form-control" id="newExamLink" placeholder="Dán Link bài thi tại đây...">
                                         </div>
                                     </div>
                                     <div class="d-flex gap-2 mt-3">
@@ -599,7 +599,7 @@
                                             <option value="11A">Lớp 11A</option><option value="11B">Lớp 11B</option>
                                             <option value="10A">Lớp 10A</option><option value="10B">Lớp 10B</option><option value="10C">Lớp 10C</option>
                                         </select>
-                                        <button class="btn btn-outline-success fw-bold" onclick="exportToAzotaExcel()" title="Xuất file chuẩn để nạp trực tiếp vào Azota">📥 Xuất Excel chuẩn Azota</button>
+                                        <button class="btn btn-outline-success fw-bold" onclick="exportToAzotaExcel()" title="Xuất file danh sách học sinh">📥 Xuất File Excel</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -613,8 +613,8 @@
                                                 <th>Lớp</th>
                                                 <th class="text-start">Họ Tên Học Sinh</th>
                                                 <th>SĐT Đăng Ký</th>
-                                                <th>Tài Khoản Azota</th>
-                                                <th>Mật Khẩu Azota</th>
+                                                <th>Tài Khoản</th>
+                                                <th>Mật Khẩu</th>
                                                 <th>Trạng Thái</th>
                                                 <th>Cảnh Báo Trùng</th>
                                                 <th>Hành Động</th>
@@ -693,7 +693,7 @@
         let currentAdminPasswordSession = "";
         let currentVerifiedPhone = "";
 
-        // HÀM SINH TÀI KHOẢN AZOTA: Trt + 6 SỐ CUỐI SĐT
+        // HÀM SINH TÀI KHOẢN: Trt + 6 SỐ CUỐI SĐT
         function generateAzotaUsername(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last6 = pClean.slice(-6);
@@ -701,7 +701,7 @@
             return "Trt" + last6;
         }
 
-        // HÀM SINH MẬT KHẨU AZOTA: Trung@ + 4 SỐ CUỐI SĐT
+        // HÀM SINH MẬT KHẨU: Trung@ + 4 SỐ CUỐI SĐT
         function generateAzotaPassword(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last4 = pClean.slice(-4);
@@ -882,7 +882,7 @@
             });
         }
 
-        // 3. QUẢN LÝ ĐỀ THI AZOTA & TÍNH NĂNG ẨN / HIỆN ĐỀ
+        // 3. QUẢN LÝ ĐỀ THI & TÍNH NĂNG ẨN / HIỆN ĐỀ
         function loadExams() {
             window.handleExamData = function(data) {
                 globalExams = data || [];
@@ -904,10 +904,8 @@
 
             const isAdmin = (currentAdminPasswordSession !== "");
 
-            // Lọc danh sách đề thi theo khối
             let filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi || e.KHOI || '') === String(grade)).reverse();
 
-            // Nếu là học sinh: chỉ hiển thị đề có trạng thái khác "AN" (mặc định là HIEN)
             if (!isAdmin) {
                 filteredExams = filteredExams.filter(e => {
                     const st = String(e.TrangThai || e.trangThai || e.status || '').toUpperCase();
@@ -946,7 +944,6 @@
                 const col = document.createElement('div');
                 col.className = 'col-12';
 
-                // Nút toggle ẩn hiện dành cho Admin
                 let toggleBtnHtml = "";
                 if (isAdmin) {
                     toggleBtnHtml = isHidden ? 
@@ -986,7 +983,6 @@
 
         // HÀM ĐỔI TRẠNG THÁI ẨN / HIỆN ĐỀ THI
         function toggleExamVisibility(rowIndex, newStatus) {
-            // Cập nhật mượt mà trực tiếp trên giao diện
             const targetExam = globalExams.find(e => e._rowIndex === rowIndex);
             if (targetExam) {
                 targetExam.TrangThai = newStatus;
@@ -994,7 +990,6 @@
             }
             switchGrade(currentGrade);
 
-            // Gửi dữ liệu cập nhật về máy chủ Google Sheets
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -1010,7 +1005,7 @@
             const thoiGian = document.getElementById('newExamTime').value.trim();
             let link = document.getElementById('newExamLink').value.trim();
 
-            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link Azota!"); return; }
+            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link bài thi!"); return; }
             if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
 
             const action = editRowIndex ? "suaDeThi" : "themDeThi";
@@ -1051,7 +1046,7 @@
             document.getElementById('editExamRowIndex').value = '';
             document.getElementById('newExamTitle').value = '';
             document.getElementById('newExamLink').value = '';
-            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI AZOTA';
+            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI';
             document.getElementById('btnSaveExam').innerText = "🚀 ĐĂNG ĐỀ THI";
             document.getElementById('btnCancelEditExam').classList.add('d-none');
         }
@@ -1165,10 +1160,10 @@
             }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        // 5. XÁC THỰC SỐ ĐIỆN THOẠI TRÊN WEB & BẬT MODAL HƯỚNG DẪN AZOTA
+        // 5. XÁC THỰC SỐ ĐIỆN THOẠI TRÊN WEB & BẬT MODAL HƯỚNG DẪN
         function openExamWithAuth(azotaUrl, title) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
-                alert("❌ Link đề thi Azota chưa đúng hoặc bị trống trên Google Sheets!");
+                alert("❌ Link đề thi chưa đúng hoặc bị trống trên Google Sheets!");
                 return;
             }
 
@@ -1217,7 +1212,6 @@
                     const modalObj = bootstrap.Modal.getInstance(modalEl);
                     if (modalObj) modalObj.hide();
 
-                    // BẬT MODAL HƯỚNG DẪN TÀI KHOẢN AZOTA TO RÕ
                     showAzotaInstructionModal(phone);
                 } else if (res.status === "PENDING") {
                     document.getElementById('authAlertBox').innerHTML = `
@@ -1248,7 +1242,7 @@
             });
         }
 
-        // BẬT BẢNG THÔNG TIN TÀI KHOẢN AZOTA TO RÕ Ở GIỮA MÀN HÌNH
+        // BẬT BẢNG THÔNG TIN TÀI KHOẢN TO RÕ Ở GIỮA MÀN HÌNH
         function showAzotaInstructionModal(phone) {
             const formattedP = formatPhone10Digits(phone);
             const user = generateAzotaUsername(formattedP);
@@ -1269,7 +1263,7 @@
             launchExamArena(selectedAzotaUrl, selectedExamTitle, currentVerifiedPhone);
         }
 
-        // HÀM KHỞI CHẠY PHÒNG THI AZOTA TOÀN MÀN HÌNH
+        // HÀM KHỞI CHẠY PHÒNG THI TOÀN MÀN HÌNH
         function launchExamArena(url, title, phone) {
             const formattedP = formatPhone10Digits(phone);
             const azotaUsername = generateAzotaUsername(formattedP);
@@ -1320,7 +1314,7 @@
                     document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.remove('d-none'));
                     renderAdminTable(globalData);
                     renderAdmin3DList();
-                    switchGrade(currentGrade); // Tải lại danh sách đề với quyền Admin
+                    switchGrade(currentGrade);
                 } else {
                     alert("❌ Mật khẩu Admin không chính xác!");
                 }
@@ -1339,7 +1333,7 @@
             document.getElementById('passwordAuthBox').classList.remove('d-none');
             document.getElementById('adminContentBox').classList.add('d-none');
             document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.add('d-none'));
-            switchGrade(currentGrade); // Tải lại giao diện về góc nhìn học sinh
+            switchGrade(currentGrade);
         }
 
         function reloadAdminData() {
@@ -1534,7 +1528,7 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        // HÀM XUẤT EXCEL CHUẨN ĐỊNH DẠNG NẠP AZOTA: TÀI KHOẢN Trtxxxxxx
+        // HÀM XUẤT EXCEL DANH SÁCH HỌC SINH
         function exportToAzotaExcel() {
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
@@ -1559,7 +1553,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Danh_Sach_Azota_${selectedClass}.csv`);
+            link.setAttribute("download", `Danh_Sach_Hoc_Sinh_${selectedClass}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
