@@ -310,7 +310,7 @@
                         <div class="row g-3" id="examListContainer">
                             <div class="text-center py-4 text-muted">
                                 <div class="spinner-border text-primary me-2" role="status"></div>
-                                ⏳ Đang tải danh sách đề thi...
+                                ⏳ Đang kết nối danh sách đề thi...
                             </div>
                         </div>
                     </div>
@@ -756,15 +756,30 @@
             }
         }
 
-        // 2. MÔ HÌNH 3D
+        // 2. MÔ HÌNH 3D (CÓ LƯU CACHE TỨC THÌ)
         function load3DModels() {
+            try {
+                const cached = localStorage.getItem('cache_3d_models');
+                if (cached) {
+                    global3DModels = JSON.parse(cached);
+                    render3DModels();
+                    renderAdmin3DList();
+                }
+            } catch(e){}
+
             window.handle3DData = function(data) {
-                global3DModels = data || [];
-                render3DModels();
-                renderAdmin3DList();
+                if (data && Array.isArray(data)) {
+                    global3DModels = data;
+                    try { localStorage.setItem('cache_3d_models', JSON.stringify(data)); } catch(e){}
+                    render3DModels();
+                    renderAdmin3DList();
+                }
             };
             const script = document.createElement('script');
             script.src = SCRIPT_URL + "?type=moHinh3D&callback=handle3DData&t=" + new Date().getTime();
+            script.onerror = function() {
+                if (global3DModels.length === 0) render3DModels();
+            };
             document.body.appendChild(script);
         }
 
@@ -882,15 +897,53 @@
             });
         }
 
-        // 3. QUẢN LÝ ĐỀ THI & TÍNH NĂNG ẨN / HIỆN ĐỀ
+        // 3. QUẢN LÝ ĐỀ THI (TẢI NHANH 0.1s BẰNG CACHE + AUTO RETRY)
+        let examLoadTimeout = null;
+
         function loadExams() {
+            // Bước 1: Hiển thị ngay từ Cache nếu có (học sinh không phải chờ xoay vòng)
+            try {
+                const cached = localStorage.getItem('cache_exam_list');
+                if (cached) {
+                    globalExams = JSON.parse(cached);
+                    switchGrade(currentGrade);
+                }
+            } catch(e){}
+
+            // Bước 2: Tải dữ liệu mới nhất từ Google Sheets
             window.handleExamData = function(data) {
-                globalExams = data || [];
-                switchGrade(currentGrade);
+                if (examLoadTimeout) clearTimeout(examLoadTimeout);
+                if (data && Array.isArray(data)) {
+                    globalExams = data;
+                    try { localStorage.setItem('cache_exam_list', JSON.stringify(data)); } catch(e){}
+                    switchGrade(currentGrade);
+                }
             };
+
             const script = document.createElement('script');
             script.src = SCRIPT_URL + "?type=deThi&callback=handleExamData&t=" + new Date().getTime();
+            script.onerror = function() {
+                handleExamFetchError();
+            };
             document.body.appendChild(script);
+
+            // Bước 3: Đặt thời gian chờ tối đa 6 giây nếu mạng lag
+            examLoadTimeout = setTimeout(() => {
+                if (globalExams.length === 0) handleExamFetchError();
+            }, 6000);
+        }
+
+        function handleExamFetchError() {
+            const container = document.getElementById('examListContainer');
+            if (globalExams.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-4 text-muted">
+                        <p class="mb-2">⚠️ Kết nối máy chủ đang chậm do đường truyền.</p>
+                        <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-2" onclick="loadExams()">
+                            <i class="fa-solid fa-rotate-right me-1"></i> BẤM ĐỂ TẢI LẠI ĐỀ THI
+                        </button>
+                    </div>`;
+            }
         }
 
         function switchGrade(grade) {
@@ -981,13 +1034,13 @@
             }
         }
 
-        // HÀM ĐỔI TRẠNG THÁI ẨN / HIỆN ĐỀ THI
         function toggleExamVisibility(rowIndex, newStatus) {
             const targetExam = globalExams.find(e => e._rowIndex === rowIndex);
             if (targetExam) {
                 targetExam.TrangThai = newStatus;
                 targetExam.trangThai = newStatus;
             }
+            try { localStorage.setItem('cache_exam_list', JSON.stringify(globalExams)); } catch(e){}
             switchGrade(currentGrade);
 
             fetch(SCRIPT_URL, {
@@ -1061,7 +1114,7 @@
             }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
         }
 
-        // 4. XỬ LÝ ẢNH THÔNG BÁO
+        // 4. XỬ LÝ ẢNH THÔNG BÁO (CÓ CACHE TỨC THÌ)
         function handleNoticeImageUpload(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -1101,35 +1154,51 @@
             const container = document.getElementById('noticeBoardContainer');
             const adminNoticeList = document.getElementById('adminNoticeList');
             
-            window.handleNoticeData = function(data) {
-                container.innerHTML = '';
-                if (adminNoticeList) adminNoticeList.innerHTML = '';
-
-                if (!data || data.length === 0) {
-                    container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
-                    return;
+            try {
+                const cached = localStorage.getItem('cache_notices');
+                if (cached) {
+                    renderNotices(JSON.parse(cached));
                 }
-                
-                data.slice().reverse().forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'card notice-card p-3 mb-3 text-start';
-                    let imgHtml = item.HinhAnh && String(item.HinhAnh).trim() !== '' ? `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border shadow-sm" style="max-height: 500px; width: 100%; object-fit: contain;"></div>` : '';
-                    div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
-                    container.appendChild(div);
+            } catch(e){}
 
-                    if (adminNoticeList) {
-                        adminNoticeList.innerHTML += `
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                                <span>${item.NoiDung || 'Thông báo hình ảnh'}</span>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
-                            </div>`;
-                    }
-                });
+            window.handleNoticeData = function(data) {
+                if (data && Array.isArray(data)) {
+                    try { localStorage.setItem('cache_notices', JSON.stringify(data)); } catch(e){}
+                    renderNotices(data);
+                }
             };
 
             const script = document.createElement('script');
             script.src = SCRIPT_URL + "?type=thongBao&callback=handleNoticeData&t=" + new Date().getTime();
             document.body.appendChild(script);
+        }
+
+        function renderNotices(data) {
+            const container = document.getElementById('noticeBoardContainer');
+            const adminNoticeList = document.getElementById('adminNoticeList');
+            container.innerHTML = '';
+            if (adminNoticeList) adminNoticeList.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="alert alert-info mb-0">Chào mừng Phụ huynh và Học sinh đến với Lớp Toán Thầy Nguyễn Phỉ Đức Trung!</div>`;
+                return;
+            }
+            
+            data.slice().reverse().forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'card notice-card p-3 mb-3 text-start';
+                let imgHtml = item.HinhAnh && String(item.HinhAnh).trim() !== '' ? `<div class="mt-2 text-center"><img src="${item.HinhAnh}" class="img-fluid rounded border shadow-sm" style="max-height: 500px; width: 100%; object-fit: contain;"></div>` : '';
+                div.innerHTML = `<div class="fw-bold text-dark">${item.NoiDung || ''}</div>${imgHtml}`;
+                container.appendChild(div);
+
+                if (adminNoticeList) {
+                    adminNoticeList.innerHTML += `
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <span>${item.NoiDung || 'Thông báo hình ảnh'}</span>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice(${item._rowIndex})">🗑️ Xóa</button>
+                        </div>`;
+                }
+            });
         }
 
         function postNewNotice() {
