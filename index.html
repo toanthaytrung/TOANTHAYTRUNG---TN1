@@ -98,6 +98,19 @@
             color: white;
         }
 
+        /* BANNER KẾT NỐI HỆ THỐNG THI THẦY TRUNG */
+        .portal-exam-banner {
+            background: linear-gradient(135deg, #0b57d0 0%, #041e49 100%);
+            border-radius: 16px;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(11, 87, 208, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .portal-exam-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(11, 87, 208, 0.35);
+        }
+
         /* ĐỒNG HỒ ĐẾM NGƯỢC */
         .countdown-slim {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -191,7 +204,6 @@
             font-size: 13px;
         }
 
-        /* KHUNG THẺ THÔNG TIN TÀI KHOẢN TRONG MODAL */
         .account-card-box {
             background: #f8fafc;
             border: 2px dashed #cbd5e1;
@@ -223,9 +235,17 @@
                     <small class="opacity-90">📍 Hẻm 483, Nguyễn Huệ, xã Tư Nghĩa, Quảng Ngãi | 📞 Hotline: 0985.759.796</small>
                 </div>
             </div>
-            <button class="btn btn-outline-light fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#adminModal" style="border-radius: 10px;">
-                🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
-            </button>
+            
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <!-- NÚT LIÊN KẾT NHANH SANG CỔNG THI THẦY TRUNG -->
+                <a href="https://toanthaytrung.github.io/thionline/" target="_blank" class="btn btn-warning fw-bold px-3 py-2 text-dark shadow-sm" style="border-radius: 10px;">
+                    <i class="fa-solid fa-file-signature me-1"></i> 📝 CỔNG THI ONLINE <span class="badge bg-danger text-white ms-1">MỚI</span>
+                </a>
+                
+                <button class="btn btn-outline-light fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#adminModal" style="border-radius: 10px;">
+                    🏢 KHỐI QUẢN LÝ & ĐĂNG KÝ
+                </button>
+            </div>
         </div>
 
         <div class="container my-4">
@@ -288,9 +308,24 @@
                 <!-- 4. KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
                 <div class="col-lg-12">
                     <div class="card card-custom p-4">
+                        
+                        <!-- BANNER GIỚI THIỆU HỆ THỐNG THI MỚI CHUẨN GDPT 2018 -->
+                        <div class="portal-exam-banner p-4 mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <span class="badge bg-warning text-dark fw-bold mb-2">⭐ HỆ THỐNG ĐỘC QUYỀN MỚI</span>
+                                <h4 class="fw-bold mb-1 text-white">CỔNG THI TRỰC TUYẾN TOÁN THPT - TN1</h4>
+                                <p class="mb-0 text-white-50 small">Khảo sát năng lực Toán chuẩn GDPT 2018 • Đảo đề chống nhìn bài • Tự động chấm điểm & Mở khóa lời giải chi tiết.</p>
+                            </div>
+                            <div>
+                                <a href="https://toanthaytrung.github.io/thionline/" target="_blank" class="btn btn-light btn-lg fw-bold text-primary px-4 py-2 shadow" style="border-radius: 12px;">
+                                    🚀 VÀO THI NGAY <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="text-center mb-4">
-                            <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN</h4>
-                            <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện đề</p>
+                            <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>DANH SÁCH BÀI TẬP VÀ ĐỀ THI THEO KHỐI</h4>
+                            <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện tập</p>
                         </div>
 
                         <!-- TAB CHỌN KHỐI HỌC -->
@@ -331,7 +366,6 @@
                 <div class="modal-body p-4 text-center">
                     <p class="text-muted mb-3 fs-6">Để vào làm bài thi, em vui lòng sử dụng đúng <b>Tài khoản & Mật khẩu</b> cá nhân của mình bên dưới:</p>
                     
-                    <!-- Khung Tài khoản -->
                     <div class="account-card-box mb-3 text-start">
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small text-muted fw-bold">🏷️ TÀI KHOẢN:</span>
@@ -345,7 +379,6 @@
                         </div>
                     </div>
 
-                    <!-- Khung Mật khẩu -->
                     <div class="account-card-box mb-4 text-start">
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small text-muted fw-bold">🔑 MẬT KHẨU:</span>
@@ -371,14 +404,13 @@
         </div>
     </div>
 
-    <!-- 5. PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP -->
+    <!-- PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP -->
     <div id="examArenaScreen" class="d-none">
         <div class="arena-header">
             <div class="d-flex align-items-center gap-2 text-truncate">
                 <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
                 <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
             </div>
-            <!-- BẢNG NHẮC NHỞ TÀI KHOẢN CÁ NHÂN -->
             <div class="account-badge-header d-flex align-items-center gap-2 flex-wrap">
                 <i class="fa-solid fa-key text-warning"></i>
                 <span>TK: <b class="text-warning" id="arenaUserPhone">...</b></span>
@@ -693,7 +725,6 @@
         let currentAdminPasswordSession = "";
         let currentVerifiedPhone = "";
 
-        // HÀM SINH TÀI KHOẢN: Trt + 6 SỐ CUỐI SĐT
         function generateAzotaUsername(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last6 = pClean.slice(-6);
@@ -701,7 +732,6 @@
             return "Trt" + last6;
         }
 
-        // HÀM SINH MẬT KHẨU: Trung@ + 4 SỐ CUỐI SĐT
         function generateAzotaPassword(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
             let last4 = pClean.slice(-4);
@@ -716,7 +746,6 @@
             return p;
         }
 
-        // HÀM SAO CHÉP VĂN BẢN VÀ BÁO HIỆU
         function copyToClipboard(elementId, toastId) {
             const text = document.getElementById(elementId).innerText;
             copyText(text);
@@ -743,7 +772,6 @@
             }
         }
 
-        // 1. ĐỒNG HỒ ĐẾM NGƯỢC THI TN THPT
         function startSlimCountdown() {
             const targetDate = new Date("June 11, 2027 07:30:00").getTime();
             const now = new Date().getTime();
@@ -756,7 +784,6 @@
             }
         }
 
-        // 2. MÔ HÌNH 3D (CÓ LƯU CACHE TỨC THÌ)
         function load3DModels() {
             try {
                 const cached = localStorage.getItem('cache_3d_models');
@@ -897,11 +924,9 @@
             });
         }
 
-        // 3. QUẢN LÝ ĐỀ THI (TẢI NHANH 0.1s BẰNG CACHE + AUTO RETRY)
         let examLoadTimeout = null;
 
         function loadExams() {
-            // Bước 1: Hiển thị ngay từ Cache nếu có (học sinh không phải chờ xoay vòng)
             try {
                 const cached = localStorage.getItem('cache_exam_list');
                 if (cached) {
@@ -910,7 +935,6 @@
                 }
             } catch(e){}
 
-            // Bước 2: Tải dữ liệu mới nhất từ Google Sheets
             window.handleExamData = function(data) {
                 if (examLoadTimeout) clearTimeout(examLoadTimeout);
                 if (data && Array.isArray(data)) {
@@ -927,7 +951,6 @@
             };
             document.body.appendChild(script);
 
-            // Bước 3: Đặt thời gian chờ tối đa 6 giây nếu mạng lag
             examLoadTimeout = setTimeout(() => {
                 if (globalExams.length === 0) handleExamFetchError();
             }, 6000);
@@ -1114,7 +1137,6 @@
             }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
         }
 
-        // 4. XỬ LÝ ẢNH THÔNG BÁO (CÓ CACHE TỨC THÌ)
         function handleNoticeImageUpload(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -1151,9 +1173,6 @@
         }
 
         function loadNotices() {
-            const container = document.getElementById('noticeBoardContainer');
-            const adminNoticeList = document.getElementById('adminNoticeList');
-            
             try {
                 const cached = localStorage.getItem('cache_notices');
                 if (cached) {
@@ -1229,7 +1248,6 @@
             }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        // 5. XÁC THỰC SỐ ĐIỆN THOẠI TRÊN WEB & BẬT MODAL HƯỚNG DẪN
         function openExamWithAuth(azotaUrl, title) {
             if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
                 alert("❌ Link đề thi chưa đúng hoặc bị trống trên Google Sheets!");
@@ -1311,7 +1329,6 @@
             });
         }
 
-        // BẬT BẢNG THÔNG TIN TÀI KHOẢN TO RÕ Ở GIỮA MÀN HÌNH
         function showAzotaInstructionModal(phone) {
             const formattedP = formatPhone10Digits(phone);
             const user = generateAzotaUsername(formattedP);
@@ -1332,7 +1349,6 @@
             launchExamArena(selectedAzotaUrl, selectedExamTitle, currentVerifiedPhone);
         }
 
-        // HÀM KHỞI CHẠY PHÒNG THI TOÀN MÀN HÌNH
         function launchExamArena(url, title, phone) {
             const formattedP = formatPhone10Digits(phone);
             const azotaUsername = generateAzotaUsername(formattedP);
@@ -1356,7 +1372,6 @@
             }
         }
 
-        // 6. ĐĂNG NHẬP ADMIN & ĐỔI MẬT KHẨU
         function doAdminLogin() {
             const pass = document.getElementById('adminPasswordInput').value.trim();
             if (!pass) { alert("Vui lòng nhập mật khẩu!"); return; }
@@ -1458,7 +1473,6 @@
             });
         }
 
-        // 7. QUẢN LÝ DUYỆT & XÓA HỌC SINH
         function toggleSelectAll(master) {
             const checkboxes = document.querySelectorAll('.student-select-cb');
             checkboxes.forEach(cb => cb.checked = master.checked);
@@ -1597,7 +1611,6 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        // HÀM XUẤT EXCEL DANH SÁCH HỌC SINH
         function exportToAzotaExcel() {
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
@@ -1661,7 +1674,6 @@
             });
         });
 
-        // KHỞI CHẠY TỰ ĐỘNG CÁC PHÂN HỆ
         startSlimCountdown();
         load3DModels();
         loadExams();
