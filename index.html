@@ -61,20 +61,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             background: white;
         }
-        .exam-card { 
-            transition: all 0.25s ease-in-out; 
-            border-left: 6px solid var(--primary-navy); 
-            border-radius: 12px;
-        }
-        .exam-card:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 20px rgba(31, 73, 125, 0.12); 
-        }
-        .exam-card-hidden {
-            border-left: 6px solid #94a3b8 !important;
-            background-color: #f8fafc !important;
-            opacity: 0.85;
-        }
 
         .btn-primary-custom { 
             background-color: var(--primary-navy); 
@@ -86,29 +72,18 @@
             background-color: var(--primary-dark); 
             color: white; 
         }
-        .btn-action-start {
-            background-color: var(--accent-green);
-            border-color: var(--accent-green);
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-        }
-        .btn-action-start:hover {
-            background-color: var(--accent-green-hover);
-            color: white;
-        }
 
-        /* BANNER KẾT NỐI HỆ THỐNG THI THẦY TRUNG */
+        /* BANNER CỔNG THI TRỰC TUYẾN MỚI */
         .portal-exam-banner {
             background: linear-gradient(135deg, #0b57d0 0%, #041e49 100%);
-            border-radius: 16px;
+            border-radius: 18px;
             color: #ffffff;
-            box-shadow: 0 8px 25px rgba(11, 87, 208, 0.25);
+            box-shadow: 0 10px 25px rgba(11, 87, 208, 0.22);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .portal-exam-banner:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(11, 87, 208, 0.35);
+            box-shadow: 0 14px 32px rgba(11, 87, 208, 0.32);
         }
 
         /* ĐỒNG HỒ ĐẾM NGƯỢC */
@@ -154,63 +129,6 @@
             border-radius: 12px;
         }
 
-        .badge-k12 { background-color: #0284c7; }
-        .badge-k11 { background-color: #0d9488; }
-        .badge-k10 { background-color: #8b5cf6; }
-
-        /* PHÒNG THI TRỰC TUYẾN TOÀN MÀN HÌNH */
-        #examArenaScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #ffffff;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-        }
-        .arena-header {
-            min-height: 56px;
-            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 8px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-        }
-        .arena-body {
-            flex-grow: 1;
-            width: 100%;
-            height: calc(100vh - 65px);
-            background: #f1f5f9;
-        }
-        #examIframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .account-badge-header {
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid #facc15;
-            color: #ffffff;
-            border-radius: 8px;
-            padding: 5px 12px;
-            font-size: 13px;
-        }
-
-        .account-card-box {
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 12px 16px;
-        }
-
         @media print {
             body * { visibility: hidden; }
             #printSection, #printSection * { visibility: visible; }
@@ -238,7 +156,7 @@
             
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <!-- NÚT LIÊN KẾT NHANH SANG CỔNG THI THẦY TRUNG -->
-                <a href="https://toanthaytrung.github.io/thionline/" target="_blank" class="btn btn-warning fw-bold px-3 py-2 text-dark shadow-sm" style="border-radius: 10px;">
+                <a href="https://toanthaytrung.github.io/thionline/index.html" target="_blank" class="btn btn-warning fw-bold px-3 py-2 text-dark shadow-sm" style="border-radius: 10px;">
                     <i class="fa-solid fa-file-signature me-1"></i> 📝 CỔNG THI ONLINE <span class="badge bg-danger text-white ms-1">MỚI</span>
                 </a>
                 
@@ -305,143 +223,28 @@
                     </div>
                 </div>
 
-                <!-- 4. KHỐI LUYỆN ĐỀ THI TRỰC TUYẾN 3 KHỐI -->
+                <!-- 4. KHỐI CỔNG THI TRỰC TUYẾN MỚI (ĐÃ THAY THẾ KHỐI ĐỀ CŨ) -->
                 <div class="col-lg-12">
-                    <div class="card card-custom p-4">
-                        
-                        <!-- BANNER GIỚI THIỆU HỆ THỐNG THI MỚI CHUẨN GDPT 2018 -->
-                        <div class="portal-exam-banner p-4 mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <span class="badge bg-warning text-dark fw-bold mb-2">⭐ HỆ THỐNG ĐỘC QUYỀN MỚI</span>
-                                <h4 class="fw-bold mb-1 text-white">CỔNG THI TRỰC TUYẾN TOÁN THPT - TN1</h4>
-                                <p class="mb-0 text-white-50 small">Khảo sát năng lực Toán chuẩn GDPT 2018 • Đảo đề chống nhìn bài • Tự động chấm điểm & Mở khóa lời giải chi tiết.</p>
-                            </div>
-                            <div>
-                                <a href="https://toanthaytrung.github.io/thionline/" target="_blank" class="btn btn-light btn-lg fw-bold text-primary px-4 py-2 shadow" style="border-radius: 12px;">
-                                    🚀 VÀO THI NGAY <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                            </div>
+                    <div class="portal-exam-banner p-4 p-md-5 d-flex justify-content-between align-items-center flex-wrap gap-4">
+                        <div style="max-width: 680px;">
+                            <span class="badge bg-warning text-dark fw-bold px-3 py-2 fs-6 mb-3" style="border-radius: 20px;">
+                                ⭐ HỆ THỐNG ĐỘC QUYỀN MỚI
+                            </span>
+                            <h3 class="fw-bold text-white mb-2" style="letter-spacing: -0.3px;">
+                                CỔNG THI TRỰC TUYẾN TOÁN THPT - TN1
+                            </h3>
+                            <p class="mb-0 text-white-50 fs-6" style="line-height: 1.7;">
+                                Khảo sát năng lực Toán chuẩn GDPT 2018 • Đảo đề chống nhìn bài • Tự động chấm điểm & Mở khóa lời giải chi tiết theo từng khối lớp (Khối 10, 11, 12).
+                            </p>
                         </div>
-
-                        <div class="text-center mb-4">
-                            <h4 class="fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>DANH SÁCH BÀI TẬP VÀ ĐỀ THI THEO KHỐI</h4>
-                            <p class="text-muted mb-0">Chọn Khối học bên dưới để tiến hành luyện tập</p>
-                        </div>
-
-                        <!-- TAB CHỌN KHỐI HỌC -->
-                        <ul class="nav nav-pills nav-justified mb-4 card-custom p-2 bg-light" id="gradeTab">
-                            <li class="nav-item">
-                                <button class="nav-link active fw-bold py-2 fs-5" id="tab-k12" onclick="switchGrade(12)">🎓 KHỐI 12</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link fw-bold py-2 fs-5" id="tab-k11" onclick="switchGrade(11)">🎓 KHỐI 11</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link fw-bold py-2 fs-5" id="tab-k10" onclick="switchGrade(10)">🎓 KHỐI 10</button>
-                            </li>
-                        </ul>
-
-                        <!-- DANH SÁCH ĐỀ THI -->
-                        <div class="row g-3" id="examListContainer">
-                            <div class="text-center py-4 text-muted">
-                                <div class="spinner-border text-primary me-2" role="status"></div>
-                                ⏳ Đang kết nối danh sách đề thi...
-                            </div>
+                        <div>
+                            <a href="https://toanthaytrung.github.io/thionline/index.html" target="_blank" class="btn btn-light btn-lg fw-bold text-primary px-4 py-3 shadow" style="border-radius: 12px; font-size: 16px; white-space: nowrap;">
+                                🚀 VÀO THI NGAY <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL HƯỚNG DẪN ĐĂNG NHẬP NỔI BẬT TRƯỚC KHI VÀO THI -->
-    <div class="modal fade" id="azotaInstructionModal" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
-                <div class="modal-header header-bg text-white">
-                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-key text-warning me-2"></i>THÔNG TIN ĐĂNG NHẬP BÀI THI</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <p class="text-muted mb-3 fs-6">Để vào làm bài thi, em vui lòng sử dụng đúng <b>Tài khoản & Mật khẩu</b> cá nhân của mình bên dưới:</p>
-                    
-                    <div class="account-card-box mb-3 text-start">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small text-muted fw-bold">🏷️ TÀI KHOẢN:</span>
-                            <span class="badge bg-secondary" id="toastCopyUser" style="display:none;">Đã sao chép!</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-4 fw-bold text-primary" id="modalAzotaUsername">Trt...</span>
-                            <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-1" onclick="copyToClipboard('modalAzotaUsername', 'toastCopyUser')">
-                                <i class="fa-regular fa-copy me-1"></i> Sao chép
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="account-card-box mb-4 text-start">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small text-muted fw-bold">🔑 MẬT KHẨU:</span>
-                            <span class="badge bg-secondary" id="toastCopyPass" style="display:none;">Đã sao chép!</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-4 fw-bold text-danger" id="modalAzotaPassword">Trung@...</span>
-                            <button class="btn btn-outline-danger btn-sm fw-bold px-3 py-1" onclick="copyToClipboard('modalAzotaPassword', 'toastCopyPass')">
-                                <i class="fa-regular fa-copy me-1"></i> Sao chép
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="alert alert-info py-2 small mb-4 text-start">
-                        💡 <b>Hướng dẫn:</b> Em bấm nút <b>Sao chép</b> ở trên ➔ Sau đó dán vào ô <b>Đăng nhập</b> để làm bài nhé!
-                    </div>
-
-                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3 fs-5" onclick="confirmLaunchArena()">
-                        🚀 ĐÃ HIỂU, TIẾN HÀNH ĐĂNG NHẬP <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PHÒNG THI TRỰC TUYẾN NHÚNG TRỰC TIẾP -->
-    <div id="examArenaScreen" class="d-none">
-        <div class="arena-header">
-            <div class="d-flex align-items-center gap-2 text-truncate">
-                <i class="fa-solid fa-graduation-cap text-warning fs-5"></i>
-                <span class="fw-bold text-white text-truncate" id="arenaExamTitle">ĐANG LÀM BÀI THI</span>
-            </div>
-            <div class="account-badge-header d-flex align-items-center gap-2 flex-wrap">
-                <i class="fa-solid fa-key text-warning"></i>
-                <span>TK: <b class="text-warning" id="arenaUserPhone">...</b></span>
-                <span>|</span>
-                <span>MK: <b class="text-warning" id="arenaUserPass">...</b></span>
-                <button class="btn btn-sm btn-outline-warning py-0 px-2 text-white" onclick="copyText(document.getElementById('arenaUserPhone').innerText)" title="Sao chép Tài khoản">Copy TK</button>
-                <button class="btn btn-sm btn-outline-warning py-0 px-2 text-white" onclick="copyText(document.getElementById('arenaUserPass').innerText)" title="Sao chép Mật khẩu">Copy MK</button>
-            </div>
-            <button class="btn btn-danger btn-sm fw-bold px-3 py-1" onclick="closeExamArena()">
-                <i class="fa-solid fa-arrow-left me-1"></i> RỜI PHÒNG THI
-            </button>
-        </div>
-        <div class="arena-body">
-            <iframe id="examIframe" src="" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
-        </div>
-    </div>
-
-    <!-- MODAL POPUP XÁC THỰC SỐ ĐIỆN THOẠI HỌC SINH -->
-    <div class="modal fade" id="verifyPhoneModal" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content style-modal" style="border-radius: 20px;">
-                <div class="modal-header header-bg text-white" style="border-radius: 20px 20px 0 0;">
-                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-user-shield me-2"></i>XÁC THỰC HỌC VIÊN CƠ SỞ</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <p class="text-muted mb-3">Đề thi dành riêng cho Học sinh đã được <b>Thầy Trung phê duyệt</b>. Vui lòng nhập Số điện thoại đã đăng ký để làm bài.</p>
-                    <input type="tel" class="form-control form-control-lg text-center fw-bold mb-3" id="inputPhoneAuth" placeholder="Nhập số điện thoại (VD: 0985...)" style="border-radius: 12px; letter-spacing: 1px;">
-                    <button class="btn btn-action-start btn-lg w-100 fw-bold py-3" id="btnConfirmAuth" onclick="processPhoneAuth()">🚀 XÁC NHẬN VÀO BÀI THI</button>
-                    <div id="authAlertBox" class="mt-3"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -543,37 +346,9 @@
                                     </div>
                                 </div>
 
-                                <!-- FORM QUẢN LÝ ĐỀ THI -->
-                                <div class="card p-3 mb-4 bg-light border border-primary">
-                                    <h6 class="fw-bold text-primary mb-3" id="examFormHeader"><i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI</h6>
-                                    <input type="hidden" id="editExamRowIndex" value="">
-                                    <div class="row g-2">
-                                        <div class="col-md-3">
-                                            <select class="form-select" id="newExamKhoi">
-                                                <option value="12">🎓 Khối 12</option>
-                                                <option value="11">🎓 Khối 11</option>
-                                                <option value="10">🎓 Khối 10</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" id="newExamTitle" placeholder="Tên đề (Ví dụ: Đề số 02...)">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="text" class="form-control" id="newExamTime" value="90 Phút" placeholder="Thời gian">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" id="newExamLink" placeholder="Dán Link bài thi tại đây...">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2 mt-3">
-                                        <button class="btn btn-primary-custom fw-bold" id="btnSaveExam" onclick="saveExam()">🚀 ĐĂNG ĐỀ THI</button>
-                                        <button class="btn btn-secondary fw-bold d-none" id="btnCancelEditExam" onclick="cancelEditExam()">Hủy sửa</button>
-                                    </div>
-                                </div>
-
                                 <!-- FORM QUẢN LÝ MÔ HÌNH 3D -->
                                 <div class="card p-3 mb-4 bg-light border border-indigo" style="border-color: #6366f1 !important;">
-                                    <h6 class="fw-bold text-indigo mb-3" id="model3DFormHeader" style="color: #4f46e5;"><i class="fa-solid fa-cube me-1"></i> 2. QUẢN LÝ MÔ HÌNH TOÁN 3D</h6>
+                                    <h6 class="fw-bold text-indigo mb-3" id="model3DFormHeader" style="color: #4f46e5;"><i class="fa-solid fa-cube me-1"></i> 1. QUẢN LÝ MÔ HÌNH TOÁN 3D</h6>
                                     <input type="hidden" id="edit3DRowIndex" value="">
                                     <div class="row g-2">
                                         <div class="col-md-3">
@@ -600,7 +375,7 @@
 
                                 <!-- KHUNG ĐĂNG THÔNG BÁO -->
                                 <div class="card p-3 mb-4 bg-light border">
-                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 3. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-bullhorn me-1"></i> 2. ĐĂNG THÔNG BÁO LÊN TRANG CHỦ</h6>
                                     <div class="mb-2">
                                         <textarea class="form-control" id="newNoticeText" rows="2" placeholder="Gõ nội dung thông báo... (Có thể dán trực tiếp ảnh Ctrl + V vào đây)"></textarea>
                                     </div>
@@ -620,7 +395,7 @@
 
                                 <!-- QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH -->
                                 <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3 flex-wrap gap-2">
-                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 4. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
                                     <div class="d-flex align-items-center gap-2">
                                         <button class="btn btn-success fw-bold" onclick="approveSelectedStudents()">
                                             ✅ DUYỆT CÁC MỤC ĐÃ CHỌN
@@ -715,15 +490,10 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJmB0gORl33cR-T1BsdCLNgk2rN53CKnbsYu5iZ49ZHrf3zqEFiN0Z2SsJ4RwDpMHo/exec";
 
-        let currentGrade = 12;
         let globalData = [];
-        let globalExams = [];
         let global3DModels = [];
-        let selectedAzotaUrl = "";
-        let selectedExamTitle = "";
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
-        let currentVerifiedPhone = "";
 
         function generateAzotaUsername(rawPhone) {
             let pClean = String(rawPhone || '').replace(/\D/g, '');
@@ -744,32 +514,6 @@
             if (p.startsWith('84') && p.length > 9) p = '0' + p.substring(2);
             if (!p.startsWith('0') && p.length === 9) p = '0' + p;
             return p;
-        }
-
-        function copyToClipboard(elementId, toastId) {
-            const text = document.getElementById(elementId).innerText;
-            copyText(text);
-            const toast = document.getElementById(toastId);
-            if (toast) {
-                toast.style.display = "inline-block";
-                setTimeout(() => { toast.style.display = "none"; }, 1500);
-            }
-        }
-
-        function copyText(text) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text);
-            } else {
-                let textArea = document.createElement("textarea");
-                textArea.value = text;
-                textArea.style.position = "fixed";
-                textArea.style.left = "-999999px";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try { document.execCommand('copy'); } catch(e){}
-                document.body.removeChild(textArea);
-            }
         }
 
         function startSlimCountdown() {
@@ -891,7 +635,7 @@
             document.getElementById('edit3DRowIndex').value = '';
             document.getElementById('new3DTitle').value = '';
             document.getElementById('new3DLink').value = '';
-            document.getElementById('model3DFormHeader').innerHTML = '<i class="fa-solid fa-cube me-1"></i> 2. QUẢN LÝ MÔ HÌNH TOÁN 3D';
+            document.getElementById('model3DFormHeader').innerHTML = '<i class="fa-solid fa-cube me-1"></i> 1. QUẢN LÝ MÔ HÌNH TOÁN 3D';
             document.getElementById('btnSave3D').innerText = "🎲 ĐĂNG MÔ HÌNH 3D";
             document.getElementById('btnCancelEdit3D').classList.add('d-none');
         }
@@ -922,219 +666,6 @@
                         </div>
                     </div>`;
             });
-        }
-
-        let examLoadTimeout = null;
-
-        function loadExams() {
-            try {
-                const cached = localStorage.getItem('cache_exam_list');
-                if (cached) {
-                    globalExams = JSON.parse(cached);
-                    switchGrade(currentGrade);
-                }
-            } catch(e){}
-
-            window.handleExamData = function(data) {
-                if (examLoadTimeout) clearTimeout(examLoadTimeout);
-                if (data && Array.isArray(data)) {
-                    globalExams = data;
-                    try { localStorage.setItem('cache_exam_list', JSON.stringify(data)); } catch(e){}
-                    switchGrade(currentGrade);
-                }
-            };
-
-            const script = document.createElement('script');
-            script.src = SCRIPT_URL + "?type=deThi&callback=handleExamData&t=" + new Date().getTime();
-            script.onerror = function() {
-                handleExamFetchError();
-            };
-            document.body.appendChild(script);
-
-            examLoadTimeout = setTimeout(() => {
-                if (globalExams.length === 0) handleExamFetchError();
-            }, 6000);
-        }
-
-        function handleExamFetchError() {
-            const container = document.getElementById('examListContainer');
-            if (globalExams.length === 0) {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-4 text-muted">
-                        <p class="mb-2">⚠️ Kết nối máy chủ đang chậm do đường truyền.</p>
-                        <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-2" onclick="loadExams()">
-                            <i class="fa-solid fa-rotate-right me-1"></i> BẤM ĐỂ TẢI LẠI ĐỀ THI
-                        </button>
-                    </div>`;
-            }
-        }
-
-        function switchGrade(grade) {
-            currentGrade = grade;
-            document.querySelectorAll('#gradeTab .nav-link').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`tab-k${grade}`);
-            if (activeBtn) activeBtn.classList.add('active');
-
-            const container = document.getElementById('examListContainer');
-            container.innerHTML = '';
-
-            const isAdmin = (currentAdminPasswordSession !== "");
-
-            let filteredExams = globalExams.filter(e => String(e.Khoi || e.khoi || e.KHOI || '') === String(grade)).reverse();
-
-            if (!isAdmin) {
-                filteredExams = filteredExams.filter(e => {
-                    const st = String(e.TrangThai || e.trangThai || e.status || '').toUpperCase();
-                    return st !== "AN";
-                });
-            }
-
-            if (filteredExams.length === 0) {
-                container.innerHTML = `<div class="col-12 text-center py-4 text-muted fs-6">Chưa có đề thi nào đang mở cho Khối ${grade}.</div>`;
-                return;
-            }
-
-            filteredExams.forEach(exam => {
-                let rawLink = "";
-                const candidates = [exam.AzotaLink, exam.azotaLink, exam.Azotalink, exam.AZOTALINK, exam.Link, exam.link, exam.LinkAzota, exam.linkAzota, exam.LinkDe, exam.linkDe];
-                for (let c of candidates) {
-                    if (c && typeof c === 'string' && (c.startsWith('http://') || c.startsWith('https://'))) {
-                        rawLink = c.trim();
-                        break;
-                    }
-                }
-                if (!rawLink) {
-                    for (let key in exam) {
-                        let val = String(exam[key] || '').trim();
-                        if (val.startsWith("http://") || val.startsWith("https://")) {
-                            rawLink = val;
-                            break;
-                        }
-                    }
-                }
-
-                const examTitle = exam.TenDe || exam.tenDe || 'Đề luyện tập';
-                const status = String(exam.TrangThai || exam.trangThai || exam.status || 'HIEN').toUpperCase();
-                const isHidden = (status === "AN");
-
-                const col = document.createElement('div');
-                col.className = 'col-12';
-
-                let toggleBtnHtml = "";
-                if (isAdmin) {
-                    toggleBtnHtml = isHidden ? 
-                        `<button class="btn btn-sm btn-secondary fw-bold me-1" onclick="toggleExamVisibility(${exam._rowIndex}, 'HIEN')" title="Bấm để Hiện đề cho học sinh">👁️‍🗨️ Đang ẩn</button>` :
-                        `<button class="btn btn-sm btn-success fw-bold me-1" onclick="toggleExamVisibility(${exam._rowIndex}, 'AN')" title="Bấm để Ẩn đề khỏi học sinh">👁️ Đang hiện</button>`;
-                }
-
-                col.innerHTML = `
-                    <div class="card card-custom exam-card ${isHidden ? 'exam-card-hidden' : ''} p-3 bg-white">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <div class="flex-grow-1">
-                                <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                    <span class="badge badge-k${grade} fs-6">Khối ${exam.Khoi || exam.khoi || grade}</span>
-                                    <small class="text-muted fw-bold"><i class="fa-regular fa-clock me-1"></i>${exam.ThoiGian || exam.thoiGian || '90 Phút'}</small>
-                                    ${isHidden ? '<span class="badge bg-secondary ms-2"><i class="fa-solid fa-eye-slash me-1"></i>Đang ẩn với học sinh</span>' : ''}
-                                </div>
-                                <h5 class="fw-bold text-dark mb-0 text-start">${examTitle}</h5>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-                                <button class="btn btn-action-start fw-bold px-4 py-2" onclick="openExamWithAuth('${rawLink.replace(/'/g, "\\'")}', '${examTitle.replace(/'/g, "\\'")}')">
-                                    🚀 BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-arrow-right ms-1"></i>
-                                </button>
-                                ${toggleBtnHtml}
-                                <button class="btn btn-sm btn-outline-primary d-none admin-only-btn" onclick='editExam(${JSON.stringify(exam)})' title="Sửa thông tin đề">✏️</button>
-                                <button class="btn btn-sm btn-outline-danger d-none admin-only-btn" onclick="deleteExam(${exam._rowIndex})" title="Xóa đề">🗑️</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(col);
-            });
-
-            if (isAdmin && !document.getElementById('adminContentBox').classList.contains('d-none')) {
-                document.querySelectorAll('.admin-only-btn').forEach(btn => btn.classList.remove('d-none'));
-            }
-        }
-
-        function toggleExamVisibility(rowIndex, newStatus) {
-            const targetExam = globalExams.find(e => e._rowIndex === rowIndex);
-            if (targetExam) {
-                targetExam.TrangThai = newStatus;
-                targetExam.trangThai = newStatus;
-            }
-            try { localStorage.setItem('cache_exam_list', JSON.stringify(globalExams)); } catch(e){}
-            switchGrade(currentGrade);
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "doiTrangThaiDeThi", rowIndex: rowIndex, trangThai: newStatus })
-            });
-        }
-
-        function saveExam() {
-            const editRowIndex = document.getElementById('editExamRowIndex').value;
-            const khoi = document.getElementById('newExamKhoi').value;
-            const tenDe = document.getElementById('newExamTitle').value.trim();
-            const thoiGian = document.getElementById('newExamTime').value.trim();
-            let link = document.getElementById('newExamLink').value.trim();
-
-            if (!tenDe || !link) { alert("Vui lòng nhập Tên đề và Dán Link bài thi!"); return; }
-            if (!link.startsWith("http://") && !link.startsWith("https://")) link = "https://" + link;
-
-            const action = editRowIndex ? "suaDeThi" : "themDeThi";
-            const payload = { action: action, khoi: khoi, tenDe: tenDe, thoiGian: thoiGian, azotaLink: link, trangThai: "HIEN", rowIndex: parseInt(editRowIndex) || null };
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                alert(editRowIndex ? "✅ ĐÃ CẬP NHẬT ĐỀ THI!" : "🚀 ĐÃ ĐĂNG ĐỀ THI MỚI THÀNH CÔNG!");
-                cancelEditExam();
-                loadExams();
-            });
-        }
-
-        function editExam(examJson) {
-            const exam = typeof examJson === 'string' ? JSON.parse(examJson) : examJson;
-            let rawLink = "";
-            for (let key in exam) {
-                let val = String(exam[key] || '').trim();
-                if (val.startsWith("http://") || val.startsWith("https://")) { rawLink = val; break; }
-            }
-
-            document.getElementById('editExamRowIndex').value = exam._rowIndex;
-            document.getElementById('newExamKhoi').value = exam.Khoi || exam.khoi || '12';
-            document.getElementById('newExamTitle').value = exam.TenDe || exam.tenDe || '';
-            document.getElementById('newExamTime').value = exam.ThoiGian || exam.thoiGian || '90 Phút';
-            document.getElementById('newExamLink').value = rawLink;
-            
-            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-pen-to-square me-1"></i> CHỈNH SỬA THÔNG TIN ĐỀ THI';
-            document.getElementById('btnSaveExam').innerText = "💾 LƯU CẬP NHẬT";
-            document.getElementById('btnCancelEditExam').classList.remove('d-none');
-        }
-
-        function cancelEditExam() {
-            document.getElementById('editExamRowIndex').value = '';
-            document.getElementById('newExamTitle').value = '';
-            document.getElementById('newExamLink').value = '';
-            document.getElementById('examFormHeader').innerHTML = '<i class="fa-solid fa-plus-circle me-1"></i> 1. TẠO / CẬP NHẬT ĐỀ THI';
-            document.getElementById('btnSaveExam').innerText = "🚀 ĐĂNG ĐỀ THI";
-            document.getElementById('btnCancelEditExam').classList.add('d-none');
-        }
-
-        function deleteExam(rowIndex) {
-            if (!confirm("Thầy có chắc chắn muốn xóa đề thi này không?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaDeThi", rowIndex: rowIndex })
-            }).then(() => { alert("Đã xóa đề thi!"); loadExams(); });
         }
 
         function handleNoticeImageUpload(input) {
@@ -1248,130 +779,6 @@
             }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
         }
 
-        function openExamWithAuth(azotaUrl, title) {
-            if (!azotaUrl || azotaUrl === '#' || !azotaUrl.startsWith('http')) {
-                alert("❌ Link đề thi chưa đúng hoặc bị trống trên Google Sheets!");
-                return;
-            }
-
-            selectedAzotaUrl = azotaUrl;
-            selectedExamTitle = title || "ĐỀ THI TRỰC TUYẾN";
-            let savedPhone = "";
-            try { savedPhone = localStorage.getItem('user_auth_phone'); } catch(e){}
-            
-            if (savedPhone) {
-                verifyPhoneOnServer(savedPhone, true);
-            } else {
-                document.getElementById('inputPhoneAuth').value = '';
-                document.getElementById('authAlertBox').innerHTML = '';
-                const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
-                modal.show();
-            }
-        }
-
-        function processPhoneAuth() {
-            const inputPhone = document.getElementById('inputPhoneAuth').value.trim();
-            if (!inputPhone) {
-                document.getElementById('authAlertBox').innerHTML = `<div class="alert alert-danger py-2">Vui lòng nhập số điện thoại!</div>`;
-                return;
-            }
-            verifyPhoneOnServer(inputPhone, false);
-        }
-
-        function verifyPhoneOnServer(phone, isAuto) {
-            const btnConfirm = document.getElementById('btnConfirmAuth');
-            if (btnConfirm) { btnConfirm.disabled = true; btnConfirm.innerHTML = "⏳ Đang kiểm tra bảo mật..."; }
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ action: "checkAuthPhone", phone: phone })
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (btnConfirm) { btnConfirm.disabled = false; btnConfirm.innerHTML = "🚀 XÁC NHẬN VÀO BÀI THI"; }
-
-                if (res.status === "APPROVED") {
-                    try { localStorage.setItem('user_auth_phone', phone); } catch(e){}
-                    currentVerifiedPhone = phone;
-
-                    const modalEl = document.getElementById('verifyPhoneModal');
-                    const modalObj = bootstrap.Modal.getInstance(modalEl);
-                    if (modalObj) modalObj.hide();
-
-                    showAzotaInstructionModal(phone);
-                } else if (res.status === "PENDING") {
-                    document.getElementById('authAlertBox').innerHTML = `
-                        <div class="alert alert-info py-2 small">
-                            ⏳ Học sinh <b>${res.name || ''}</b> đang <b>Chờ Thầy Trung phê duyệt</b>.<br>
-                            Em vui lòng đợi Thầy xác nhận để vào làm bài nhé!
-                        </div>`;
-                    if (isAuto) {
-                        const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
-                        modal.show();
-                    }
-                } else {
-                    try { if (isAuto) localStorage.removeItem('user_auth_phone'); } catch(e){}
-                    document.getElementById('authAlertBox').innerHTML = `
-                        <div class="alert alert-warning py-2 small">
-                            ❌ Số điện thoại <b>${phone}</b> chưa đăng ký học.<br>
-                            Vui lòng bấm nút <b>"KHỐI QUẢN LÝ & ĐĂNG KÝ"</b> để hoàn tất phiếu đăng ký!
-                        </div>`;
-                    if (isAuto) {
-                        const modal = new bootstrap.Modal(document.getElementById('verifyPhoneModal'));
-                        modal.show();
-                    }
-                }
-            })
-            .catch(() => {
-                if (btnConfirm) { btnConfirm.disabled = false; btnConfirm.innerHTML = "🚀 XÁC NHẬN VÀO BÀI THI"; }
-                alert("Mạng yếu, vui lòng thử lại hoặc tải lại trang!");
-            });
-        }
-
-        function showAzotaInstructionModal(phone) {
-            const formattedP = formatPhone10Digits(phone);
-            const user = generateAzotaUsername(formattedP);
-            const pass = generateAzotaPassword(formattedP);
-
-            document.getElementById('modalAzotaUsername').innerText = user;
-            document.getElementById('modalAzotaPassword').innerText = pass;
-
-            const modal = new bootstrap.Modal(document.getElementById('azotaInstructionModal'));
-            modal.show();
-        }
-
-        function confirmLaunchArena() {
-            const modalEl = document.getElementById('azotaInstructionModal');
-            const modalObj = bootstrap.Modal.getInstance(modalEl);
-            if (modalObj) modalObj.hide();
-
-            launchExamArena(selectedAzotaUrl, selectedExamTitle, currentVerifiedPhone);
-        }
-
-        function launchExamArena(url, title, phone) {
-            const formattedP = formatPhone10Digits(phone);
-            const azotaUsername = generateAzotaUsername(formattedP);
-            const azotaPassword = generateAzotaPassword(formattedP);
-
-            document.getElementById('arenaExamTitle').innerText = title.toUpperCase();
-            document.getElementById('arenaUserPhone').innerText = azotaUsername;
-            document.getElementById('arenaUserPass').innerText = azotaPassword;
-            
-            document.getElementById('examIframe').src = url;
-            document.getElementById('mainWebsiteWrapper').classList.add('d-none');
-            document.getElementById('examArenaScreen').classList.remove('d-none');
-            window.scrollTo(0, 0);
-        }
-
-        function closeExamArena() {
-            if (confirm("Em có chắc chắn muốn rời khỏi phòng thi?\nHãy đảm bảo rằng em đã nộp bài trên hệ thống!")) {
-                document.getElementById('examIframe').src = "";
-                document.getElementById('examArenaScreen').classList.add('d-none');
-                document.getElementById('mainWebsiteWrapper').classList.remove('d-none');
-            }
-        }
-
         function doAdminLogin() {
             const pass = document.getElementById('adminPasswordInput').value.trim();
             if (!pass) { alert("Vui lòng nhập mật khẩu!"); return; }
@@ -1395,10 +802,8 @@
                     globalData = res.data || [];
                     document.getElementById('passwordAuthBox').classList.add('d-none');
                     document.getElementById('adminContentBox').classList.remove('d-none');
-                    document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.remove('d-none'));
                     renderAdminTable(globalData);
                     renderAdmin3DList();
-                    switchGrade(currentGrade);
                 } else {
                     alert("❌ Mật khẩu Admin không chính xác!");
                 }
@@ -1416,8 +821,6 @@
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('passwordAuthBox').classList.remove('d-none');
             document.getElementById('adminContentBox').classList.add('d-none');
-            document.querySelectorAll('.admin-only-btn').forEach(b => b.classList.add('d-none'));
-            switchGrade(currentGrade);
         }
 
         function reloadAdminData() {
@@ -1676,7 +1079,6 @@
 
         startSlimCountdown();
         load3DModels();
-        loadExams();
         loadNotices();
     </script>
 </body>
