@@ -396,9 +396,13 @@
                                 <!-- QUẢN LÝ VÀ PHÊ DUYỆT HỌC SINH -->
                                 <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-3 flex-wrap gap-2">
                                     <h6 class="fw-bold mb-0"><i class="fa-solid fa-user-check me-1"></i> 3. PHÊ DUYỆT & QUẢN LÝ HỌC SINH</h6>
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
                                         <button class="btn btn-success fw-bold" onclick="approveSelectedStudents()">
                                             ✅ DUYỆT CÁC MỤC ĐÃ CHỌN
+                                        </button>
+                                        <!-- NÚT XÓA CÁC MỤC ĐÃ CHỌN (MỚI BỔ SUNG) -->
+                                        <button class="btn btn-danger fw-bold" onclick="deleteSelectedStudents()">
+                                            🗑️ XÓA CÁC MỤC ĐÃ CHỌN
                                         </button>
                                         <select class="form-select w-auto" id="filterLop" onchange="filterDataByClass()">
                                             <option value="ALL">-- Tất cả Lớp --</option>
@@ -900,6 +904,26 @@
             });
         }
 
+        // HÀM XÓA NHIỀU HỌC SINH ĐÃ CHỌN (MỚI BỔ SUNG)
+        function deleteSelectedStudents() {
+            const selectedCbs = document.querySelectorAll('.student-select-cb:checked');
+            if (selectedCbs.length === 0) { alert("Thầy chưa chọn học sinh nào để xóa!"); return; }
+
+            const indexes = Array.from(selectedCbs).map(cb => parseInt(cb.value));
+            if (!confirm(`⚠️ CẢNH BÁO: Thầy có chắc chắn muốn XÓA VĨNH VIỄN ${indexes.length} học sinh đã chọn khỏi hệ thống?`)) return;
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "xoaNhieuHocSinh", rowIndexes: indexes })
+            }).then(() => {
+                alert(`🗑️ ĐÃ XÓA THÀNH CÔNG ${indexes.length} HỌC SINH!`);
+                document.getElementById('selectAllCheckbox').checked = false;
+                reloadAdminData();
+            });
+        }
+
         function approveStudent(rowIndex) {
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -955,9 +979,8 @@
                     `<span class="badge bg-success">Đã duyệt</span>` : 
                     `<span class="badge bg-warning text-dark">Chờ duyệt</span>`;
                 
-                const checkboxCell = isApproved ? 
-                    `<i class="fa-solid fa-check text-success"></i>` : 
-                    `<input type="checkbox" class="student-select-cb" value="${row._rowIndex}">`;
+                // Mở checkbox cho mọi dòng để Thầy có thể tích chọn xóa đồng loạt
+                const checkboxCell = `<input type="checkbox" class="student-select-cb" value="${row._rowIndex}">`;
 
                 const actionBtn = isApproved ? 
                     `<button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>` : 
