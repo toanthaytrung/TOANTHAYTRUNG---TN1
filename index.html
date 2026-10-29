@@ -123,6 +123,19 @@
             background: #fdfdfd;
         }
 
+        /* KHO ĐỀ THEO CHUYÊN ĐỀ */
+        .topic-section-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .topic-filter .btn { border-radius: 999px; font-weight: 700; padding: 4px 14px; }
+        .topic-card { border-left: 5px solid #b45309; border-radius: 12px; background: #fffdf9; }
+        .topic-card .topic-title { color: #5b3409; font-weight: 800; }
+        .topic-card .exam-link {
+            display: flex; justify-content: space-between; align-items: center; gap: 8px;
+            padding: 8px 12px; border: 1px solid #f3d9b1; border-radius: 10px; background: #fff;
+            text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14.5px;
+        }
+        .topic-card .exam-link:hover { border-color: #b45309; background: #fff8ee; color: #7c2d12; }
+        .topic-card .exam-link small { color: #64748b; font-weight: 500; white-space: nowrap; }
+
         .notice-card { 
             border-left: 5px solid #0284c7; 
             background-color: #f0f9ff; 
@@ -240,6 +253,28 @@
                         <div>
                             <a href="https://toanthaytrung.github.io/thionline/index.html" target="_blank" class="btn btn-light btn-lg fw-bold text-primary px-4 py-3 shadow" style="border-radius: 12px; font-size: 16px; white-space: nowrap;">
                                 🚀 VÀO THI NGAY <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. KHO ĐỀ THEO CHUYÊN ĐỀ (tự lấy danh sách từ cổng thi online) -->
+                <div class="col-lg-12">
+                    <div class="card card-custom p-4">
+                        <div class="topic-section-head border-bottom pb-3 mb-3">
+                            <h5 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #b45309;">
+                                <i class="fa-solid fa-layer-group"></i> KHO ĐỀ THEO CHUYÊN ĐỀ
+                            </h5>
+                            <div class="topic-filter d-flex gap-2 flex-wrap" id="topicFilter"></div>
+                        </div>
+                        <div class="row g-3" id="topicListContainer">
+                            <div class="col-12 text-center py-3 text-muted">
+                                <div class="spinner-border spinner-border-sm text-warning me-2"></div> Đang tải danh sách chuyên đề...
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <a href="https://toanthaytrung.github.io/thionline/index.html?tab=chuyende" target="_blank" class="fw-bold text-decoration-none" style="color: #b45309;">
+                                Xem tất cả trên Cổng thi online <i class="fa-solid fa-arrow-right ms-1"></i>
                             </a>
                         </div>
                     </div>
@@ -410,7 +445,7 @@
                                             <option value="11A">Lớp 11A</option><option value="11B">Lớp 11B</option>
                                             <option value="10A">Lớp 10A</option><option value="10B">Lớp 10B</option><option value="10C">Lớp 10C</option>
                                         </select>
-                                        <button class="btn btn-outline-success fw-bold" onclick="exportToAzotaExcel()" title="Xuất file danh sách học sinh">📥 Xuất File Excel</button>
+                                        <button class="btn btn-outline-success fw-bold" onclick="exportStudentExcel()" title="Xuất file danh sách học sinh">📥 Xuất File Excel</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -424,8 +459,6 @@
                                                 <th>Lớp</th>
                                                 <th class="text-start">Họ Tên Học Sinh</th>
                                                 <th>SĐT Đăng Ký</th>
-                                                <th>Tài Khoản</th>
-                                                <th>Mật Khẩu</th>
                                                 <th>Trạng Thái</th>
                                                 <th>Cảnh Báo Trùng</th>
                                                 <th>Hành Động</th>
@@ -498,19 +531,40 @@
         let global3DModels = [];
         let currentActive3DUrl = "";
         let currentAdminPasswordSession = "";
+        let currentTableRows = [];
 
-        function generateAzotaUsername(rawPhone) {
-            let pClean = String(rawPhone || '').replace(/\D/g, '');
-            let last6 = pClean.slice(-6);
-            if (!last6 || last6.length < 6) last6 = pClean.padStart(6, '0');
-            return "Trt" + last6;
+        // Chống chèn mã: mọi chữ do người ngoài gõ (phiếu đăng ký) đều được "làm sạch" trước khi hiện lên trang
+        function escapeHtml(t) {
+            return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         }
 
-        function generateAzotaPassword(rawPhone) {
-            let pClean = String(rawPhone || '').replace(/\D/g, '');
-            let last4 = pClean.slice(-4);
-            if (!last4 || last4.length < 4) last4 = "2027";
-            return "Trung@" + last4;
+        // Mọi thao tác quản trị đều gửi kèm mật khẩu để máy chủ kiểm tra (không còn ai gửi lệnh xóa/duyệt "chui" được)
+        function adminPost(payload) {
+            if (!currentAdminPasswordSession) {
+                alert("🔒 Thầy đăng nhập quản trị trước nhé!");
+                return Promise.reject(new Error('denied'));
+            }
+            payload.password = currentAdminPasswordSession;
+            return fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.text())
+            .then(t => {
+                let res = null;
+                try { res = JSON.parse(t); } catch (e) {}
+                if (res && res.status === 'DENIED') {
+                    alert("🔒 " + (res.message || "Mật khẩu quản trị không đúng") + ". Thầy đăng nhập lại nhé!");
+                    logoutAdmin();
+                    throw new Error('denied');
+                }
+                return res;
+            }, err => {
+                // máy chủ đã nhận lệnh nhưng trình duyệt không đọc được trả lời: coi như đã gửi (như cách cũ)
+                if (err && err.message === 'denied') throw err;
+                return null;
+            });
         }
 
         function formatPhone10Digits(rawPhone) {
@@ -611,16 +665,11 @@
             const action = editRowIndex ? "suaMoHinh" : "themMoHinh";
             const payload = { action: action, khoi: khoi, tenMoHinh: tenMoHinh, link3D: link3D, rowIndex: parseInt(editRowIndex) || null };
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(() => {
+            adminPost(payload).then(() => {
                 alert(editRowIndex ? "✅ ĐÃ CẬP NHẬT MÔ HÌNH 3D!" : "🚀 ĐÃ ĐĂNG MÔ HÌNH 3D MỚI!");
                 cancelEdit3D();
                 load3DModels();
-            });
+            }).catch(() => {});
         }
 
         function edit3D(modelJson) {
@@ -646,12 +695,8 @@
 
         function delete3D(rowIndex) {
             if (!confirm("Thầy có chắc chắn muốn xóa mô hình 3D này?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaMoHinh", rowIndex: rowIndex })
-            }).then(() => { alert("Đã xóa mô hình!"); load3DModels(); });
+            adminPost({ action: "xoaMoHinh", rowIndex: rowIndex })
+                .then(() => { alert("Đã xóa mô hình!"); load3DModels(); }).catch(() => {});
         }
 
         function renderAdmin3DList() {
@@ -760,27 +805,18 @@
             const img = document.getElementById('noticeImageBase64').value.trim();
             if (!txt && !img) { alert("Vui lòng nhập nội dung hoặc chọn ảnh!"); return; }
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "dangThongBao", noiDung: txt, hinhAnh: img })
-            }).then(() => {
+            adminPost({ action: "dangThongBao", noiDung: txt, hinhAnh: img }).then(() => {
                 alert("🚀 ĐÃ ĐĂNG THÔNG BÁO THÀNH CÔNG!");
                 document.getElementById('newNoticeText').value = '';
                 clearNoticeImage();
                 loadNotices();
-            });
+            }).catch(() => {});
         }
 
         function deleteNotice(rowIndex) {
             if (!confirm("Thầy có chắc chắn muốn xóa thông báo này?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaThongBao", rowIndex: rowIndex })
-            }).then(() => { alert("Đã xóa thông báo!"); loadNotices(); });
+            adminPost({ action: "xoaThongBao", rowIndex: rowIndex })
+                .then(() => { alert("Đã xóa thông báo!"); loadNotices(); }).catch(() => {});
         }
 
         function doAdminLogin() {
@@ -892,16 +928,11 @@
             const indexes = Array.from(selectedCbs).map(cb => parseInt(cb.value));
             if (!confirm(`Thầy có chắc chắn muốn duyệt ${indexes.length} học sinh đã chọn?`)) return;
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "duyetNhieuHocSinh", rowIndexes: indexes })
-            }).then(() => {
+            adminPost({ action: "duyetNhieuHocSinh", rowIndexes: indexes }).then(() => {
                 alert(`✅ ĐÃ PHÊ DUYỆT THÀNH CÔNG ${indexes.length} HỌC SINH!`);
                 document.getElementById('selectAllCheckbox').checked = false;
                 reloadAdminData();
-            });
+            }).catch(() => {});
         }
 
         // HÀM XÓA NHIỀU HỌC SINH ĐÃ CHỌN (MỚI BỔ SUNG)
@@ -912,41 +943,26 @@
             const indexes = Array.from(selectedCbs).map(cb => parseInt(cb.value));
             if (!confirm(`⚠️ CẢNH BÁO: Thầy có chắc chắn muốn XÓA VĨNH VIỄN ${indexes.length} học sinh đã chọn khỏi hệ thống?`)) return;
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaNhieuHocSinh", rowIndexes: indexes })
-            }).then(() => {
+            adminPost({ action: "xoaNhieuHocSinh", rowIndexes: indexes }).then(() => {
                 alert(`🗑️ ĐÃ XÓA THÀNH CÔNG ${indexes.length} HỌC SINH!`);
                 document.getElementById('selectAllCheckbox').checked = false;
                 reloadAdminData();
-            });
+            }).catch(() => {});
         }
 
         function approveStudent(rowIndex) {
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "duyetHocSinh", rowIndex: rowIndex })
-            }).then(() => {
+            adminPost({ action: "duyetHocSinh", rowIndex: rowIndex }).then(() => {
                 alert("✅ ĐÃ PHÊ DUYỆT HỌC SINH THÀNH CÔNG!");
                 reloadAdminData();
-            });
+            }).catch(() => {});
         }
 
         function deleteStudent(rowIndex) {
             if (!confirm("Thầy có chắc chắn muốn xóa học sinh này?")) return;
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "xoaHocSinh", rowIndex: rowIndex })
-            }).then(() => {
+            adminPost({ action: "xoaHocSinh", rowIndex: rowIndex }).then(() => {
                 alert("Đã xóa học sinh!");
                 reloadAdminData();
-            });
+            }).catch(() => {});
         }
 
         function cleanPhoneLocal(p) {
@@ -962,7 +978,8 @@
             tbody.innerHTML = '';
             document.getElementById('selectAllCheckbox').checked = false;
 
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="11" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
+            currentTableRows = data || [];
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="text-center py-3">Chưa có học sinh đăng ký.</td></tr>`; return; }
             
             const phoneCounts = {};
             const nameCounts = {};
@@ -980,16 +997,15 @@
                     `<span class="badge bg-warning text-dark">Chờ duyệt</span>`;
                 
                 // Mở checkbox cho mọi dòng để Thầy có thể tích chọn xóa đồng loạt
-                const checkboxCell = `<input type="checkbox" class="student-select-cb" value="${row._rowIndex}">`;
+                const rIdx = parseInt(row._rowIndex, 10) || 0;
+                const checkboxCell = `<input type="checkbox" class="student-select-cb" value="${rIdx}">`;
 
                 const actionBtn = isApproved ? 
-                    `<button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>` : 
-                    `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${row._rowIndex})">✅ Duyệt</button>
-                     <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${row._rowIndex})">🗑️ Xóa</button>`;
+                    `<button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${rIdx})">🗑️ Xóa</button>` : 
+                    `<button class="btn btn-sm btn-success fw-bold me-1" onclick="approveStudent(${rIdx})">✅ Duyệt</button>
+                     <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${rIdx})">🗑️ Xóa</button>`;
 
                 let displayPhone = formatPhone10Digits(row.SoDienThoai);
-                let azotaUser = generateAzotaUsername(displayPhone);
-                let azotaPass = generateAzotaPassword(displayPhone);
 
                 const pClean = cleanPhoneLocal(row.SoDienThoai);
                 const nameClean = String(row.HoTenHocSinh || '').trim().toLowerCase();
@@ -1007,15 +1023,13 @@
                     <tr>
                         <td>${checkboxCell}</td>
                         <td>${i+1}</td>
-                        <td><span class="badge bg-primary">${row.Lớp||row.lop||''}</span></td>
-                        <td class="fw-bold text-start">${row.HoTenHocSinh||row.hoTenHocSinh||''}</td>
-                        <td><span class="text-secondary">${displayPhone}</span></td>
-                        <td><code class="text-primary fw-bold fs-6">${azotaUser}</code></td>
-                        <td><code>${azotaPass}</code></td>
+                        <td><span class="badge bg-primary">${escapeHtml(row.Lớp||row.lop||'')}</span></td>
+                        <td class="fw-bold text-start">${escapeHtml(row.HoTenHocSinh||row.hoTenHocSinh||'')}</td>
+                        <td><span class="text-secondary">${escapeHtml(displayPhone)}</span></td>
                         <td>${statusBadge}</td>
                         <td>${duplicateBadge}</td>
                         <td>${actionBtn}</td>
-                        <td><button class="btn btn-sm btn-outline-primary" onclick='printSingleReceipt(${JSON.stringify(row)})'>🖨 In</button></td>
+                        <td><button class="btn btn-sm btn-outline-primary" onclick="printSingleReceipt(${i})">🖨 In</button></td>
                     </tr>`;
             });
         }
@@ -1025,7 +1039,9 @@
             renderAdminTable(selectedClass === 'ALL' ? globalData : globalData.filter(i => (i.Lớp || i.lop) === selectedClass));
         }
 
-        function printSingleReceipt(student) {
+        function printSingleReceipt(idx) {
+            const student = currentTableRows[idx];
+            if (!student) return;
             document.getElementById('p_hoTenPhuHuynh').innerText = student.HoTenPhuHuynh || '';
             document.getElementById('p_soDienThoai').innerText = student.SoDienThoai || '';
             document.getElementById('p_diaChi').innerText = student.DiaChi || '';
@@ -1037,7 +1053,7 @@
             document.getElementById('printSection').classList.add('d-none');
         }
 
-        function exportToAzotaExcel() {
+        function exportStudentExcel() {
             if (!globalData || globalData.length === 0) { alert("Chưa có dữ liệu học sinh!"); return; }
             const selectedClass = document.getElementById('filterLop').value;
             
@@ -1048,19 +1064,16 @@
                 return;
             }
 
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFFSTT,Họ và tên,Số điện thoại,Tài khoản,Mật khẩu,Lớp\n";
+            const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+            let csv = "\uFEFFSTT,Họ và tên,Lớp,Số điện thoại,Trường,Phụ huynh,Địa chỉ\n";
             exportData.forEach((row, i) => {
                 let p = formatPhone10Digits(row.SoDienThoai);
-                let user = generateAzotaUsername(p);
-                let pass = generateAzotaPassword(p);
-                let name = row.HoTenHocSinh || row.hoTenHocSinh || '';
-                let lop = row.Lớp || row.lop || '';
-                csvContent += `${i+1},"${name}","'${p}","${user}","${pass}","${lop}"\n`;
+                csv += [i + 1, q(row.HoTenHocSinh || row.hoTenHocSinh), q(row.Lớp || row.lop), q("'" + p),
+                        q(row.TruongHoc), q(row.HoTenPhuHuynh), q(row.DiaChi)].join(',') + "\n";
             });
 
-            const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
+            link.setAttribute("href", URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })));
             link.setAttribute("download", `Danh_Sach_Hoc_Sinh_${selectedClass}.csv`);
             document.body.appendChild(link);
             link.click();
@@ -1100,9 +1113,68 @@
             });
         });
 
+        // ===== KHO ĐỀ THEO CHUYÊN ĐỀ: tự đọc danh mục đề của Cổng thi online (thầy nạp bằng app là tự hiện) =====
+        const EXAM_SITE = "https://toanthaytrung.github.io/thionline/";
+        let allTopics = [];
+        let topicGrade = 'ALL';
+
+        function loadTopics() {
+            fetch(EXAM_SITE + "manifest.json?t=" + Date.now())
+                .then(r => r.json())
+                .then(list => {
+                    const groups = new Map();
+                    (list || []).filter(e => e.type === 'chuyende' && !e.hidden).forEach(e => {
+                        const topic = String(e.topic || e.title || 'Chuyên đề').trim();
+                        const key = e.grade + '|' + topic.toLowerCase().replace(/\s+/g, ' ');
+                        if (!groups.has(key)) groups.set(key, { grade: String(e.grade), topic: topic, items: [] });
+                        groups.get(key).items.push(e);
+                    });
+                    allTopics = [...groups.values()];
+                    allTopics.forEach(g => g.items.sort((a, b) => String(a.id).localeCompare(String(b.id))));
+                    allTopics.sort((a, b) => b.grade.localeCompare(a.grade) ||
+                        String(b.items[b.items.length - 1].id).localeCompare(String(a.items[a.items.length - 1].id)));
+                    renderTopics();
+                })
+                .catch(() => {
+                    document.getElementById('topicListContainer').innerHTML =
+                        `<div class="col-12 text-center py-3 text-muted">Chưa tải được danh sách chuyên đề. Em vào Cổng thi online để xem nhé.</div>`;
+                });
+        }
+
+        function renderTopics() {
+            const box = document.getElementById('topicListContainer');
+            const filter = document.getElementById('topicFilter');
+            const grades = ['12', '11', '10'].filter(g => allTopics.some(t => t.grade === g));
+            filter.innerHTML = allTopics.length ? [['ALL', 'Tất cả'], ...grades.map(g => [g, 'Khối ' + g])].map(([g, t]) =>
+                `<button class="btn btn-sm ${g === topicGrade ? 'btn-warning' : 'btn-outline-warning text-dark'}" onclick="topicGrade='${g}'; renderTopics()">${t}</button>`).join('') : '';
+            const shown = allTopics.filter(t => topicGrade === 'ALL' || t.grade === topicGrade);
+            if (!shown.length) {
+                box.innerHTML = `<div class="col-12 text-center py-3 text-muted">📚 Kho chuyên đề đang được Thầy cập nhật, các em quay lại sau nhé!</div>`;
+                return;
+            }
+            box.innerHTML = shown.map(t => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="card topic-card p-3 h-100 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge" style="background:#b45309;">Khối ${escapeHtml(t.grade)}</span>
+                            <small class="text-muted">${t.items.length} đề</small>
+                        </div>
+                        <h6 class="topic-title mb-3">${escapeHtml(t.topic)}</h6>
+                        <div class="d-flex flex-column gap-2 mt-auto">
+                            ${t.items.map(e => `
+                            <a class="exam-link" target="_blank" href="${EXAM_SITE}exam_player.html?exam=${encodeURIComponent(e.folder || e.id)}">
+                                <span>📝 ${escapeHtml(e.topic ? (e.title || 'Đề 1') : 'Đề 1')}</span>
+                                <small>${e.totalQuestions ? e.totalQuestions + ' câu · ' : ''}${e.duration || 45} phút</small>
+                            </a>`).join('')}
+                        </div>
+                    </div>
+                </div>`).join('');
+        }
+
         startSlimCountdown();
         load3DModels();
         loadNotices();
+        loadTopics();
     </script>
 </body>
 </html>
